@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Button;
 public class findCourse {
 
 	protected Shell cFindWindow;
-	private Text text;
+	private Text findCourse;
 
 	/**
 	 * Launch the application.
@@ -53,19 +53,19 @@ public class findCourse {
 		lblCourseOffered.setBounds(136, 10, 158, 21);
 		lblCourseOffered.setText("Find Course Offered");
 		
-		text = new Text(cFindWindow, SWT.BORDER);
-		text.setBounds(190, 37, 136, 21);
+		findCourse = new Text(cFindWindow, SWT.BORDER);
+		findCourse.setBounds(190, 37, 136, 21);
 		
-		Label lblNewLabel_1 = new Label(cFindWindow, SWT.NONE);
-		lblNewLabel_1.setBounds(10, 37, 174, 15);
-		lblNewLabel_1.setText("Insert department name or code:");
+		Label lblFindCourse = new Label(cFindWindow, SWT.NONE);
+		lblFindCourse.setBounds(10, 37, 174, 15);
+		lblFindCourse.setText("Insert department name or code:");
 		
-		List list = new List(cFindWindow, SWT.BORDER);
-		list.setBounds(97, 73, 250, 153);
+		List listCourse = new List(cFindWindow, SWT.BORDER);
+		listCourse.setBounds(97, 73, 250, 153);
 		
-		Button btnNewButton = new Button(cFindWindow, SWT.NONE);
-		btnNewButton.setBounds(10, 228, 75, 25);
-		btnNewButton.setText("Back");
+		Button backButton = new Button(cFindWindow, SWT.NONE);
+		backButton.setBounds(10, 228, 75, 25);
+		backButton.setText("Back");
 
 	}
 }
