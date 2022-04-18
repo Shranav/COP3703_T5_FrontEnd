@@ -60,8 +60,8 @@ public class findCourse {
 		lblFindCourse.setBounds(10, 37, 174, 15);
 		lblFindCourse.setText("Insert department name or code:");
 		
-		List listCourse = new List(cFindWindow, SWT.BORDER);
-		listCourse.setBounds(97, 73, 250, 153);
+		List courseList = new List(cFindWindow, SWT.BORDER);
+		courseList.setBounds(97, 73, 250, 153);
 		
 		Button backButton = new Button(cFindWindow, SWT.NONE);
 		backButton.setBounds(10, 228, 75, 25);
