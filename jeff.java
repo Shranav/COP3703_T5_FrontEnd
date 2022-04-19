@@ -3,29 +3,35 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class jeff {
 
 	protected Shell shell;
-	private Text text;
-	private Text text_1;
-	private Text text_2;
-	private Text text_3;
-	private Text text_4;
-	private Text text_5;
-	private Text text_6;
-	private Text text_7;
-	private Text text_8;
-	private Text text_9;
-	private Text text_10;
-	private Text text_11;
-	private Text text_12;
-	private Text text_13;
-	private Text text_14;
+	private Text NTxt;
+	private Text fNameTxt;
+	private Text midTxt;
+	private Text lNameTxt;
+	private Text birthTxt;
+	private Text ssnTxt;
+	private Text cpnTxt;
+	private Text ppnTxt;
+	private Text sClassTxt;
+	private Text DegreeTxt;
+	private Text cAddressTxt;
+	private Text stAddressTxt;
+	private Text cityTxt;
+	private Text stateTxt;
+	private Text zipTxt;
+	private Button maleButton;
+	private Button femaleButton;
+	private Button otherbutton;
 
 	/**
 	 * Launch the application.
@@ -54,146 +60,187 @@ public class jeff {
 			}
 		}
 	}
+	
+	public static void openStudent() {
+		
+		try {
+			jeff window = new jeff();
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(822, 760);
-		shell.setText("SWT Application");
+		shell.setSize(644, 501);
+		shell.setText("Student");
 		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(10, 21, 61, 15);
-		lblNewLabel.setText("Student ID:");
+		Label nNum = new Label(shell, SWT.NONE);
+		nNum.setBounds(10, 60, 98, 15);
+		nNum.setText("Student Nnumber:");
 		
-		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
-		lblNewLabel_1.setBounds(10, 62, 66, 15);
-		lblNewLabel_1.setText(" First Name:");
+		Label fName = new Label(shell, SWT.NONE);
+		fName.setBounds(212, 60, 66, 15);
+		fName.setText(" First Name:");
 		
-		Label lblNewLabel_2 = new Label(shell, SWT.NONE);
-		lblNewLabel_2.setText("Mid Initial:");
-		lblNewLabel_2.setBounds(10, 100, 55, 15);
+		Label midInitial = new Label(shell, SWT.NONE);
+		midInitial.setText("Mid Initial:");
+		midInitial.setBounds(375, 60, 55, 15);
 		
-		Label lblNewLabel_3 = new Label(shell, SWT.NONE);
-		lblNewLabel_3.setBounds(10, 150, 61, 15);
-		lblNewLabel_3.setText("Last Name:");
+		Label lName = new Label(shell, SWT.NONE);
+		lName.setBounds(478, 60, 61, 15);
+		lName.setText("Last Name:");
 		
-		Label lblSsdf = new Label(shell, SWT.NONE);
-		lblSsdf.setAlignment(SWT.CENTER);
-		lblSsdf.setBounds(10, 200, 83, 15);
-		lblSsdf.setText("Date of Birth:");
+		Label birth = new Label(shell, SWT.NONE);
+		birth.setAlignment(SWT.CENTER);
+		birth.setBounds(10, 99, 83, 15);
+		birth.setText("Date of Birth:");
 		
-		Label lblNewLabel_4 = new Label(shell, SWT.NONE);
-		lblNewLabel_4.setAlignment(SWT.CENTER);
-		lblNewLabel_4.setText("Sex:");
-		lblNewLabel_4.setBounds(16, 231, 55, 15);
+		Label sex = new Label(shell, SWT.NONE);
+		sex.setAlignment(SWT.CENTER);
+		sex.setText("Sex:");
+		sex.setBounds(10, 296, 55, 15);
 		
-		Label lblNewLabel_5 = new Label(shell, SWT.NONE);
-		lblNewLabel_5.setAlignment(SWT.CENTER);
-		lblNewLabel_5.setText("SSN:");
-		lblNewLabel_5.setBounds(16, 329, 40, 15);
+		Label ssn = new Label(shell, SWT.NONE);
+		ssn.setAlignment(SWT.CENTER);
+		ssn.setText("SSN:");
+		ssn.setBounds(200, 99, 40, 15);
 		
-		Label lblNewLabel_6 = new Label(shell, SWT.NONE);
-		lblNewLabel_6.setBounds(10, 365, 129, 15);
-		lblNewLabel_6.setText("Current Phone Number:");
+		Label cpn = new Label(shell, SWT.NONE);
+		cpn.setBounds(10, 138, 129, 15);
+		cpn.setText("Current Phone Number:");
 		
-		Label lblNewLabel_7 = new Label(shell, SWT.NONE);
-		lblNewLabel_7.setAlignment(SWT.CENTER);
-		lblNewLabel_7.setBounds(10, 500, 55, 15);
-		lblNewLabel_7.setText("Degree:");
+		Label degree = new Label(shell, SWT.NONE);
+		degree.setAlignment(SWT.CENTER);
+		degree.setBounds(129, 340, 55, 15);
+		degree.setText("Degree:");
 		
-		Label lblNewLabel_8 = new Label(shell, SWT.NONE);
-		lblNewLabel_8.setAlignment(SWT.CENTER);
-		lblNewLabel_8.setText("Class:");
-		lblNewLabel_8.setBounds(10, 450, 46, 15);
+		Label sClass = new Label(shell, SWT.NONE);
+		sClass.setAlignment(SWT.CENTER);
+		sClass.setText("Class:");
+		sClass.setBounds(129, 296, 40, 15);
 		
-		Label lblNewLabel_9 = new Label(shell, SWT.NONE);
-		lblNewLabel_9.setBounds(10, 400, 148, 15);
-		lblNewLabel_9.setText("Permanent Phone Number:");
+		Label ppn = new Label(shell, SWT.NONE);
+		ppn.setBounds(258, 138, 148, 15);
+		ppn.setText("Permanent Phone Number:");
 		
-		text = new Text(shell, SWT.BORDER);
-		text.setBounds(77, 18, 76, 21);
+		NTxt = new Text(shell, SWT.BORDER);
+		NTxt.setBounds(114, 57, 76, 21);
 		
-		text_1 = new Text(shell, SWT.BORDER);
-		text_1.setBounds(82, 59, 76, 21);
+		fNameTxt = new Text(shell, SWT.BORDER);
+		fNameTxt.setBounds(284, 57, 76, 21);
 		
-		text_2 = new Text(shell, SWT.BORDER);
-		text_2.setBounds(71, 97, 76, 21);
+		midTxt = new Text(shell, SWT.BORDER);
+		midTxt.setBounds(436, 57, 24, 21);
 		
-		text_3 = new Text(shell, SWT.BORDER);
-		text_3.setBounds(82, 147, 76, 21);
+		lNameTxt = new Text(shell, SWT.BORDER);
+		lNameTxt.setBounds(545, 57, 76, 21);
 		
-		text_4 = new Text(shell, SWT.BORDER);
-		text_4.setBounds(99, 197, 76, 21);
+		birthTxt = new Text(shell, SWT.BORDER);
+		birthTxt.setBounds(99, 96, 76, 21);
 		
-		Button btnRadioButton = new Button(shell, SWT.RADIO);
-		btnRadioButton.setBounds(26, 250, 90, 16);
-		btnRadioButton.setText("Male");
+		maleButton = new Button(shell, SWT.RADIO);
+		maleButton.setBounds(10, 317, 46, 16);
+		maleButton.setText("Male");
 		
-		Button btnRadioButton_1 = new Button(shell, SWT.RADIO);
-		btnRadioButton_1.setBounds(26, 270, 90, 16);
-		btnRadioButton_1.setText("Female");
+		femaleButton = new Button(shell, SWT.RADIO);
+		femaleButton.setBounds(10, 339, 55, 16);
+		femaleButton.setText("Female");
 		
-		text_5 = new Text(shell, SWT.BORDER);
-		text_5.setBounds(60, 326, 76, 21);
+		ssnTxt = new Text(shell, SWT.BORDER);
+		ssnTxt.setBounds(246, 96, 98, 21);
 		
-		text_6 = new Text(shell, SWT.BORDER);
-		text_6.setBounds(145, 362, 76, 21);
+		cpnTxt = new Text(shell, SWT.BORDER);
+		cpnTxt.setBounds(145, 135, 76, 21);
 		
-		text_7 = new Text(shell, SWT.BORDER);
-		text_7.setText("");
-		text_7.setBounds(164, 397, 76, 21);
+		ppnTxt = new Text(shell, SWT.BORDER);
+		ppnTxt.setText("");
+		ppnTxt.setBounds(412, 135, 76, 21);
 		
-		text_8 = new Text(shell, SWT.BORDER);
-		text_8.setBounds(63, 447, 76, 21);
+		sClassTxt = new Text(shell, SWT.BORDER);
+		sClassTxt.setBounds(175, 293, 76, 21);
 		
-		text_9 = new Text(shell, SWT.BORDER);
-		text_9.setText("");
-		text_9.setBounds(71, 497, 76, 21);
+		DegreeTxt = new Text(shell, SWT.BORDER);
+		DegreeTxt.setText("");
+		DegreeTxt.setBounds(184, 337, 76, 21);
 		
-		Label lblNewLabel_10 = new Label(shell, SWT.NONE);
-		lblNewLabel_10.setBounds(10, 570, 90, 15);
-		lblNewLabel_10.setText("Current Address:");
+		Label cAddress = new Label(shell, SWT.NONE);
+		cAddress.setBounds(10, 175, 90, 15);
+		cAddress.setText("Current Address:");
 		
-		text_10 = new Text(shell, SWT.BORDER);
-		text_10.setBounds(106, 567, 76, 21);
+		cAddressTxt = new Text(shell, SWT.BORDER);
+		cAddressTxt.setBounds(108, 172, 76, 21);
 		
-		Label lblNewLabel_11 = new Label(shell, SWT.NONE);
-		lblNewLabel_11.setBounds(10, 634, 106, 15);
-		lblNewLabel_11.setText("Permanent Address:");
+		Label pAddress = new Label(shell, SWT.NONE);
+		pAddress.setBounds(10, 213, 106, 15);
+		pAddress.setText("Permanent Address:");
 		
-		Label lblNewLabel_12 = new Label(shell, SWT.NONE);
-		lblNewLabel_12.setText("Zip Code:");
-		lblNewLabel_12.setBounds(481, 657, 55, 15);
+		Label zip = new Label(shell, SWT.NONE);
+		zip.setText("Zip Code:");
+		zip.setBounds(484, 245, 55, 15);
 		
-		text_11 = new Text(shell, SWT.BORDER);
-		text_11.setBounds(99, 654, 76, 21);
+		stAddressTxt = new Text(shell, SWT.BORDER);
+		stAddressTxt.setBounds(99, 242, 91, 21);
 		
-		Label lblNewLabel_13 = new Label(shell, SWT.NONE);
-		lblNewLabel_13.setBounds(208, 657, 24, 15);
-		lblNewLabel_13.setText("City:");
+		Label city = new Label(shell, SWT.NONE);
+		city.setBounds(200, 245, 24, 15);
+		city.setText("City:");
 		
-		text_12 = new Text(shell, SWT.BORDER);
-		text_12.setBounds(238, 654, 76, 21);
+		cityTxt = new Text(shell, SWT.BORDER);
+		cityTxt.setBounds(230, 242, 90, 21);
 		
-		Label lblNewLabel_14 = new Label(shell, SWT.NONE);
-		lblNewLabel_14.setBounds(335, 657, 40, 15);
-		lblNewLabel_14.setText("State:");
+		Label state = new Label(shell, SWT.NONE);
+		state.setBounds(338, 245, 32, 15);
+		state.setText("State:");
 		
-		text_13 = new Text(shell, SWT.BORDER);
-		text_13.setBounds(376, 654, 76, 21);
+		stateTxt = new Text(shell, SWT.BORDER);
+		stateTxt.setBounds(375, 242, 76, 21);
 		
-		Label lblNewLabel_15 = new Label(shell, SWT.NONE);
-		lblNewLabel_15.setBounds(10, 660, 85, 15);
-		lblNewLabel_15.setText("Street Address:");
+		Label stAddress = new Label(shell, SWT.NONE);
+		stAddress.setBounds(10, 245, 85, 15);
+		stAddress.setText("Street Address:");
 		
-		text_14 = new Text(shell, SWT.BORDER);
-		text_14.setBounds(542, 654, 76, 21);
+		zipTxt = new Text(shell, SWT.BORDER);
+		zipTxt.setBounds(545, 242, 76, 21);
 		
-		Button btnRadioButton_2 = new Button(shell, SWT.RADIO);
-		btnRadioButton_2.setBounds(26, 290, 90, 16);
-		btnRadioButton_2.setText("Other");
+		otherbutton = new Button(shell, SWT.RADIO);
+		otherbutton.setBounds(10, 361, 55, 16);
+		otherbutton.setText("Other");
+		
+		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Back to menu and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnBack.setBounds(10, 425, 75, 25);
+		btnBack.setText("Back");
+		
+		Button btnSub = new Button(shell, SWT.NONE);
+		btnSub.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Submit info and return back to menu next screen and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnSub.setBounds(546, 425, 75, 25);
+		btnSub.setText("Submit");
+		
+		Label lblStudent = new Label(shell, SWT.NONE);
+		lblStudent.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblStudent.setBounds(230, 10, 160, 25);
+		lblStudent.setText("Add Student Info");
 
 	}
 }
