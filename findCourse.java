@@ -2,14 +2,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.custom.ScrolledComposite;
 
 public class findCourse {
 
-	protected Shell cFindWindow;
+	protected Shell shell;
 	private Text findCourse;
 
 	/**
@@ -31,12 +34,22 @@ public class findCourse {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		cFindWindow.open();
-		cFindWindow.layout();
-		while (!cFindWindow.isDisposed()) {
+		shell.open();
+		shell.layout();
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
+		}
+	}
+	
+	public static void openCourseOffered() {
+		
+		try {
+			findCourse window = new findCourse();
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -44,28 +57,43 @@ public class findCourse {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		cFindWindow = new Shell();
-		cFindWindow.setSize(450, 300);
-		cFindWindow.setText("Courses Offered");
+		shell = new Shell();
+		shell.setSize(450, 300);
+		shell.setText("Courses Offered");
 		
-		Label lblCourseOffered = new Label(cFindWindow, SWT.NONE);
-		lblCourseOffered.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
-		lblCourseOffered.setBounds(136, 10, 158, 21);
+		Label lblCourseOffered = new Label(shell, SWT.NONE);
+		lblCourseOffered.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblCourseOffered.setBounds(112, 10, 186, 21);
 		lblCourseOffered.setText("Find Course Offered");
 		
-		findCourse = new Text(cFindWindow, SWT.BORDER);
+		findCourse = new Text(shell, SWT.BORDER);
 		findCourse.setBounds(190, 37, 136, 21);
 		
-		Label lblFindCourse = new Label(cFindWindow, SWT.NONE);
+		Label lblFindCourse = new Label(shell, SWT.NONE);
 		lblFindCourse.setBounds(10, 37, 174, 15);
 		lblFindCourse.setText("Insert department name or code:");
 		
-		List courseList = new List(cFindWindow, SWT.BORDER);
-		courseList.setBounds(97, 73, 250, 153);
+		ScrolledComposite scrolledComposite = new ScrolledComposite(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setBounds(97, 73, 250, 153);
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
 		
-		Button backButton = new Button(cFindWindow, SWT.NONE);
-		backButton.setBounds(10, 228, 75, 25);
-		backButton.setText("Back");
+		List courseList = new List(scrolledComposite, SWT.BORDER);
+		scrolledComposite.setContent(courseList);
+		scrolledComposite.setMinSize(courseList.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		
+		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Back to menu and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnBack.setBounds(10, 228, 75, 25);
+		btnBack.setText("Back");
 
 	}
 }
