@@ -16,6 +16,11 @@ public class addSection {
 	private Text sectionNumTxt;
 	private Text instructorTxt;
 	private Text cNumTxt;
+	static String semester;
+	static String sYear;
+	static String sectionNum;
+	static String instructor;
+	static String cNum;
 
 	/**
 	 * Launch the application.
@@ -68,38 +73,38 @@ public class addSection {
 		lblSection.setBounds(87, 10, 156, 25);
 		lblSection.setText("Add Section Info");
 		
-		Label sem = new Label(shell, SWT.NONE);
-		sem.setBounds(10, 89, 55, 15);
-		sem.setText("Semester:");
+		Label lblSem = new Label(shell, SWT.NONE);
+		lblSem.setBounds(10, 89, 55, 15);
+		lblSem.setText("Semester:");
 		
 		semTxt = new Text(shell, SWT.BORDER);
 		semTxt.setText("");
 		semTxt.setBounds(71, 86, 76, 21);
 		
-		Label sYear = new Label(shell, SWT.NONE);
-		sYear.setBounds(10, 130, 30, 15);
-		sYear.setText("Year:");
+		Label lblSemYear = new Label(shell, SWT.NONE);
+		lblSemYear.setBounds(10, 130, 30, 15);
+		lblSemYear.setText("Year:");
 		
 		sYearTxt = new Text(shell, SWT.BORDER);
 		sYearTxt.setBounds(46, 127, 76, 21);
 		
-		Label sectionNum = new Label(shell, SWT.NONE);
-		sectionNum.setBounds(10, 174, 89, 15);
-		sectionNum.setText("Section Number:");
+		Label lblSectionNum = new Label(shell, SWT.NONE);
+		lblSectionNum.setBounds(10, 174, 89, 15);
+		lblSectionNum.setText("Section Number:");
 		
 		sectionNumTxt = new Text(shell, SWT.BORDER);
 		sectionNumTxt.setBounds(105, 171, 76, 21);
 		
-		Label instructor = new Label(shell, SWT.NONE);
-		instructor.setBounds(10, 217, 55, 15);
-		instructor.setText("Instructor:");
+		Label lblInstructor = new Label(shell, SWT.NONE);
+		lblInstructor.setBounds(10, 217, 55, 15);
+		lblInstructor.setText("Instructor:");
 		
 		instructorTxt = new Text(shell, SWT.BORDER);
 		instructorTxt.setBounds(71, 214, 110, 21);
 		
-		Label cNum = new Label(shell, SWT.NONE);
-		cNum.setBounds(10, 51, 89, 15);
-		cNum.setText("Course Number:");
+		Label lblCNum = new Label(shell, SWT.NONE);
+		lblCNum.setBounds(10, 51, 89, 15);
+		lblCNum.setText("Course Number:");
 		
 		cNumTxt = new Text(shell, SWT.BORDER);
 		cNumTxt.setBounds(105, 48, 76, 21);
@@ -121,9 +126,13 @@ public class addSection {
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//username = txtUsername.getText();
-				//password = txtPassword.getText();
-		
+				
+				semester = semTxt.getText();
+				sYear = sYearTxt.getText();
+				sectionNum = sectionNumTxt.getText();
+				instructor = instructorTxt.getText();
+				cNum = cNumTxt.getText();
+				
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
 				menuScreen.openMenu();
