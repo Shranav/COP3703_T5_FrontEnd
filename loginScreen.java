@@ -15,6 +15,8 @@ public class loginScreen {
 	private Text txtPassword;
 	static String password;
 	static String username;
+	private Label lblPassword;
+	private Label lblUsername;
 
 	/**
 	 * Launch the application.
@@ -53,12 +55,11 @@ public class loginScreen {
 		shell.setText("SWT Application");
 		
 		txtUsername = new Text(shell, SWT.BORDER);
-		txtUsername.setText("username");
-		txtUsername.setBounds(138, 72, 165, 21);
+		txtUsername.setBounds(180, 76, 133, 21);
 		
 		txtPassword = new Text(shell, SWT.BORDER);
-		txtPassword.setText("password");
-		txtPassword.setBounds(138, 118, 165, 21);
+		txtPassword.setEchoChar('*');
+		txtPassword.setBounds(180, 122, 133, 21);
 		
 		Button btnLogin = new Button(shell, SWT.NONE);
 		btnLogin.addSelectionListener(new SelectionAdapter() {
@@ -80,6 +81,14 @@ public class loginScreen {
 		lblUnfCourseManager.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.BOLD));
 		lblUnfCourseManager.setBounds(84, 10, 274, 40);
 		lblUnfCourseManager.setText("UNF Course Manager");
+		
+		lblPassword = new Label(shell, SWT.NONE);
+		lblPassword.setBounds(104, 122, 55, 15);
+		lblPassword.setText("Password:");
+		
+		lblUsername = new Label(shell, SWT.NONE);
+		lblUsername.setText("Username:");
+		lblUsername.setBounds(104, 79, 55, 15);
 
 	}
 }
