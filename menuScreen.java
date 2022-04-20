@@ -84,19 +84,32 @@ public class menuScreen {
 		lblPerformActions.setAlignment(SWT.CENTER);
 		lblPerformActions.setBounds(126, 205, 174, 25);
 		
-		Group group_1_1 = new Group(shell, SWT.NONE);
-		group_1_1.setBounds(10, 227, 412, 69);
+		Group group_2 = new Group(shell, SWT.NONE);
+		group_2.setBounds(10, 227, 412, 69);
 		
-		Button btnEnroll = new Button(group_1_1, SWT.NONE);
+		Button btnEnroll = new Button(group_2, SWT.NONE);
 		btnEnroll.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				//close menu and open Enroll
 				shell.close();
 				enrollStudent.openEnroll();
 			}
 		});
-		btnEnroll.setBounds(42, 10, 97, 49);
+		btnEnroll.setBounds(50, 21, 97, 38);
 		btnEnroll.setText("Enroll Student");
+		
+		Button btnGrade = new Button(group_2, SWT.NONE);
+		btnGrade.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//close menu and open Grade
+				shell.close();
+				gradeStudent.openGrade();
+			}
+		});
+		btnGrade.setText("Enter a Grade");
+		btnGrade.setBounds(242, 21, 97, 38);
 
 	}
 }
