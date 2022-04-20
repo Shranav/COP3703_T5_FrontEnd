@@ -1,0 +1,102 @@
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.SWT;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.custom.TableCursor;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+
+public class findGradeReport {
+
+	protected Shell shell;
+	private Text text;
+	private Table table;
+
+	/**
+	 * Launch the application.
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		try {
+			findGradeReport window = new findGradeReport();
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Open the window.
+	 */
+	public void open() {
+		Display display = Display.getDefault();
+		createContents();
+		shell.open();
+		shell.layout();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
+	}
+	
+	public static void openGradeReport() {
+		
+		try {
+			findGradeReport window = new findGradeReport();
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Create contents of the window.
+	 */
+	protected void createContents() {
+		shell = new Shell();
+		shell.setSize(450, 300);
+		shell.setText("SWT Application");
+		
+		Label lblGradeReport = new Label(shell, SWT.NONE);
+		lblGradeReport.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblGradeReport.setBounds(153, 10, 128, 25);
+		lblGradeReport.setText("Grade Report");
+		
+		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel.setBounds(10, 47, 129, 15);
+		lblNewLabel.setText("Enter Student's Number:");
+		
+		text = new Text(shell, SWT.BORDER);
+		text.setBounds(145, 44, 87, 21);
+		
+		Button btnSearch = new Button(shell, SWT.NONE);
+		btnSearch.setBounds(246, 41, 75, 25);
+		btnSearch.setText("Search");
+		
+		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Back to menu and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnBack.setBounds(10, 227, 75, 25);
+		btnBack.setText("Back");
+		
+		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		table.setBounds(87, 84, 246, 116);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		
+		TableCursor tableCursor = new TableCursor(table, SWT.NONE);
+
+	}
+}
