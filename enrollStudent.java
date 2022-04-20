@@ -141,6 +141,10 @@ public class enrollStudent {
 							jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 							try {
 								sqlconn.insertGradesFor(nNum, course, section);
+								createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+								txtNnumber.setText("");
+								txtCourse.setText("");
+								txtSection.setText("");
 							} catch (SQLException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -149,6 +153,7 @@ public class enrollStudent {
 							
 						} else {
 							createMsgBox(shell, "Incorrect Section Number", "Please enter a valid section number (either 1, 2, or 3).");
+							txtSection.setText("");
 						}
 					} else {
 						createMsgBox(shell, "Incorrect Student nNumber", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
@@ -158,6 +163,7 @@ public class enrollStudent {
 					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
 					txtNnumber.setText("");
 					txtCourse.setText("");
+					txtSection.setText("");
 				}
 			}
 		});
