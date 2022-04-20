@@ -69,6 +69,58 @@ public class menuScreen {
 		Group group = new Group(shell, SWT.NONE);
 		group.setBounds(10, 26, 412, 69);
 		
+		Button btnStudent = new Button(group, SWT.NONE);
+		btnStudent.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Open next screen and close current one.
+				shell.close();
+				addStudent.openStudent();
+			}
+		});
+		btnStudent.setBounds(8, 16, 94, 35);
+		btnStudent.setText("Student");
+		
+		Button btnDepartment = new Button(group, SWT.NONE);
+		btnDepartment.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Open next screen and close current one.
+				shell.close();
+				addDepartment.openDepartment();
+			}
+		});
+		btnDepartment.setBounds(108, 16, 94, 35);
+		btnDepartment.setText("Department");
+		
+		Button btnCourse = new Button(group, SWT.NONE);
+		btnCourse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Open next screen and close current one.
+				shell.close();
+				addCourse.openCourse();
+			}
+		});
+		btnCourse.setBounds(208, 16, 94, 35);
+		btnCourse.setText("Course");
+		
+		Button btnSection = new Button(group, SWT.NONE);
+		btnSection.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Open next screen and close current one.
+				shell.close();
+				addSection.openSection();
+			}
+		});
+		btnSection.setBounds(308, 16, 94, 35);
+		btnSection.setText("Course Section");
+		
 		Label lblDisplayItems = new Label(shell, SWT.NONE);
 		lblDisplayItems.setText("Display Items");
 		lblDisplayItems.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
@@ -77,6 +129,32 @@ public class menuScreen {
 		
 		Group group_1 = new Group(shell, SWT.NONE);
 		group_1.setBounds(10, 126, 412, 69);
+		
+		Button btnCourseOffered = new Button(group_1, SWT.NONE);
+		btnCourseOffered.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Open next screen and close current one.
+				shell.close();
+				findCourse.openCourseOffered();
+			}
+		});
+		btnCourseOffered.setBounds(243, 21, 97, 38);
+		btnCourseOffered.setText("Courses Offered");
+		
+		Button btnGradeReport = new Button(group_1, SWT.NONE);
+		btnGradeReport.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Open next screen and close current one.
+				shell.close();
+				findGradeReport.openGradeReport();
+			}
+		});
+		btnGradeReport.setBounds(49, 21, 97, 38);
+		btnGradeReport.setText("Grade Report");
 		
 		Label lblPerformActions = new Label(shell, SWT.NONE);
 		lblPerformActions.setText("Perform Actions");
@@ -93,7 +171,7 @@ public class menuScreen {
 			public void widgetSelected(SelectionEvent e) {
 				//close menu and open Enroll
 				shell.close();
-				enrollStudent.openEnroll();
+			//enrollStudent.openEnroll();
 			}
 		});
 		btnEnroll.setBounds(50, 21, 97, 38);
@@ -105,7 +183,7 @@ public class menuScreen {
 			public void widgetSelected(SelectionEvent e) {
 				//close menu and open Grade
 				shell.close();
-				gradeStudent.openGrade();
+			//gradeStudent.openGrade();
 			}
 		});
 		btnGrade.setText("Enter a Grade");
