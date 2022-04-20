@@ -4,6 +4,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class menuScreen {
 
@@ -66,11 +69,34 @@ public class menuScreen {
 		Group group = new Group(shell, SWT.NONE);
 		group.setBounds(10, 26, 412, 69);
 		
-		Label lblAddItems_1 = new Label(shell, SWT.NONE);
-		lblAddItems_1.setText("Add Items");
-		lblAddItems_1.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
-		lblAddItems_1.setAlignment(SWT.CENTER);
-		lblAddItems_1.setBounds(126, 104, 174, 25);
+		Label lblDisplayItems = new Label(shell, SWT.NONE);
+		lblDisplayItems.setText("Display Items");
+		lblDisplayItems.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblDisplayItems.setAlignment(SWT.CENTER);
+		lblDisplayItems.setBounds(126, 104, 174, 25);
+		
+		Group group_1 = new Group(shell, SWT.NONE);
+		group_1.setBounds(10, 126, 412, 69);
+		
+		Label lblPerformActions = new Label(shell, SWT.NONE);
+		lblPerformActions.setText("Perform Actions");
+		lblPerformActions.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblPerformActions.setAlignment(SWT.CENTER);
+		lblPerformActions.setBounds(126, 205, 174, 25);
+		
+		Group group_1_1 = new Group(shell, SWT.NONE);
+		group_1_1.setBounds(10, 227, 412, 69);
+		
+		Button btnEnroll = new Button(group_1_1, SWT.NONE);
+		btnEnroll.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shell.close();
+				enrollStudent.openEnroll();
+			}
+		});
+		btnEnroll.setBounds(42, 10, 97, 49);
+		btnEnroll.setText("Enroll Student");
 
 	}
 }
