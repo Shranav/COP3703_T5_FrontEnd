@@ -14,7 +14,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 public class jeff {
 
 	protected Shell shell;
-	private Text NTxt;
+	private Text nNumTxt;
 	private Text fNameTxt;
 	private Text midTxt;
 	private Text lNameTxt;
@@ -23,15 +23,34 @@ public class jeff {
 	private Text cpnTxt;
 	private Text ppnTxt;
 	private Text sClassTxt;
-	private Text DegreeTxt;
+	private Text degreeTxt;
 	private Text cAddressTxt;
 	private Text stAddressTxt;
 	private Text cityTxt;
 	private Text stateTxt;
 	private Text zipTxt;
-	private Button maleButton;
-	private Button femaleButton;
-	private Button otherbutton;
+	private Button maleBtn;
+	private Button femaleBtn;
+	private Button otherBtn;
+	static String nNum;
+	static String fName;
+	static String mid;
+	static String lName;
+	static String birth;
+	static String ssn;
+	static String cpn; // Current Phone Number
+	static String ppn; // Permanent Phone Number
+	static String sClass;
+	static String degree;
+	static String cAddress; // Current Address
+	static String stAddress; // Street Address
+	static String city;
+	static String state;
+	static String zip;
+	static String male;
+	static String female;
+	static String other;
+	
 
 	/**
 	 * Launch the application.
@@ -79,57 +98,57 @@ public class jeff {
 		shell.setSize(644, 501);
 		shell.setText("Student");
 		
-		Label nNum = new Label(shell, SWT.NONE);
-		nNum.setBounds(10, 60, 98, 15);
-		nNum.setText("Student Nnumber:");
+		Label nNumLbl = new Label(shell, SWT.NONE);
+		nNumLbl.setBounds(10, 60, 98, 15);
+		nNumLbl.setText("Student Nnumber:");
 		
-		Label fName = new Label(shell, SWT.NONE);
-		fName.setBounds(212, 60, 66, 15);
-		fName.setText(" First Name:");
+		Label fNameLbl = new Label(shell, SWT.NONE);
+		fNameLbl.setBounds(212, 60, 66, 15);
+		fNameLbl.setText(" First Name:");
 		
-		Label midInitial = new Label(shell, SWT.NONE);
-		midInitial.setText("Mid Initial:");
-		midInitial.setBounds(375, 60, 55, 15);
+		Label midInitialLbl = new Label(shell, SWT.NONE);
+		midInitialLbl.setText("Mid Initial:");
+		midInitialLbl.setBounds(375, 60, 55, 15);
 		
-		Label lName = new Label(shell, SWT.NONE);
-		lName.setBounds(478, 60, 61, 15);
-		lName.setText("Last Name:");
+		Label lNameLbl = new Label(shell, SWT.NONE);
+		lNameLbl.setBounds(478, 60, 61, 15);
+		lNameLbl.setText("Last Name:");
 		
-		Label birth = new Label(shell, SWT.NONE);
-		birth.setAlignment(SWT.CENTER);
-		birth.setBounds(10, 99, 83, 15);
-		birth.setText("Date of Birth:");
+		Label birthLbl = new Label(shell, SWT.NONE);
+		birthLbl.setAlignment(SWT.CENTER);
+		birthLbl.setBounds(10, 99, 83, 15);
+		birthLbl.setText("Date of Birth:");
 		
-		Label sex = new Label(shell, SWT.NONE);
-		sex.setAlignment(SWT.CENTER);
-		sex.setText("Sex:");
-		sex.setBounds(10, 296, 55, 15);
+		Label sexLbl = new Label(shell, SWT.NONE);
+		sexLbl.setAlignment(SWT.CENTER);
+		sexLbl.setText("Sex:");
+		sexLbl.setBounds(10, 296, 55, 15);
 		
-		Label ssn = new Label(shell, SWT.NONE);
-		ssn.setAlignment(SWT.CENTER);
-		ssn.setText("SSN:");
-		ssn.setBounds(200, 99, 40, 15);
+		Label ssnLbl = new Label(shell, SWT.NONE);
+		ssnLbl.setAlignment(SWT.CENTER);
+		ssnLbl.setText("SSN:");
+		ssnLbl.setBounds(200, 99, 40, 15);
 		
-		Label cpn = new Label(shell, SWT.NONE);
-		cpn.setBounds(10, 138, 129, 15);
-		cpn.setText("Current Phone Number:");
+		Label cpnLbl = new Label(shell, SWT.NONE);
+		cpnLbl.setBounds(10, 138, 129, 15);
+		cpnLbl.setText("Current Phone Number:");
 		
-		Label degree = new Label(shell, SWT.NONE);
-		degree.setAlignment(SWT.CENTER);
-		degree.setBounds(129, 340, 55, 15);
-		degree.setText("Degree:");
+		Label degreeLbl = new Label(shell, SWT.NONE);
+		degreeLbl.setAlignment(SWT.CENTER);
+		degreeLbl.setBounds(129, 340, 55, 15);
+		degreeLbl.setText("Degree:");
 		
-		Label sClass = new Label(shell, SWT.NONE);
-		sClass.setAlignment(SWT.CENTER);
-		sClass.setText("Class:");
-		sClass.setBounds(129, 296, 40, 15);
+		Label sClassLbl = new Label(shell, SWT.NONE);
+		sClassLbl.setAlignment(SWT.CENTER);
+		sClassLbl.setText("Class:");
+		sClassLbl.setBounds(129, 296, 40, 15);
 		
-		Label ppn = new Label(shell, SWT.NONE);
-		ppn.setBounds(258, 138, 148, 15);
-		ppn.setText("Permanent Phone Number:");
+		Label ppnLbl = new Label(shell, SWT.NONE);
+		ppnLbl.setBounds(258, 138, 148, 15);
+		ppnLbl.setText("Permanent Phone Number:");
 		
-		NTxt = new Text(shell, SWT.BORDER);
-		NTxt.setBounds(114, 57, 76, 21);
+		nNumTxt = new Text(shell, SWT.BORDER);
+		nNumTxt.setBounds(114, 57, 76, 21);
 		
 		fNameTxt = new Text(shell, SWT.BORDER);
 		fNameTxt.setBounds(284, 57, 76, 21);
@@ -143,13 +162,13 @@ public class jeff {
 		birthTxt = new Text(shell, SWT.BORDER);
 		birthTxt.setBounds(99, 96, 76, 21);
 		
-		maleButton = new Button(shell, SWT.RADIO);
-		maleButton.setBounds(10, 317, 46, 16);
-		maleButton.setText("Male");
+		maleBtn = new Button(shell, SWT.RADIO);
+		maleBtn.setBounds(10, 317, 46, 16);
+		maleBtn.setText("Male");
 		
-		femaleButton = new Button(shell, SWT.RADIO);
-		femaleButton.setBounds(10, 339, 55, 16);
-		femaleButton.setText("Female");
+		femaleBtn = new Button(shell, SWT.RADIO);
+		femaleBtn.setBounds(10, 339, 55, 16);
+		femaleBtn.setText("Female");
 		
 		ssnTxt = new Text(shell, SWT.BORDER);
 		ssnTxt.setBounds(246, 96, 98, 21);
@@ -164,52 +183,52 @@ public class jeff {
 		sClassTxt = new Text(shell, SWT.BORDER);
 		sClassTxt.setBounds(175, 293, 76, 21);
 		
-		DegreeTxt = new Text(shell, SWT.BORDER);
-		DegreeTxt.setText("");
-		DegreeTxt.setBounds(184, 337, 76, 21);
+		degreeTxt = new Text(shell, SWT.BORDER);
+		degreeTxt.setText("");
+		degreeTxt.setBounds(184, 337, 76, 21);
 		
-		Label cAddress = new Label(shell, SWT.NONE);
-		cAddress.setBounds(10, 175, 90, 15);
-		cAddress.setText("Current Address:");
+		Label cAddressLbl = new Label(shell, SWT.NONE);
+		cAddressLbl.setBounds(10, 175, 90, 15);
+		cAddressLbl.setText("Current Address:");
 		
 		cAddressTxt = new Text(shell, SWT.BORDER);
 		cAddressTxt.setBounds(108, 172, 76, 21);
 		
-		Label pAddress = new Label(shell, SWT.NONE);
-		pAddress.setBounds(10, 213, 106, 15);
-		pAddress.setText("Permanent Address:");
+		Label pAddressLbl = new Label(shell, SWT.NONE);
+		pAddressLbl.setBounds(10, 213, 106, 15);
+		pAddressLbl.setText("Permanent Address:");
 		
-		Label zip = new Label(shell, SWT.NONE);
-		zip.setText("Zip Code:");
-		zip.setBounds(484, 245, 55, 15);
+		Label zipLbl = new Label(shell, SWT.NONE);
+		zipLbl.setText("Zip Code:");
+		zipLbl.setBounds(484, 245, 55, 15);
 		
 		stAddressTxt = new Text(shell, SWT.BORDER);
 		stAddressTxt.setBounds(99, 242, 91, 21);
 		
-		Label city = new Label(shell, SWT.NONE);
-		city.setBounds(200, 245, 24, 15);
-		city.setText("City:");
+		Label cityLbl = new Label(shell, SWT.NONE);
+		cityLbl.setBounds(200, 245, 24, 15);
+		cityLbl.setText("City:");
 		
 		cityTxt = new Text(shell, SWT.BORDER);
 		cityTxt.setBounds(230, 242, 90, 21);
 		
-		Label state = new Label(shell, SWT.NONE);
-		state.setBounds(338, 245, 32, 15);
-		state.setText("State:");
+		Label stateLbl = new Label(shell, SWT.NONE);
+		stateLbl.setBounds(338, 245, 32, 15);
+		stateLbl.setText("State:");
 		
 		stateTxt = new Text(shell, SWT.BORDER);
 		stateTxt.setBounds(375, 242, 76, 21);
 		
-		Label stAddress = new Label(shell, SWT.NONE);
-		stAddress.setBounds(10, 245, 85, 15);
-		stAddress.setText("Street Address:");
+		Label stAddressLnl = new Label(shell, SWT.NONE);
+		stAddressLnl.setBounds(10, 245, 85, 15);
+		stAddressLnl.setText("Street Address:");
 		
 		zipTxt = new Text(shell, SWT.BORDER);
 		zipTxt.setBounds(545, 242, 76, 21);
 		
-		otherbutton = new Button(shell, SWT.RADIO);
-		otherbutton.setBounds(10, 361, 55, 16);
-		otherbutton.setText("Other");
+		otherBtn = new Button(shell, SWT.RADIO);
+		otherBtn.setBounds(10, 361, 55, 16);
+		otherBtn.setText("Other");
 		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
@@ -228,6 +247,25 @@ public class jeff {
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
+				nNum = nNumTxt.getText();
+				fName = fNameTxt.getText();
+				mid = midTxt.getText();
+				lName = lNameTxt.getText();
+				birth = birthTxt.getText();
+				ssn = ssnTxt.getText();
+				cpn = cpnTxt.getText();
+				ppn = ppnTxt.getText();
+				sClass = sClassTxt.getText();
+				degree = degreeTxt.getText();
+				cAddress = cAddressTxt.getText();
+				stAddress = stAddressTxt.getText();
+				city = cityTxt.getText();
+				state = stateTxt.getText();
+				zip = zipTxt.getText();
+				//male = maleTxt.getText();
+				//female = femaleTxt.getText();
+				//other = otherTxt.getText();
 		
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
