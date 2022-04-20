@@ -109,5 +109,8 @@ public class jdbcHandler {
 		int rows = pstmtUpdate.executeUpdate();
 	    System.out.println("\n" + rows + " row(s) updated");
 		System.out.println("Successfully updated entry");
+		
+	    //close connection
+	    closeConn(conn);
 	}
 }
