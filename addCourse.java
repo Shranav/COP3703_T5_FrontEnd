@@ -19,6 +19,11 @@ public class addCourse {
 	private Text cLvlTxt;
 	private Text cNumTxt;
 	private Text hoursTxt;
+	static String cName;
+	static String description;
+	static String cLvl;
+	static String cNum;
+	static String hours;
 
 	/**
 	 * Launch the application.
@@ -67,37 +72,37 @@ public class addCourse {
 		shell.setText("Course");
 		shell.setLayout(null);
 		
-		Label cLvl = new Label(shell, SWT.NONE);
-		cLvl.setBounds(10, 139, 76, 15);
-		cLvl.setText("Course Level:");
+		Label lblCLvl = new Label(shell, SWT.NONE);
+		lblCLvl.setBounds(10, 139, 76, 15);
+		lblCLvl.setText("Course Level:");
 		
 		cNameTxt = new Text(shell, SWT.BORDER);
 		cNameTxt.setBounds(92, 48, 76, 21);
 		
-		Label description = new Label(shell, SWT.NONE);
-		description.setBounds(10, 94, 68, 15);
-		description.setText("Description:");
+		Label lblDescription = new Label(shell, SWT.NONE);
+		lblDescription.setBounds(10, 94, 68, 15);
+		lblDescription.setText("Description:");
 		
 		descriptionTxt = new Text(shell, SWT.BORDER);
 		descriptionTxt.setBounds(84, 91, 76, 21);
 		
-		Label cName = new Label(shell, SWT.NONE);
-		cName.setBounds(10, 51, 76, 15);
-		cName.setText("Course Name:");
+		Label lblCName = new Label(shell, SWT.NONE);
+		lblCName.setBounds(10, 51, 76, 15);
+		lblCName.setText("Course Name:");
 		
 		cLvlTxt = new Text(shell, SWT.BORDER);
 		cLvlTxt.setBounds(92, 136, 76, 21);
 		
-		Label cNum = new Label(shell, SWT.NONE);
-		cNum.setBounds(10, 175, 94, 15);
-		cNum.setText("Course Number:");
+		Label lblCNum = new Label(shell, SWT.NONE);
+		lblCNum.setBounds(10, 175, 94, 15);
+		lblCNum.setText("Course Number:");
 		
 		cNumTxt = new Text(shell, SWT.BORDER);
 		cNumTxt.setBounds(110, 172, 76, 21);
 		
-		Label hours = new Label(shell, SWT.NONE);
-		hours.setBounds(10, 214, 94, 15);
-		hours.setText("Semester Hours:");
+		Label lblHours = new Label(shell, SWT.NONE);
+		lblHours.setBounds(10, 214, 94, 15);
+		lblHours.setText("Semester Hours:");
 		
 		hoursTxt = new Text(shell, SWT.BORDER);
 		hoursTxt.setBounds(110, 214, 76, 21);
@@ -125,8 +130,12 @@ public class addCourse {
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//username = txtUsername.getText();
-				//password = txtPassword.getText();
+				
+				cName = cNameTxt.getText();
+				description = descriptionTxt.getText();
+				cLvl = cLvlTxt.getText();
+				cNum = cNumTxt.getText();
+				hours = hoursTxt.getText();
 		
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
