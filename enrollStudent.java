@@ -81,7 +81,7 @@ public class enrollStudent {
 		lblInfo.setAlignment(SWT.CENTER);
 		lblInfo.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.ITALIC));
 		lblInfo.setBounds(22, 40, 389, 37);
-		lblInfo.setText("Please Provide a student nNumber and or Course/Section to enroll them in. ");
+		lblInfo.setText("Please provide a student nNumber, Course, and Section to enroll them in. ");
 		
 		txtNnumber = new Text(shell, SWT.BORDER);
 		txtNnumber.setBounds(222, 101, 76, 21);
@@ -125,6 +125,10 @@ public class enrollStudent {
 				//do we have to do error handling? i.e. for 2nd requirement, if student or course doesnt exist what do we do?
 				//what does the user enter? both course num and section? or just one or the other?
 				//how are semesters divided up? only spring summer and fall? or include summer a, b, c etc?
+				//do grades have to be decimals since they are gpa?
+				//if student doesnt exist in grades table should we add them?
+				//do we have to take Ws and other grades into consideration?
+				//can we ask for semester as well? if not how do we retrieve the semester from database for grades
 				
 				//extract text from txt boxes
 				String nNum = txtNnumber.getText();
@@ -161,9 +165,6 @@ public class enrollStudent {
 					}
 				} else {
 					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
-					txtNnumber.setText("");
-					txtCourse.setText("");
-					txtSection.setText("");
 				}
 			}
 		});
