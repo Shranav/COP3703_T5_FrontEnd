@@ -1,6 +1,9 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
+
+import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -11,7 +14,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class jeff {
+public class addStudent {
 
 	protected Shell shell;
 	private Text nNumTxt;
@@ -32,24 +35,6 @@ public class jeff {
 	private Button maleBtn;
 	private Button femaleBtn;
 	private Button otherBtn;
-	static String nNum;
-	static String fName;
-	static String mid;
-	static String lName;
-	static String birth;
-	static String ssn;
-	static String cpn; // Current Phone Number
-	static String ppn; // Permanent Phone Number
-	static String sClass;
-	static String degree;
-	static String cAddress; // Current Address
-	static String stAddress; // Street Address
-	static String city;
-	static String state;
-	static String zip;
-	static String male;
-	static String female;
-	static String other;
 	
 
 	/**
@@ -58,7 +43,7 @@ public class jeff {
 	 */
 	public static void main(String[] args) {
 		try {
-			jeff window = new jeff();
+			addStudent window = new addStudent();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,7 +68,7 @@ public class jeff {
 	public static void openStudent() {
 		
 		try {
-			jeff window = new jeff();
+			addStudent window = new addStudent();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,8 +101,8 @@ public class jeff {
 		
 		Label birthLbl = new Label(shell, SWT.NONE);
 		birthLbl.setAlignment(SWT.CENTER);
-		birthLbl.setBounds(10, 99, 83, 15);
-		birthLbl.setText("Date of Birth:");
+		birthLbl.setBounds(10, 99, 174, 15);
+		birthLbl.setText("Date of Birth (MM/DD/YYYY):");
 		
 		Label sexLbl = new Label(shell, SWT.NONE);
 		sexLbl.setAlignment(SWT.CENTER);
@@ -127,7 +112,7 @@ public class jeff {
 		Label ssnLbl = new Label(shell, SWT.NONE);
 		ssnLbl.setAlignment(SWT.CENTER);
 		ssnLbl.setText("SSN:");
-		ssnLbl.setBounds(200, 99, 40, 15);
+		ssnLbl.setBounds(266, 99, 40, 15);
 		
 		Label cpnLbl = new Label(shell, SWT.NONE);
 		cpnLbl.setBounds(10, 138, 129, 15);
@@ -160,9 +145,14 @@ public class jeff {
 		lNameTxt.setBounds(545, 57, 76, 21);
 		
 		birthTxt = new Text(shell, SWT.BORDER);
-		birthTxt.setBounds(99, 96, 76, 21);
+		birthTxt.setBounds(184, 96, 76, 21);
 		
 		maleBtn = new Button(shell, SWT.RADIO);
+		maleBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		maleBtn.setBounds(10, 317, 46, 16);
 		maleBtn.setText("Male");
 		
@@ -171,7 +161,7 @@ public class jeff {
 		femaleBtn.setText("Female");
 		
 		ssnTxt = new Text(shell, SWT.BORDER);
-		ssnTxt.setBounds(246, 96, 98, 21);
+		ssnTxt.setBounds(308, 96, 98, 21);
 		
 		cpnTxt = new Text(shell, SWT.BORDER);
 		cpnTxt.setBounds(145, 135, 76, 21);
@@ -248,24 +238,145 @@ public class jeff {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				nNum = nNumTxt.getText();
-				fName = fNameTxt.getText();
-				mid = midTxt.getText();
-				lName = lNameTxt.getText();
-				birth = birthTxt.getText();
-				ssn = ssnTxt.getText();
-				cpn = cpnTxt.getText();
-				ppn = ppnTxt.getText();
-				sClass = sClassTxt.getText();
-				degree = degreeTxt.getText();
-				cAddress = cAddressTxt.getText();
-				stAddress = stAddressTxt.getText();
-				city = cityTxt.getText();
-				state = stateTxt.getText();
-				zip = zipTxt.getText();
-				//male = maleTxt.getText();
-				//female = femaleTxt.getText();
-				//other = otherTxt.getText();
+				String nNum = nNumTxt.getText();
+				String fName = fNameTxt.getText();
+				String mid = midTxt.getText();
+				String lName = lNameTxt.getText();
+				String birth = birthTxt.getText();
+				String ssn = ssnTxt.getText();
+				String cpn = cpnTxt.getText();
+				String ppn = ppnTxt.getText();
+				String sClass = sClassTxt.getText();
+				String degree = degreeTxt.getText();
+				String cAddress = cAddressTxt.getText();
+				String stAddress = stAddressTxt.getText();
+				String city = cityTxt.getText();
+				String state = stateTxt.getText();
+				String zip = zipTxt.getText();
+				//String sex = btnSex;
+				
+				if (!nNum.isBlank() && !fName.isBlank() && !mid.isBlank() && !lName.isBlank() && !birth.isBlank() && !ssn.isBlank() && !cpn.isBlank() && !ppn.isBlank() && !sClass.isBlank() && !degree.isBlank() && !cAddress.isBlank() && !stAddress.isBlank() && !city.isBlank() && !state.isBlank() && !zip.isBlank()) {
+					if (nNum.matches("^[Nn][0-9]+")) {
+						if (fName.matches("")) {
+							if (mid.matches("")) {
+								if (lName.matches("")) {
+									if(birth.matches("")) {
+										if(ssn.matches("[0-9]{9}")) {
+											if(cpn.matches("")) {
+												if(ppn.matches("")) {
+													if(sClass.matches("")) {
+														if(degree.matches("")) {
+															if(cAddress.matches("")) {
+																if(stAddress.matches("")) {
+																	if(city.matches("")) {
+																		if(state.matches("")) {
+																			if(zip.matches("")) {
+																				int Ssn = Integer.parseInt(ssn);
+																				int z = Integer.parseInt(zip);
+									
+																				//make sql call
+																				jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+																				try {
+																					// reminder: add sex later on
+																					sqlconn.insertStudent(fName, lName, mid, Ssn, birth, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, z);
+																					enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
+																					nNumTxt.setText("");
+																					fNameTxt.setText("");
+																					midTxt.setText("");
+																					lNameTxt.setText("");
+																					birthTxt.setText("");
+																					ssnTxt.setText("");
+																					cpnTxt.setText("");
+																					ppnTxt.setText("");
+																					sClassTxt.setText("");
+																					degreeTxt.setText("");
+																					cAddressTxt.setText("");
+																					stAddressTxt.setText("");
+																					cityTxt.setText("");
+																					stateTxt.setText("");
+																					zipTxt.setText("");
+																				}catch (SQLException e1) {
+																					// TODO Auto-generated catch block
+																					e1.printStackTrace();
+																					enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+																				}
+																				
+																			}else {
+																				enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Zip Code.");
+																				zipTxt.setText("");
+																			}
+																			
+																		}else {
+																			enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State.");
+																			stateTxt.setText("");
+																		}
+																		
+																	}else {
+																		enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid City.");
+																		cityTxt.setText("");
+																	}
+																	
+																}else {
+																	enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Street-Address.");
+																	stAddressTxt.setText("");
+																}
+																
+															}else {
+																enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Address.");
+																cAddressTxt.setText("");
+															}
+															
+														}else {
+															enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Degree.");
+															degreeTxt.setText("");
+														}
+														
+													}else {
+														enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Class.");
+														sClassTxt.setText("");
+													}
+													
+												}else {
+													enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Permanent Phone Number.");
+													ppnTxt.setText("");
+												}
+												
+											}else {
+												enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Phone Number.");
+												cpnTxt.setText("");
+											}
+											
+										}
+										else {
+											enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Social Security Number.");
+											ssnTxt.setText("");
+										}
+										
+									}else {
+										enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Birth-Date.");
+										birthTxt.setText("");
+									}
+									
+								}else {
+									enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Last Name.");
+									lNameTxt.setText("");
+								}
+							
+							} else {
+								enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid middle-Initial.");
+								midTxt.setText("");
+							}
+						} else {
+							enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid First Name.");
+							fNameTxt.setText("");
+						}
+					} else {
+						enrollStudent.createMsgBox(shell, "Invalid", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
+						nNumTxt.setText("");
+					}
+				} else {
+					enrollStudent.createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+				}
 		
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
