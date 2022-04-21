@@ -170,12 +170,12 @@ public class addDepartment {
 										
 										
 									}else {
-										createMsgBox(shell, "Invalid", "Please enter a valid Department Name.");
+										createMsgBox(shell, "Invalid", "Please enter a valid College.");
 										collegeTxt.setText("");
 									}
 									
 								}else {
-									createMsgBox(shell, "Invalid", "Please enter a valid Code.");
+									createMsgBox(shell, "Invalid", "Please enter a valid Office Phone Number.");
 									officePhoneTxt.setText("");
 								}
 								
@@ -185,11 +185,11 @@ public class addDepartment {
 							}
 							
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Office Phone Number.");
+							createMsgBox(shell, "Invalid", "Please enter a valid Department code.");
 							codeTxt.setText("");
 						}
 					} else {
-						createMsgBox(shell, "Invalid", "Please enter a valid College.");
+						createMsgBox(shell, "Invalid", "Please enter a valid Department Name.");
 						dNameTxt.setText("");
 					}
 				} else {
