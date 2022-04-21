@@ -1,6 +1,10 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
+
+import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -19,11 +23,6 @@ public class addCourse {
 	private Text cLvlTxt;
 	private Text cNumTxt;
 	private Text hoursTxt;
-	static String cName;
-	static String description;
-	static String cLvl;
-	static String cNum;
-	static String hours;
 
 	/**
 	 * Launch the application.
@@ -63,6 +62,13 @@ public class addCourse {
 		}
 	}
 
+	public static void createMsgBox( Shell shell, String title, String txt) {
+		MessageBox messageBox = new MessageBox(shell,SWT.ICON_INFORMATION |SWT.OK);
+		messageBox.setText(title);
+		messageBox.setMessage(txt);
+		messageBox.open();
+	}
+	
 	/**
 	 * Create contents of the window.
 	 */
@@ -131,11 +137,67 @@ public class addCourse {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				cName = cNameTxt.getText();
-				description = descriptionTxt.getText();
-				cLvl = cLvlTxt.getText();
-				cNum = cNumTxt.getText();
-				hours = hoursTxt.getText();
+				String cName = cNameTxt.getText();
+				String description = descriptionTxt.getText();
+				String cLvl = cLvlTxt.getText();
+				String cNum = cNumTxt.getText();
+				String hours = hoursTxt.getText();
+				
+				  //check if txt boxes are not blank
+					if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank()) {
+						if (cName.matches("")) {
+							if (description.matches("")) {
+								if (cLvl.matches("")) {
+									if (cNum.matches("")) {
+										if (hours.matches("")) {
+											int cn = Integer.parseInt(cNum);
+											int h = Integer.parseInt(hours);
+											
+											//int section = Integer.parseInt(secNum);
+											
+											//make sql call
+											jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+											try {
+												sqlconn.insertCourse(cName, description, cLvl, cn, h);
+												createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+												cNameTxt.setText("");
+												descriptionTxt.setText("");
+												cLvlTxt.setText("");
+												cNumTxt.setText("");
+												hoursTxt.setText("");
+											} catch (SQLException e1) {
+												// TODO Auto-generated catch block
+												e1.printStackTrace();
+												createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+											}
+											
+											
+										}else {
+											createMsgBox(shell, "Invalid", "Please enter a valid Course Name.");
+											hoursTxt.setText("");
+										}
+										
+									}else {
+										createMsgBox(shell, "Invalid", "Please enter a valid Description.");
+										cNumTxt.setText("");
+									}
+									
+								}else {
+									createMsgBox(shell, "Invalid", "Please enter a valid Course Level.");
+									cLvlTxt.setText("");
+								}
+								
+							} else {
+								createMsgBox(shell, "Invalid", "Please enter a valid Office Course Number.");
+								descriptionTxt.setText("");
+							}
+						} else {
+							createMsgBox(shell, "Invalid", "Please enter a valid Hours.");
+							cNameTxt.setText("");
+						}
+					} else {
+						createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+					  }
 		
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
