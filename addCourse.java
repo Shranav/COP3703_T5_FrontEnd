@@ -173,12 +173,12 @@ public class addCourse {
 											
 											
 										}else {
-											createMsgBox(shell, "Invalid", "Please enter a valid Course Name.");
+											createMsgBox(shell, "Invalid", "Please enter a valid Hours.");
 											hoursTxt.setText("");
 										}
 										
 									}else {
-										createMsgBox(shell, "Invalid", "Please enter a valid Description.");
+										createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
 										cNumTxt.setText("");
 									}
 									
@@ -188,11 +188,11 @@ public class addCourse {
 								}
 								
 							} else {
-								createMsgBox(shell, "Invalid", "Please enter a valid Office Course Number.");
+								createMsgBox(shell, "Invalid", "Please enter a valid Office Description.");
 								descriptionTxt.setText("");
 							}
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Hours.");
+							createMsgBox(shell, "Invalid", "Please enter a valid Course Name.");
 							cNameTxt.setText("");
 						}
 					} else {
