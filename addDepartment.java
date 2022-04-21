@@ -1,6 +1,10 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
+
+import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -20,12 +24,6 @@ public class addDepartment {
 	private Text officePhoneTxt;
 	private Label lblCollege;
 	private Text collegeTxt;
-	static String dName;
-	static String code;
-	static String officeNum;
-	static String officePhone;
-	static String college;
-	
 
 	/**
 	 * Launch the application.
@@ -65,6 +63,13 @@ public class addDepartment {
 		}
 	}
 
+	public static void createMsgBox( Shell shell, String title, String txt) {
+		MessageBox messageBox = new MessageBox(shell,SWT.ICON_INFORMATION |SWT.OK);
+		messageBox.setText(title);
+		messageBox.setMessage(txt);
+		messageBox.open();
+	}
+	
 	/**
 	 * Create contents of the window.
 	 */
@@ -131,11 +136,65 @@ public class addDepartment {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				dName = dNameTxt.getText();
-				code = codeTxt.getText();
-				officeNum = officeNumTxt.getText();
-				officePhone = officePhoneTxt.getText();
-			        college = collegeTxt.getText();
+				String dName = dNameTxt.getText();
+				String code = codeTxt.getText();
+				String officeNum = officeNumTxt.getText();
+				String officePhone = officePhoneTxt.getText();
+			    String college = collegeTxt.getText();
+			    
+			  //check if txt boxes are not blank
+				if (!dName.isBlank() && !code.isBlank() && !officeNum.isBlank() && !officePhone.isBlank() && !college.isBlank()) {
+					if (dName.matches("")) {
+						if (code.matches("")) {
+							if (officeNum.matches("")) {
+								if (officePhone.matches("")) {
+									if (college.matches("")) {
+										
+										//int section = Integer.parseInt(secNum);
+										
+										//make sql call
+										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+										try {
+											sqlconn.insertDepartment(dName, code, officeNum, officePhone, college);
+											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+											dNameTxt.setText("");
+											codeTxt.setText("");
+											officeNumTxt.setText("");
+											officePhoneTxt.setText("");
+											collegeTxt.setText("");
+										} catch (SQLException e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+											createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+										}
+										
+										
+									}else {
+										createMsgBox(shell, "Invalid", "Please enter a valid Department Name.");
+										collegeTxt.setText("");
+									}
+									
+								}else {
+									createMsgBox(shell, "Invalid", "Please enter a valid Code.");
+									officePhoneTxt.setText("");
+								}
+								
+							}else {
+								createMsgBox(shell, "Invalid", "Please enter a valid Office Number.");
+								officeNumTxt.setText("");
+							}
+							
+						} else {
+							createMsgBox(shell, "Invalid", "Please enter a valid Office Phone Number.");
+							codeTxt.setText("");
+						}
+					} else {
+						createMsgBox(shell, "Invalid", "Please enter a valid College.");
+						dNameTxt.setText("");
+					}
+				} else {
+					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+				  }
 		
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
