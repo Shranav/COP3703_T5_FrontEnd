@@ -113,4 +113,64 @@ public class jdbcHandler {
 	    //close connection
 	    closeConn(conn);
 	}
+	// reminder: add sex later on
+	public void insertStudent(String fName, String lName, String mid, int Ssn, String birth, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z) throws SQLException {
+		//open connection
+		Connection conn = this.createConn();
+		
+		//create statement
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Fname, Lname, Mid_initial, Ssn, Bdate, Sex, Class, Degree, Nnumber, C_phone, C_address, P_phone, P_st.address, P_city, P_state, P_zip_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		
+		//prep values and insert them
+		pstmt.setString(1, fName);
+		
+		pstmt.setString(2, lName);
+		
+		pstmt.setString(3, mid);
+		
+		pstmt.setInt(4, Ssn);
+		
+		pstmt.setString(5, birth);
+		
+		//pstmt.setString(6, sex);
+		
+		pstmt.setString(7, sClass);
+		
+		pstmt.setString(8, degree);
+		
+		pstmt.setString(9, nNum);
+		
+		pstmt.setString(10, cpn);
+		
+		pstmt.setString(11, ppn);
+		
+		pstmt.setString(12, cAddress);
+		
+		pstmt.setString(13, stAddress);
+		
+		pstmt.setString(14, city);
+		
+		pstmt.setString(15, state);
+		
+		pstmt.setInt(16, z);
+		
+		//print inserted rows
+		int rows = pstmt.executeUpdate();
+		System.out.println("\n" + rows + " row(s) inserted");
+		
+		//close connection
+	    closeConn(conn);	
+	}
+	
+	public void insertDepartment(String dName, String code, String officeNum, String officePhone, String college ) throws SQLException {
+		
+	}
+	
+	public void insertCourse(String cName, String description, String cLvl, int cn, int h) throws SQLException {
+		
+	}
+
+	public void insertSection(String sem, String sYear, int s, String instructor) throws SQLException {
+		
+	}
 }
