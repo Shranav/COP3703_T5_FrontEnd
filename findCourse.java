@@ -60,16 +60,6 @@ public class findCourse {
 		}
 	}
 	
-	public Connection createConn() throws SQLException {
-		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		Connection conn = DriverManager.getConnection(this.url, this.username, this.password);
-		return conn;
-	}
-	
-	public void closeConn(Connection conn) throws SQLException {
-		conn.close();
-	}
-	
 
 	/**
 	 * Create contents of the window.
@@ -89,7 +79,21 @@ public class findCourse {
 			@Override
 			public void keyReleased(KeyEvent e) {  //Search for department name and code 
 				
-				//open connection
+				String findCourse = txtFindCourse.getText();
+				
+				jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+				try {
+					// reminder: add sex later on
+					sqlconn.displayCourse(findCourse);
+					enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
+					txtFindCourse.setText("");
+				}catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+				}
+				
+				/*//open connection
 				Connection conn = this.createConn();
 				
 				//running query to check if student is 
@@ -103,10 +107,10 @@ public class findCourse {
 				/*while(rs.next())
 				{
 					txtFindCourse.setText(rs.getString(""));
-				}*/
+				}
 				
 				//close connection
-				closeConn(conn);
+				closeConn(conn);*/
 			}
 		});
 		txtFindCourse.setBounds(190, 37, 136, 21);
