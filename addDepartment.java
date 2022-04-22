@@ -104,13 +104,6 @@ public class addDepartment {
 		officeNumTxt = new Text(shell, SWT.BORDER);
 		officeNumTxt.setBounds(98, 143, 76, 21);
 		
-		lblCollege = new Label(shell, SWT.NONE);
-		lblCollege.setBounds(10, 219, 49, 15);
-		lblCollege.setText("College:");
-		
-		collegeTxt = new Text(shell, SWT.BORDER);
-		collegeTxt.setBounds(63, 216, 76, 21);
-		
 		lblOfficePhone = new Label(shell, SWT.NONE);
 		lblOfficePhone.setBounds(10, 182, 77, 15);
 		lblOfficePhone.setText("Office Phone:");
@@ -118,18 +111,12 @@ public class addDepartment {
 		officePhoneTxt = new Text(shell, SWT.BORDER);
 		officePhoneTxt.setBounds(87, 179, 76, 21);
 		
-		Button btnBack = new Button(shell, SWT.NONE);
-		btnBack.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
+		lblCollege = new Label(shell, SWT.NONE);
+		lblCollege.setBounds(10, 219, 49, 15);
+		lblCollege.setText("College:");
 		
-				// Back to menu and close current one.
-				shell.close();
-				menuScreen.openMenu();
-			}
-		});
-		btnBack.setBounds(10, 289, 75, 25);
-		btnBack.setText("Back");
+		collegeTxt = new Text(shell, SWT.BORDER);
+		collegeTxt.setBounds(63, 216, 76, 21);
 		
 		Button btnSub = new Button(shell, SWT.NONE);
 		btnSub.addSelectionListener(new SelectionAdapter() {
@@ -144,18 +131,19 @@ public class addDepartment {
 			    
 			  //check if txt boxes are not blank
 				if (!dName.isBlank() && !code.isBlank() && !officeNum.isBlank() && !officePhone.isBlank() && !college.isBlank()) {
-					if (dName.matches("")) {
-						if (code.matches("")) {
-							if (officeNum.matches("")) {
-								if (officePhone.matches("")) {
-									if (college.matches("")) {
-										
-										//int section = Integer.parseInt(secNum);
+					//if (dName.matches("")) {
+						if (code.matches("[0-9]{4}")) {
+							if (officeNum.matches("[0-9]+")) {
+								if (officePhone.matches("[0-9]{10}")) {
+									//if (college.matches("")) {
+										int dCode = Integer.parseInt(code);
+										int oNum = Integer.parseInt(officeNum);
+										int oPhone = Integer.parseInt(officePhone);
 										
 										//make sql call
 										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 										try {
-											sqlconn.insertDepartment(dName, code, officeNum, officePhone, college);
+											sqlconn.insertDepartment(dName, dCode, oNum, oPhone, college);
 											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
 											dNameTxt.setText("");
 											codeTxt.setText("");
@@ -169,10 +157,10 @@ public class addDepartment {
 										}
 										
 										
-									}else {
-										createMsgBox(shell, "Invalid", "Please enter a valid College.");
-										collegeTxt.setText("");
-									}
+									//}else {
+									//	createMsgBox(shell, "Invalid", "Please enter a valid College.");
+									//	collegeTxt.setText("");
+									//}
 									
 								}else {
 									createMsgBox(shell, "Invalid", "Please enter a valid Office Phone Number.");
@@ -188,21 +176,34 @@ public class addDepartment {
 							createMsgBox(shell, "Invalid", "Please enter a valid Department code.");
 							codeTxt.setText("");
 						}
-					} else {
-						createMsgBox(shell, "Invalid", "Please enter a valid Department Name.");
-						dNameTxt.setText("");
-					}
+					//} else {
+						//createMsgBox(shell, "Invalid", "Please enter a valid Department Name.");
+						//dNameTxt.setText("");
+					//}
 				} else {
-					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+					createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
 				  }
 		
 				// Submit info and return back to menu next screen and close current one.
-				shell.close();
-				menuScreen.openMenu();
+				//shell.close();
+				//menuScreen.openMenu();
 			}
 		});
 		btnSub.setBounds(253, 289, 75, 25);
 		btnSub.setText("Submit");
+		
+		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		
+				// Back to menu and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnBack.setBounds(10, 289, 75, 25);
+		btnBack.setText("Back");
 
 	}
 }
