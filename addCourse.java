@@ -75,7 +75,7 @@ public class addCourse {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(343, 375);
+		shell.setSize(395, 375);
 		shell.setText("Course");
 		shell.setLayout(null);
 		
@@ -84,14 +84,14 @@ public class addCourse {
 		lblCLvl.setText("Course Level:");
 		
 		cNameTxt = new Text(shell, SWT.BORDER);
-		cNameTxt.setBounds(92, 48, 76, 21);
+		cNameTxt.setBounds(92, 48, 254, 21);
 		
 		Label lblDescription = new Label(shell, SWT.NONE);
 		lblDescription.setBounds(10, 94, 68, 15);
 		lblDescription.setText("Description:");
 		
 		descriptionTxt = new Text(shell, SWT.BORDER);
-		descriptionTxt.setBounds(84, 91, 210, 21);
+		descriptionTxt.setBounds(84, 91, 262, 21);
 		
 		Label lblCName = new Label(shell, SWT.NONE);
 		lblCName.setBounds(10, 51, 76, 15);
@@ -114,26 +114,20 @@ public class addCourse {
 		hoursTxt = new Text(shell, SWT.BORDER);
 		hoursTxt.setBounds(110, 214, 76, 21);
 		
+		Label lblDCode = new Label(shell, SWT.NONE);
+		lblDCode.setBounds(10, 254, 102, 15);
+		lblDCode.setText("Department Code:");
+		
+		codeTxt = new Text(shell, SWT.BORDER);
+		codeTxt.setBounds(114, 251, 76, 21);
+		
 		Label lblCourse = new Label(shell, SWT.NONE);
-		lblCourse.setBounds(92, 10, 146, 25);
+		lblCourse.setBounds(124, 10, 146, 25);
 		lblCourse.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		lblCourse.setText("Add Course Info");
 		
-		Button btnBack = new Button(shell, SWT.NONE);
-		btnBack.setBounds(10, 302, 75, 25);
-		btnBack.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
-				shell.close();
-				menuScreen.openMenu();
-			}
-		});
-		btnBack.setText("Back");
-		
 		Button btnSub = new Button(shell, SWT.NONE);
-		btnSub.setBounds(244, 302, 75, 25);
+		btnSub.setBounds(295, 302, 75, 25);
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -147,11 +141,11 @@ public class addCourse {
 				
 				  //check if txt boxes are not blank
 					if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank()) {
-						if (cName.matches("")) {
-							if (description.matches("")) {
-								if (cLvl.matches("")) {
-									if (cNum.matches("")) {
-										if (hours.matches("")) {
+						if (code.matches("[0-9]{4}")) {
+							//if (description.matches("")) {
+								//if (cLvl.matches("")) {
+									if (cNum.matches("[0-9]{4}")) {
+										if (hours.matches("[0-9]{1}")) {
 											int cn = Integer.parseInt(cNum);
 											int h = Integer.parseInt(hours);
 											int dCode = Integer.parseInt(code);
@@ -187,36 +181,42 @@ public class addCourse {
 										cNumTxt.setText("");
 									}
 									
-								}else {
-									createMsgBox(shell, "Invalid", "Please enter a valid Course Level.");
-									cLvlTxt.setText("");
-								}
+								//}else {
+								//	createMsgBox(shell, "Invalid", "Please enter a valid Course Level.");
+								//	cLvlTxt.setText("");
+								//}
 								
-							} else {
-								createMsgBox(shell, "Invalid", "Please enter a valid Office Description.");
-								descriptionTxt.setText("");
-							}
+						//	} else {
+							//	createMsgBox(shell, "Invalid", "Please enter a valid Office Description.");
+							//	descriptionTxt.setText("");
+							//}
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Course Name.");
-							cNameTxt.setText("");
+							createMsgBox(shell, "Invalid", "Please enter a valid Code.");
+							codeTxt.setText("");
 						}
 					} else {
-						createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+						createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
 					  }
 		
 				// Submit info and return back to menu next screen and close current one.
-				shell.close();
-				menuScreen.openMenu();
+				//shell.close();
+				//menuScreen.openMenu();
 			}
 		});
 		btnSub.setText("Submit");
 		
-		Label lblDCode = new Label(shell, SWT.NONE);
-		lblDCode.setBounds(10, 254, 102, 15);
-		lblDCode.setText("Department Code:");
+		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.setBounds(10, 302, 75, 25);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 		
-		codeTxt = new Text(shell, SWT.BORDER);
-		codeTxt.setBounds(114, 251, 76, 21);
+				// Back to menu and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnBack.setText("Back");
 
 	}
 
