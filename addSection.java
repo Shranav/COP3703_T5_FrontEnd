@@ -19,6 +19,7 @@ public class addSection {
 	private Text sYearTxt;
 	private Text sNumTxt;
 	private Text instructorTxt;
+	private Text courseNumTxt;
 
 	/**
 	 * Launch the application.
@@ -126,6 +127,7 @@ public class addSection {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
+				String courseNum = courseNumTxt.getText();
 				String sem = semTxt.getText();
 				String sYear = sYearTxt.getText();
 				String sNum = sNumTxt.getText();
@@ -136,15 +138,18 @@ public class addSection {
 						if (sYear.matches("")) {
 							if (sNum.matches("")) {
 								if (instructor.matches("")) {
-										int sn = Integer.parseInt(sNum);
+									int year = Integer.parseInt(sYear);
+									int cn = Integer.parseInt(courseNum);
+									int sn = Integer.parseInt(sNum);
 										
 										//int section = Integer.parseInt(secNum);
 										
 										//make sql call
 										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 										try {
-											sqlconn.insertSection(sem, sYear, sn, instructor);
+											sqlconn.insertSection(cn, sem, year, sn, instructor);
 											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+											courseNumTxt.setText("");
 											semTxt.setText("");
 											sYearTxt.setText("");
 											sNumTxt.setText("");
@@ -187,6 +192,13 @@ public class addSection {
 		});
 		btnSub.setBounds(238, 257, 75, 25);
 		btnSub.setText("Sumbit");
+		
+		courseNumTxt = new Text(shell, SWT.BORDER);
+		courseNumTxt.setBounds(105, 51, 76, 21);
+		
+		Label lblCourseNum = new Label(shell, SWT.NONE);
+		lblCourseNum.setBounds(10, 54, 89, 15);
+		lblCourseNum.setText("Course Number:");
 
 	}
 }
