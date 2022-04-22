@@ -6,20 +6,24 @@ import org.eclipse.swt.widgets.MessageBox;
 import java.sql.SQLException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
 
-public class addSection {
+public class addCourse {
 
 	protected Shell shell;
-	private Text semTxt;
-	private Text sYearTxt;
-	private Text sNumTxt;
-	private Text instructorTxt;
-	private Text courseNumTxt;
+	private Text cNameTxt;
+	private Text descriptionTxt;
+	private Text cLvlTxt;
+	private Text cNumTxt;
+	private Text hoursTxt;
+	private Text codeTxt;
 
 	/**
 	 * Launch the application.
@@ -27,7 +31,7 @@ public class addSection {
 	 */
 	public static void main(String[] args) {
 		try {
-			addSection window = new addSection();
+			addCourse window = new addCourse();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -49,67 +53,74 @@ public class addSection {
 		}
 	}
 	
-	public static void openSection() {
+	public static void openCourse() {
 		
 		try {
-			addSection window = new addSection();
+			addCourse window = new addCourse();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void createMsgBox( Shell shell, String title, String txt) {
 		MessageBox messageBox = new MessageBox(shell,SWT.ICON_INFORMATION |SWT.OK);
 		messageBox.setText(title);
 		messageBox.setMessage(txt);
 		messageBox.open();
 	}
-
+	
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(333, 335);
-		shell.setText("Section");
+		shell.setSize(343, 375);
+		shell.setText("Course");
+		shell.setLayout(null);
 		
-		Label lblSection = new Label(shell, SWT.NONE);
-		lblSection.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
-		lblSection.setBounds(87, 10, 156, 25);
-		lblSection.setText("Add Section Info");
+		Label lblCLvl = new Label(shell, SWT.NONE);
+		lblCLvl.setBounds(10, 139, 76, 15);
+		lblCLvl.setText("Course Level:");
 		
-		Label lblSem = new Label(shell, SWT.NONE);
-		lblSem.setBounds(10, 89, 55, 15);
-		lblSem.setText("Semester:");
+		cNameTxt = new Text(shell, SWT.BORDER);
+		cNameTxt.setBounds(92, 48, 76, 21);
 		
-		semTxt = new Text(shell, SWT.BORDER);
-		semTxt.setText("");
-		semTxt.setBounds(71, 86, 76, 21);
+		Label lblDescription = new Label(shell, SWT.NONE);
+		lblDescription.setBounds(10, 94, 68, 15);
+		lblDescription.setText("Description:");
 		
-		Label lblSemYear = new Label(shell, SWT.NONE);
-		lblSemYear.setBounds(10, 130, 30, 15);
-		lblSemYear.setText("Year:");
+		descriptionTxt = new Text(shell, SWT.BORDER);
+		descriptionTxt.setBounds(84, 91, 210, 21);
 		
-		sYearTxt = new Text(shell, SWT.BORDER);
-		sYearTxt.setBounds(46, 127, 76, 21);
+		Label lblCName = new Label(shell, SWT.NONE);
+		lblCName.setBounds(10, 51, 76, 15);
+		lblCName.setText("Course Name:");
 		
-		Label lblSectionNum = new Label(shell, SWT.NONE);
-		lblSectionNum.setBounds(10, 174, 89, 15);
-		lblSectionNum.setText("Section Number:");
+		cLvlTxt = new Text(shell, SWT.BORDER);
+		cLvlTxt.setBounds(92, 136, 76, 21);
 		
-		sNumTxt = new Text(shell, SWT.BORDER);
-		sNumTxt.setBounds(105, 171, 76, 21);
+		Label lblCNum = new Label(shell, SWT.NONE);
+		lblCNum.setBounds(10, 175, 94, 15);
+		lblCNum.setText("Course Number:");
 		
-		Label lblInstructor = new Label(shell, SWT.NONE);
-		lblInstructor.setBounds(10, 217, 55, 15);
-		lblInstructor.setText("Instructor:");
+		cNumTxt = new Text(shell, SWT.BORDER);
+		cNumTxt.setBounds(110, 172, 76, 21);
 		
-		instructorTxt = new Text(shell, SWT.BORDER);
-		instructorTxt.setBounds(71, 214, 110, 21);
+		Label lblHours = new Label(shell, SWT.NONE);
+		lblHours.setBounds(10, 214, 94, 15);
+		lblHours.setText("Semester Hours:");
 		
+		hoursTxt = new Text(shell, SWT.BORDER);
+		hoursTxt.setBounds(110, 214, 76, 21);
+		
+		Label lblCourse = new Label(shell, SWT.NONE);
+		lblCourse.setBounds(92, 10, 146, 25);
+		lblCourse.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblCourse.setText("Add Course Info");
 		
 		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.setBounds(10, 302, 75, 25);
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -119,86 +130,94 @@ public class addSection {
 				menuScreen.openMenu();
 			}
 		});
-		btnBack.setBounds(10, 257, 75, 25);
 		btnBack.setText("Back");
 		
 		Button btnSub = new Button(shell, SWT.NONE);
+		btnSub.setBounds(244, 302, 75, 25);
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				String courseNum = courseNumTxt.getText();
-				String sem = semTxt.getText();
-				String sYear = sYearTxt.getText();
-				String sNum = sNumTxt.getText();
-				String instructor = instructorTxt.getText();
+				String cName = cNameTxt.getText();
+				String description = descriptionTxt.getText();
+				String cLvl = cLvlTxt.getText();
+				String cNum = cNumTxt.getText();
+				String hours = hoursTxt.getText();
+				String code = codeTxt.getText();
 				
-				if (!sem.isBlank() && !sYear.isBlank() && !sNum.isBlank() && !instructor.isBlank()) {
-					if (sem.matches("")) {
-						if (sYear.matches("")) {
-							if (sNum.matches("")) {
-								if (instructor.matches("")) {
-									int year = Integer.parseInt(sYear);
-									int cn = Integer.parseInt(courseNum);
-									int sn = Integer.parseInt(sNum);
-										
-										//int section = Integer.parseInt(secNum);
-										
-										//make sql call
-										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-										try {
-											sqlconn.insertSection(cn, sem, year, sn, instructor);
-											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-											courseNumTxt.setText("");
-											semTxt.setText("");
-											sYearTxt.setText("");
-											sNumTxt.setText("");
-											instructorTxt.setText("");
-										} catch (SQLException e1) {
-											// TODO Auto-generated catch block
-											e1.printStackTrace();
-											createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+				  //check if txt boxes are not blank
+					if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank()) {
+						if (cName.matches("")) {
+							if (description.matches("")) {
+								if (cLvl.matches("")) {
+									if (cNum.matches("")) {
+										if (hours.matches("")) {
+											int cn = Integer.parseInt(cNum);
+											int h = Integer.parseInt(hours);
+											int dCode = Integer.parseInt(code);
+											
+											//int section = Integer.parseInt(secNum);
+											
+											//make sql call
+											jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+											try {
+												sqlconn.insertCourse(cName, description, cLvl, cn, h, dCode);
+												createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+												cNameTxt.setText("");
+												descriptionTxt.setText("");
+												cLvlTxt.setText("");
+												cNumTxt.setText("");
+												hoursTxt.setText("");
+												codeTxt.setText("");
+												
+											} catch (SQLException e1) {
+												// TODO Auto-generated catch block
+												e1.printStackTrace();
+												createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+											}
+											
+											
+										}else {
+											createMsgBox(shell, "Invalid", "Please enter a valid Hours.");
+											hoursTxt.setText("");
 										}
 										
-										
 									}else {
-										createMsgBox(shell, "Invalid", "Please enter a valid Instructor.");
-										instructorTxt.setText("");
+										createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
+										cNumTxt.setText("");
 									}
 									
 								}else {
-									createMsgBox(shell, "Invalid", "Please enter a valid Section Number.");
-									sNumTxt.setText("");
+									createMsgBox(shell, "Invalid", "Please enter a valid Course Level.");
+									cLvlTxt.setText("");
 								}
 								
-							}else {
-								createMsgBox(shell, "Invalid", "Please enter a valid Year.");
-								sYearTxt.setText("");
+							} else {
+								createMsgBox(shell, "Invalid", "Please enter a valid Office Description.");
+								descriptionTxt.setText("");
 							}
-							
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Office Semester.");
-							semTxt.setText("");
+							createMsgBox(shell, "Invalid", "Please enter a valid Course Name.");
+							cNameTxt.setText("");
 						}
-
-				} else {
-					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
-				  }
-				
+					} else {
+						createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+					  }
+		
 				// Submit info and return back to menu next screen and close current one.
 				shell.close();
 				menuScreen.openMenu();
 			}
 		});
-		btnSub.setBounds(238, 257, 75, 25);
-		btnSub.setText("Sumbit");
+		btnSub.setText("Submit");
 		
-		courseNumTxt = new Text(shell, SWT.BORDER);
-		courseNumTxt.setBounds(105, 51, 76, 21);
+		Label lblDCode = new Label(shell, SWT.NONE);
+		lblDCode.setBounds(10, 254, 102, 15);
+		lblDCode.setText("Department Code:");
 		
-		Label lblCourseNum = new Label(shell, SWT.NONE);
-		lblCourseNum.setBounds(10, 54, 89, 15);
-		lblCourseNum.setText("Course Number:");
+		codeTxt = new Text(shell, SWT.BORDER);
+		codeTxt.setBounds(114, 251, 76, 21);
 
 	}
+
 }
