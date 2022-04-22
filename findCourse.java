@@ -12,10 +12,6 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 
-import java.sql.*;
-import java.io.*;
-import net.proteanit.sql.DbUtils;
-
 public class findCourse {
 
 	protected Shell shell;
