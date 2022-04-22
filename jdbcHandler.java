@@ -186,12 +186,12 @@ public class jdbcHandler {
 	    closeConn(conn);	
 	}
 	
-	public void insertCourse(String cName, String description, String cLvl, int cn, int h) throws SQLException {
+	public void insertCourse(String cName, String description, String cLvl, int cn, int h, int dCode) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
 		//create statement
-		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Level, Description, Course_name, Course_num, sem_hours) VALUES (?,?,?,?,?)");
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Level, Description, Course_name, Course_num, sem_hours, Code) VALUES (?,?,?,?,?,?)");
 		
 		//prep values and insert them
 		pstmt.setString(1, cLvl);
@@ -203,26 +203,30 @@ public class jdbcHandler {
 		pstmt.setInt(4, cn);
 		
 		pstmt.setInt(5, h);
+		
+		pstmt.setInt(6, dCode);
 
 		//close connection
 	    closeConn(conn);
 	}
 
-	public void insertSection(String sem, int year, int sn, String instructor) throws SQLException {
+	public void insertSection(int cn, String sem, int year, int sn, String instructor) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
 		//create statement
-		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Year, Semester, Instructor, Section_num) VALUES (?,?,?,?)");
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Course_num, Year, Semester, Instructor, Section_num) VALUES (?,?,?,?,?)");
 		
 		//prep values and insert them
-		pstmt.setInt(1, year);
+		pstmt.setInt(1, cn);
 		
-		pstmt.setString(2, sem);
+		pstmt.setInt(2, year);
 		
-		pstmt.setString(3, instructor);
+		pstmt.setString(3, sem);
 		
-		pstmt.setInt(4, sn);
+		pstmt.setString(4, instructor);
+		
+		pstmt.setInt(5, sn);
 
 		//close connection
 	    closeConn(conn);
