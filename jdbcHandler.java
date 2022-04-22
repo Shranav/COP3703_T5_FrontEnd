@@ -2,6 +2,8 @@ import java.sql.*;
 import java.io.*; 
 import java.time.LocalDateTime;
 
+import net.proteanit.sql.DbUtils;
+
 public class jdbcHandler {
 	String url = "jdbc:oracle:thin:@cisvm-oracle.unfcsd.unf.edu:1521:orcl";
 	String username, password;
@@ -114,7 +116,7 @@ public class jdbcHandler {
 	    closeConn(conn);
 	}
 	// reminder: add sex later on
-	public void insertStudent(String fName, String lName, String mid, int Ssn, String birth, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z) throws SQLException {
+	public void insertStudent(String fName, String lName, String mid, int Ssn, String birth, String sClass, String degree, String sex, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -132,7 +134,7 @@ public class jdbcHandler {
 		
 		pstmt.setString(5, birth);
 		
-		//pstmt.setString(6, sex);
+		pstmt.setString(6, sex);
 		
 		pstmt.setString(7, sClass);
 		
@@ -162,15 +164,88 @@ public class jdbcHandler {
 	    closeConn(conn);	
 	}
 	
-	public void insertDepartment(String dName, String code, String officeNum, String officePhone, String college ) throws SQLException {
+	public void insertDepartment(String dName, int dCode, int oNum, int oPhone, String college ) throws SQLException {
+		//open connection
+		Connection conn = this.createConn();
 		
+		//create statement
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Department_name, Code, Office_num,  college, Office_phone) VALUES (?,?,?,?,?)");
+		
+		//prep values and insert them
+		pstmt.setString(1, dName);
+		
+		pstmt.setInt(2, dCode);
+		
+		pstmt.setInt(3, oNum);
+		
+		pstmt.setString(4, college);
+		
+		pstmt.setInt(5, oPhone);
+
+		//close connection
+	    closeConn(conn);	
 	}
 	
 	public void insertCourse(String cName, String description, String cLvl, int cn, int h) throws SQLException {
+		//open connection
+		Connection conn = this.createConn();
 		
+		//create statement
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Level, Description, Course_name, Course_num, sem_hours) VALUES (?,?,?,?,?)");
+		
+		//prep values and insert them
+		pstmt.setString(1, cLvl);
+		
+		pstmt.setString(2, description);
+		
+		pstmt.setString(3, cName);
+		
+		pstmt.setInt(4, cn);
+		
+		pstmt.setInt(5, h);
+
+		//close connection
+	    closeConn(conn);
 	}
 
-	public void insertSection(String sem, String sYear, int s, String instructor) throws SQLException {
+	public void insertSection(String sem, int year, int sn, String instructor) throws SQLException {
+		//open connection
+		Connection conn = this.createConn();
 		
+		//create statement
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Year, Semester, Instructor, Section_num) VALUES (?,?,?,?)");
+		
+		//prep values and insert them
+		pstmt.setInt(1, year);
+		
+		pstmt.setString(2, sem);
+		
+		pstmt.setString(3, instructor);
+		
+		pstmt.setInt(4, sn);
+
+		//close connection
+	    closeConn(conn);
+	}
+	
+	public void displayCourse(String findCourse ) throws SQLException {	
+	//open connection
+	Connection conn = this.createConn();
+	
+	//running query to check if student is 
+	String query = "Select code FROM COURSE AS C, DEPARTMENT AS D WHERE C.code = D.code";
+	PreparedStatement pstmt = conn.prepareStatement(query);
+	pstmt.setString(1, findCourse);
+	ResultSet rs = pstmt.executeQuery();
+	
+	// try to display courses on list 
+	//courseList.setModel(DbUtils.resultSetToTableModel(rs));
+	/*while(rs.next())
+	{
+		txtFindCourse.setText(rs.getString(""));
+	}*/
+	
+	//close connection
+	closeConn(conn);
 	}
 }
