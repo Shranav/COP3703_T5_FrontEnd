@@ -237,7 +237,7 @@ public class jdbcHandler {
 	Connection conn = this.createConn();
 	
 	//running query to check if student is 
-	String query = "Select code FROM COURSE AS C, DEPARTMENT AS D WHERE C.code = D.code";
+	String query = "SELECT code FROM COURSE AS C, DEPARTMENT AS D WHERE C.code = D.code";
 	PreparedStatement pstmt = conn.prepareStatement(query);
 	pstmt.setString(1, findCourse);
 	ResultSet rs = pstmt.executeQuery();
