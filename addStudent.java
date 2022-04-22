@@ -148,19 +148,15 @@ public class addStudent {
 		ssnTxt = new Text(shell, SWT.BORDER);
 		ssnTxt.setBounds(308, 96, 98, 21);
 		
+		sexTxt = new Text(shell, SWT.BORDER);
+		sexTxt.setBounds(558, 96, 24, 21);
+		
 		cpnTxt = new Text(shell, SWT.BORDER);
 		cpnTxt.setBounds(145, 135, 76, 21);
 		
 		ppnTxt = new Text(shell, SWT.BORDER);
 		ppnTxt.setText("");
 		ppnTxt.setBounds(412, 135, 76, 21);
-		
-		sClassTxt = new Text(shell, SWT.BORDER);
-		sClassTxt.setBounds(175, 293, 76, 21);
-		
-		degreeTxt = new Text(shell, SWT.BORDER);
-		degreeTxt.setText("");
-		degreeTxt.setBounds(184, 337, 76, 21);
 		
 		Label lblCAddress = new Label(shell, SWT.NONE);
 		lblCAddress.setBounds(10, 175, 90, 15);
@@ -201,6 +197,13 @@ public class addStudent {
 		zipTxt = new Text(shell, SWT.BORDER);
 		zipTxt.setBounds(539, 242, 76, 21);
 		
+		sClassTxt = new Text(shell, SWT.BORDER);
+		sClassTxt.setBounds(175, 293, 76, 21);
+		
+		degreeTxt = new Text(shell, SWT.BORDER);
+		degreeTxt.setText("");
+		degreeTxt.setBounds(184, 337, 76, 21);
+		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -238,20 +241,20 @@ public class addStudent {
 				
 				if (!nNum.isBlank() && !fName.isBlank() && !mid.isBlank() && !lName.isBlank() && !birth.isBlank() && !ssn.isBlank() && !cpn.isBlank() && !ppn.isBlank() && !sClass.isBlank() && !degree.isBlank() && !cAddress.isBlank() && !stAddress.isBlank() && !city.isBlank() && !state.isBlank() && !zip.isBlank()) {
 					if (nNum.matches("^[Nn][0-9]+")) {
-						if (fName.matches("")) {
-							if (mid.matches("")) {
-								if (lName.matches("")) {
-									if(birth.matches("")) {
+						if (fName.matches("[a-zA-z]+")) {
+							if (mid.matches("[a-zA-z]{1}")) {
+								if (lName.matches("[a-zA-z]+")) {
+									//if(birth.matches("[0-9]+")) {
 										if(ssn.matches("[0-9]{9}")) {
-											if(cpn.matches("")) {
-												if(ppn.matches("")) {
-													if(sClass.matches("")) {
-														if(degree.matches("")) {
-															if(cAddress.matches("")) {
-																if(stAddress.matches("")) {
-																	if(city.matches("")) {
-																		if(state.matches("")) {
-																			if(zip.matches("")) {
+											if(cpn.matches("[0-9]+")) {
+												if(ppn.matches("[0-9]+")) {
+													//if(sClass.matches("[]")) {
+														//if(degree.matches("")) {
+															//if(cAddress.matches("")) {
+																//if(stAddress.matches("")) {
+																	//if(city.matches("")) {
+																		//if(state.matches("")) {
+																			if(zip.matches("[0-9]{5}")) {
 																				int Ssn = Integer.parseInt(ssn);
 																				int z = Integer.parseInt(zip);
 									
@@ -288,35 +291,35 @@ public class addStudent {
 																				zipTxt.setText("");
 																			}
 																			
-																		}else {
-																			enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State.");
-																			stateTxt.setText("");
-																		}
+																		//}else {
+																			//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State.");
+																			//stateTxt.setText("");
+																		//}
 																		
-																	}else {
-																		enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid City.");
-																		cityTxt.setText("");
-																	}
+																	//}else {
+																		//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid City.");
+																		//cityTxt.setText("");
+																	//}
 																	
-																}else {
-																	enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Street-Address.");
-																	stAddressTxt.setText("");
-																}
+																//}else {
+																	//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Street-Address.");
+																	//stAddressTxt.setText("");
+																//}
 																
-															}else {
-																enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Address.");
-																cAddressTxt.setText("");
-															}
+															//}else {
+																//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Address.");
+																//cAddressTxt.setText("");
+															//}
 															
-														}else {
-															enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Degree.");
-															degreeTxt.setText("");
-														}
+														//}else {
+															//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Degree.");
+															//degreeTxt.setText("");
+														//}
 														
-													}else {
-														enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Class.");
-														sClassTxt.setText("");
-													}
+													//}else {
+														//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Class.");
+														//sClassTxt.setText("");
+													//}
 													
 												}else {
 													enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Permanent Phone Number.");
@@ -334,10 +337,10 @@ public class addStudent {
 											ssnTxt.setText("");
 										}
 										
-									}else {
-										enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Birth-Date.");
-										birthTxt.setText("");
-									}
+									//}else {
+										//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Birth-Date.");
+										//birthTxt.setText("");
+									//}
 									
 								}else {
 									enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Last Name.");
@@ -357,12 +360,12 @@ public class addStudent {
 						nNumTxt.setText("");
 					}
 				} else {
-					enrollStudent.createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+					enrollStudent.createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
 				}
 		
 				// Submit info and return back to menu next screen and close current one.
-				shell.close();
-				menuScreen.openMenu();
+				//shell.close();
+				//menuScreen.openMenu();
 			}
 		});
 		btnSub.setBounds(546, 425, 75, 25);
@@ -372,9 +375,6 @@ public class addStudent {
 		lblStudent.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		lblStudent.setBounds(230, 10, 160, 25);
 		lblStudent.setText("Add Student Info");
-		
-		sexTxt = new Text(shell, SWT.BORDER);
-		sexTxt.setBounds(558, 96, 24, 21);
 
 	}
 }
