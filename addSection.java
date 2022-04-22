@@ -74,6 +74,13 @@ public class addSection {
 		shell.setSize(333, 335);
 		shell.setText("Section");
 		
+		courseNumTxt = new Text(shell, SWT.BORDER);
+		courseNumTxt.setBounds(105, 51, 76, 21);
+		
+		Label lblCourseNum = new Label(shell, SWT.NONE);
+		lblCourseNum.setBounds(10, 54, 89, 15);
+		lblCourseNum.setText("Course Number:");
+		
 		Label lblSection = new Label(shell, SWT.NONE);
 		lblSection.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		lblSection.setBounds(87, 10, 156, 25);
@@ -108,20 +115,6 @@ public class addSection {
 		instructorTxt = new Text(shell, SWT.BORDER);
 		instructorTxt.setBounds(71, 214, 110, 21);
 		
-		
-		Button btnBack = new Button(shell, SWT.NONE);
-		btnBack.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
-				shell.close();
-				menuScreen.openMenu();
-			}
-		});
-		btnBack.setBounds(10, 257, 75, 25);
-		btnBack.setText("Back");
-		
 		Button btnSub = new Button(shell, SWT.NONE);
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -134,10 +127,10 @@ public class addSection {
 				String instructor = instructorTxt.getText();
 				
 				if (!sem.isBlank() && !sYear.isBlank() && !sNum.isBlank() && !instructor.isBlank()) {
-					if (sem.matches("")) {
-						if (sYear.matches("")) {
-							if (sNum.matches("")) {
-								if (instructor.matches("")) {
+					if (courseNum.matches("[0-9]{4}")) {
+						if (sYear.matches("[0-9]{4}")) {
+							if (sNum.matches("[0-9]{5}")) {
+								//if (instructor.matches("")) {
 									int year = Integer.parseInt(sYear);
 									int cn = Integer.parseInt(courseNum);
 									int sn = Integer.parseInt(sNum);
@@ -161,10 +154,10 @@ public class addSection {
 										}
 										
 										
-									}else {
-										createMsgBox(shell, "Invalid", "Please enter a valid Instructor.");
-										instructorTxt.setText("");
-									}
+									//}else {
+									//	createMsgBox(shell, "Invalid", "Please enter a valid Instructor.");
+									//	instructorTxt.setText("");
+									//}
 									
 								}else {
 									createMsgBox(shell, "Invalid", "Please enter a valid Section Number.");
@@ -177,28 +170,34 @@ public class addSection {
 							}
 							
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Office Semester.");
-							semTxt.setText("");
+							createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
+							courseNumTxt.setText("");
 						}
 
 				} else {
-					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+					createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
 				  }
 				
 				// Submit info and return back to menu next screen and close current one.
-				shell.close();
-				menuScreen.openMenu();
+				//shell.close();
+				//menuScreen.openMenu();
 			}
 		});
 		btnSub.setBounds(238, 257, 75, 25);
 		btnSub.setText("Sumbit");
 		
-		courseNumTxt = new Text(shell, SWT.BORDER);
-		courseNumTxt.setBounds(105, 51, 76, 21);
+		Button btnBack = new Button(shell, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 		
-		Label lblCourseNum = new Label(shell, SWT.NONE);
-		lblCourseNum.setBounds(10, 54, 89, 15);
-		lblCourseNum.setText("Course Number:");
+				// Back to menu and close current one.
+				shell.close();
+				menuScreen.openMenu();
+			}
+		});
+		btnBack.setBounds(10, 257, 75, 25);
+		btnBack.setText("Back");
 
 	}
 }
