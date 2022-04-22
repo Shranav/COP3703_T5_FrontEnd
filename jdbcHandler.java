@@ -181,6 +181,11 @@ public class jdbcHandler {
 		pstmt.setString(4, college);
 		
 		pstmt.setInt(5, oPhone);
+		
+		//debugging output
+		int rows = pstmt.executeUpdate();
+	    System.out.println("\n" + rows + " row(s) updated");
+		System.out.println("Successfully updated entry");
 
 		//close connection
 	    closeConn(conn);	
@@ -205,6 +210,11 @@ public class jdbcHandler {
 		pstmt.setInt(5, h);
 		
 		pstmt.setInt(6, dCode);
+		
+		//debugging output
+		int rows = pstmt.executeUpdate();
+	    System.out.println("\n" + rows + " row(s) updated");
+		System.out.println("Successfully updated entry");
 
 		//close connection
 	    closeConn(conn);
@@ -227,20 +237,27 @@ public class jdbcHandler {
 		pstmt.setString(4, instructor);
 		
 		pstmt.setInt(5, sn);
+		
+		//debugging output
+		int rows = pstmt.executeUpdate();
+	    System.out.println("\n" + rows + " row(s) updated");
+		System.out.println("Successfully updated entry");
 
 		//close connection
 	    closeConn(conn);
 	}
 	
-	public void displayCourse(String findCourse ) throws SQLException {	
+	public void displayCourse(String findCourse) throws SQLException {	
 	//open connection
 	Connection conn = this.createConn();
 	
 	//running query to check if student is 
-	String query = "SELECT code FROM COURSE AS C, DEPARTMENT AS D WHERE C.code = D.code";
+	String query = "SELECT Course_name, code" + "FROM COURSE" + "WHERE code = ?";
 	PreparedStatement pstmt = conn.prepareStatement(query);
 	pstmt.setString(1, findCourse);
-	ResultSet rs = pstmt.executeQuery();
+	ResultSet rset = pstmt.executeQuery();
+	
+	//while(rset.next)){ }
 	
 	// try to display courses on list 
 	//courseList.setModel(DbUtils.resultSetToTableModel(rs));
