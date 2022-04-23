@@ -73,11 +73,11 @@ public class findCourse {
 		lblCourseOffered.setText("Find Course Offered");
 		
 		txtFindCourse = new Text(shell, SWT.BORDER);
-		txtFindCourse.setBounds(190, 37, 136, 21);
+		txtFindCourse.setBounds(140, 37, 136, 21);
 		
 		Label lblFindCourse = new Label(shell, SWT.NONE);
-		lblFindCourse.setBounds(10, 37, 174, 15);
-		lblFindCourse.setText("Enter department name or code:");
+		lblFindCourse.setBounds(10, 40, 129, 15);
+		lblFindCourse.setText("Enter department code:");
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setBounds(97, 73, 250, 153);
@@ -102,26 +102,30 @@ public class findCourse {
 		btnBack.setText("Back");
 		
 		Button btnSearch = new Button(shell, SWT.NONE);
+		btnSearch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 			
-			String findCourse = txtFindCourse.getText();
-            
-			jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-            try {
-                // reminder: add sex later on
-                ResultSet courses = sqlconn.displayCourse(findCourse);
-                while (courses.next()) {
-                    String result = courses.getString(0) + " " + courses.getString(1);
-                    courseList.add(result);
-                }
-                enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
-                txtFindCourse.setText("");
-            }catch (SQLException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
-            }
-			
-		btnSearch.setBounds(336, 35, 75, 25);
+				String findCourse = txtFindCourse.getText();
+	            
+				jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+	            try {
+	                // reminder: add sex later on
+	                ResultSet courses = sqlconn.displayCourse(findCourse);
+	                while (courses.next()) {
+	                    String result = courses.getString(0) + " " + courses.getString(1);
+	                    courseList.add(result);
+	                }
+	                enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
+	                txtFindCourse.setText("");
+	            }catch (SQLException e1) {
+	                // TODO Auto-generated catch block
+	                e1.printStackTrace();
+	                enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+	            }
+			}
+		});
+		btnSearch.setBounds(292, 35, 75, 25);
 		btnSearch.setText("Search");
 
 	}
