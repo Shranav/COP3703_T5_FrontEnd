@@ -1,20 +1,21 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+
+import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class findGradeReport {
 
 	protected Shell shell;
-	private Text text;
-	private Table table;
+	private Text txtNnum;
+	private Text txtGradeReport;
 
 	/**
 	 * Launch the application.
@@ -59,23 +60,51 @@ public class findGradeReport {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(600, 450);
 		shell.setText("SWT Application");
 		
 		Label lblGradeReport = new Label(shell, SWT.NONE);
+		lblGradeReport.setAlignment(SWT.CENTER);
 		lblGradeReport.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
-		lblGradeReport.setBounds(153, 10, 128, 25);
+		lblGradeReport.setBounds(35, 10, 516, 25);
 		lblGradeReport.setText("Grade Report");
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(10, 47, 129, 15);
+		lblNewLabel.setBounds(145, 47, 129, 15);
 		lblNewLabel.setText("Enter Student's Number:");
 		
-		text = new Text(shell, SWT.BORDER);
-		text.setBounds(145, 44, 87, 21);
+		txtNnum = new Text(shell, SWT.BORDER);
+		txtNnum.setBounds(326, 44, 87, 21);
+		
+		txtGradeReport = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL);
+		txtGradeReport.setBounds(35, 77, 516, 280);
 		
 		Button btnSearch = new Button(shell, SWT.NONE);
-		btnSearch.setBounds(246, 41, 75, 25);
+		btnSearch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String nNum = txtNnum.getText();
+				
+				if(nNum.matches("^[Nn][0-9]{8}$")) {
+					
+					//make sql call
+					jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+					try {
+						String result = sqlconn.genGradeReport(nNum);
+						txtGradeReport.setText(result);
+						txtNnum.setText("");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						enrollStudent.createMsgBox(shell, "Error", "There was an error with the search. Please try again.");
+					}
+					
+				} else {
+					enrollStudent.createMsgBox(shell, "Incorrect Student nNumber", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
+				}
+			}
+		});
+		btnSearch.setBounds(504, 375, 75, 25);
 		btnSearch.setText("Search");
 		
 		Button btnBack = new Button(shell, SWT.NONE);
@@ -88,15 +117,8 @@ public class findGradeReport {
 				menuScreen.openMenu();
 			}
 		});
-		btnBack.setBounds(10, 227, 75, 25);
+		btnBack.setBounds(10, 375, 75, 25);
 		btnBack.setText("Back");
-		
-		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(87, 84, 246, 116);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		
-		TableCursor tableCursor = new TableCursor(table, SWT.NONE);
 
 	}
 }
