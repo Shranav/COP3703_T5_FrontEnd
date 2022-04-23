@@ -84,7 +84,7 @@ public class addCourse {
 		lblCLvl.setText("Course Level:");
 		
 		cNameTxt = new Text(shell, SWT.BORDER);
-		cNameTxt.setBounds(92, 48, 254, 21);
+		cNameTxt.setBounds(92, 48, 146, 21);
 		
 		Label lblDescription = new Label(shell, SWT.NONE);
 		lblDescription.setBounds(10, 94, 68, 15);
@@ -101,11 +101,11 @@ public class addCourse {
 		cLvlTxt.setBounds(92, 136, 76, 21);
 		
 		Label lblCNum = new Label(shell, SWT.NONE);
-		lblCNum.setBounds(10, 175, 94, 15);
-		lblCNum.setText("Course Number:");
+		lblCNum.setBounds(10, 175, 245, 15);
+		lblCNum.setText("Course Number (3 letters followed by 4 digits):");
 		
 		cNumTxt = new Text(shell, SWT.BORDER);
-		cNumTxt.setBounds(110, 172, 76, 21);
+		cNumTxt.setBounds(261, 172, 76, 21);
 		
 		Label lblHours = new Label(shell, SWT.NONE);
 		lblHours.setBounds(10, 214, 94, 15);
@@ -115,11 +115,11 @@ public class addCourse {
 		hoursTxt.setBounds(110, 214, 76, 21);
 		
 		Label lblDCode = new Label(shell, SWT.NONE);
-		lblDCode.setBounds(10, 254, 102, 15);
-		lblDCode.setText("Department Code:");
+		lblDCode.setBounds(10, 254, 149, 15);
+		lblDCode.setText("Offereing department Code:");
 		
 		codeTxt = new Text(shell, SWT.BORDER);
-		codeTxt.setBounds(114, 251, 76, 21);
+		codeTxt.setBounds(165, 251, 76, 21);
 		
 		Label lblCourse = new Label(shell, SWT.NONE);
 		lblCourse.setBounds(124, 10, 146, 25);
@@ -140,22 +140,19 @@ public class addCourse {
 				String code = codeTxt.getText();
 				
 				  //check if txt boxes are not blank
-					if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank()) {
-						if (code.matches("[0-9]{4}")) {
+					if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank() && !code.isBlank()) {
+						if (code.matches("^[0-9]{4}$")) {
 							//if (description.matches("")) {
 								//if (cLvl.matches("")) {
-									if (cNum.matches("[0-9]{4}")) {
-										if (hours.matches("[0-9]{1}")) {
-											int cn = Integer.parseInt(cNum);
+									if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
+										if (hours.matches("^[0-9]{1}$")) {
 											int h = Integer.parseInt(hours);
 											int dCode = Integer.parseInt(code);
-											
-											//int section = Integer.parseInt(secNum);
 											
 											//make sql call
 											jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 											try {
-												sqlconn.insertCourse(cName, description, cLvl, cn, h, dCode);
+												sqlconn.insertCourse(cName, description, cLvl, cNum, h, dCode);
 												createMsgBox(shell, "Successful", "The entry was successfully inserted.");
 												cNameTxt.setText("");
 												descriptionTxt.setText("");
