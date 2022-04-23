@@ -248,7 +248,7 @@ public class addStudent {
 										if(ssn.matches("^[0-9]{3}-[0-9]{2}-[0-9]{4}$")) {
 											if(cpn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
 												if(ppn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
-													if(sex.matches("^[M-MF-FO-O]$")) {
+													if(sex.matches("^[MmFfOo]$")) {
 														//if(degree.matches("")) {
 															//if(cAddress.matches("")) {
 																//if(stAddress.matches("")) {
