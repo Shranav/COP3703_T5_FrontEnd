@@ -9,10 +9,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class findCourse {
 
@@ -84,7 +81,7 @@ public class findCourse {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
-		courseList = new List(scrolledComposite, SWT.BORDER);
+		courseList = new List(scrolledComposite, SWT.BORDER | SWT.V_SCROLL);
 		scrolledComposite.setContent(courseList);
 		scrolledComposite.setMinSize(courseList.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
