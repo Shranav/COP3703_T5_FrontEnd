@@ -19,7 +19,7 @@ public class addSection {
 	private Text sYearTxt;
 	private Text sNumTxt;
 	private Text instructorTxt;
-	private Text courseNumTxt;
+	private Text cNumTxt;
 
 	/**
 	 * Launch the application.
@@ -71,15 +71,15 @@ public class addSection {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(333, 335);
+		shell.setSize(393, 343);
 		shell.setText("Section");
 		
-		courseNumTxt = new Text(shell, SWT.BORDER);
-		courseNumTxt.setBounds(105, 51, 76, 21);
+		cNumTxt = new Text(shell, SWT.BORDER);
+		cNumTxt.setBounds(261, 51, 75, 21);
 		
 		Label lblCourseNum = new Label(shell, SWT.NONE);
-		lblCourseNum.setBounds(10, 54, 89, 15);
-		lblCourseNum.setText("Course Number:");
+		lblCourseNum.setBounds(10, 54, 245, 15);
+		lblCourseNum.setText("Course Number (3 letters followed by 4 digits):");
 		
 		Label lblSection = new Label(shell, SWT.NONE);
 		lblSection.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
@@ -92,7 +92,7 @@ public class addSection {
 		
 		semTxt = new Text(shell, SWT.BORDER);
 		semTxt.setText("");
-		semTxt.setBounds(71, 86, 76, 21);
+		semTxt.setBounds(71, 86, 94, 21);
 		
 		Label lblSemYear = new Label(shell, SWT.NONE);
 		lblSemYear.setBounds(10, 130, 30, 15);
@@ -113,26 +113,25 @@ public class addSection {
 		lblInstructor.setText("Instructor:");
 		
 		instructorTxt = new Text(shell, SWT.BORDER);
-		instructorTxt.setBounds(71, 214, 110, 21);
+		instructorTxt.setBounds(71, 214, 113, 21);
 		
 		Button btnSub = new Button(shell, SWT.NONE);
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				String courseNum = courseNumTxt.getText();
+				String cNum = cNumTxt.getText();
 				String sem = semTxt.getText();
 				String sYear = sYearTxt.getText();
 				String sNum = sNumTxt.getText();
 				String instructor = instructorTxt.getText();
 				
-				if (!sem.isBlank() && !sYear.isBlank() && !sNum.isBlank() && !instructor.isBlank()) {
-					if (courseNum.matches("[0-9]{4}")) {
-						if (sYear.matches("[0-9]{4}")) {
-							if (sNum.matches("[0-9]{5}")) {
+				if (!cNum.isBlank() && !sem.isBlank() && !sYear.isBlank() && !sNum.isBlank() && !instructor.isBlank()) {
+					if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
+						if (sYear.matches("^[0-9]{4}$")) {
+							if (sNum.matches("^[0-9]{5}$")) {
 								//if (instructor.matches("")) {
 									int year = Integer.parseInt(sYear);
-									int cn = Integer.parseInt(courseNum);
 									int sn = Integer.parseInt(sNum);
 										
 										//int section = Integer.parseInt(secNum);
@@ -140,9 +139,9 @@ public class addSection {
 										//make sql call
 										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 										try {
-											sqlconn.insertSection(cn, sem, year, sn, instructor);
+											sqlconn.insertSection(cNum, sem, year, sn, instructor);
 											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-											courseNumTxt.setText("");
+											cNumTxt.setText("");
 											semTxt.setText("");
 											sYearTxt.setText("");
 											sNumTxt.setText("");
@@ -171,7 +170,7 @@ public class addSection {
 							
 						} else {
 							createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
-							courseNumTxt.setText("");
+							cNumTxt.setText("");
 						}
 
 				} else {
