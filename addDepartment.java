@@ -83,7 +83,7 @@ public class addDepartment {
 		lblDName.setBounds(10, 64, 107, 15);
 		
 		dNameTxt = new Text(shell, SWT.BORDER);
-		dNameTxt.setBounds(123, 61, 76, 21);
+		dNameTxt.setBounds(123, 61, 174, 21);
 		
 		Label Department = new Label(shell, SWT.NONE);
 		Department.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
@@ -105,18 +105,18 @@ public class addDepartment {
 		officeNumTxt.setBounds(98, 143, 76, 21);
 		
 		lblOfficePhone = new Label(shell, SWT.NONE);
-		lblOfficePhone.setBounds(10, 182, 77, 15);
-		lblOfficePhone.setText("Office Phone:");
+		lblOfficePhone.setBounds(10, 182, 164, 15);
+		lblOfficePhone.setText("Office Phone (XXX-XXX-XXXX):");
 		
 		officePhoneTxt = new Text(shell, SWT.BORDER);
-		officePhoneTxt.setBounds(87, 179, 76, 21);
+		officePhoneTxt.setBounds(180, 179, 117, 21);
 		
 		lblCollege = new Label(shell, SWT.NONE);
 		lblCollege.setBounds(10, 219, 49, 15);
 		lblCollege.setText("College:");
 		
 		collegeTxt = new Text(shell, SWT.BORDER);
-		collegeTxt.setBounds(63, 216, 76, 21);
+		collegeTxt.setBounds(63, 216, 111, 21);
 		
 		Button btnSub = new Button(shell, SWT.NONE);
 		btnSub.addSelectionListener(new SelectionAdapter() {
@@ -132,18 +132,17 @@ public class addDepartment {
 			  //check if txt boxes are not blank
 				if (!dName.isBlank() && !code.isBlank() && !officeNum.isBlank() && !officePhone.isBlank() && !college.isBlank()) {
 					//if (dName.matches("")) {
-						if (code.matches("[0-9]{4}")) {
-							if (officeNum.matches("[0-9]+")) {
-								if (officePhone.matches("[0-9]{10}")) {
+						if (code.matches("^[0-9]{4}$")) {
+							if (officeNum.matches("^[0-9]{4}$")) {
+								if (officePhone.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
 									//if (college.matches("")) {
 										int dCode = Integer.parseInt(code);
 										int oNum = Integer.parseInt(officeNum);
-										int oPhone = Integer.parseInt(officePhone);
 										
 										//make sql call
 										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 										try {
-											sqlconn.insertDepartment(dName, dCode, oNum, oPhone, college);
+											sqlconn.insertDepartment(dName, dCode, oNum, officePhone, college);
 											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
 											dNameTxt.setText("");
 											codeTxt.setText("");
