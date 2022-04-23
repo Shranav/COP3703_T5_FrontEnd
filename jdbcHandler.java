@@ -164,7 +164,7 @@ public class jdbcHandler {
 	    closeConn(conn);	
 	}
 	
-	public void insertDepartment(String dName, int dCode, int oNum, int oPhone, String college ) throws SQLException {
+	public void insertDepartment(String dName, int dCode, int oNum, String officePhone, String college ) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -180,7 +180,7 @@ public class jdbcHandler {
 		
 		pstmt.setString(4, college);
 		
-		pstmt.setInt(5, oPhone);
+		pstmt.setString(5, officePhone);
 		
 		//debugging output
 		int rows = pstmt.executeUpdate();
@@ -220,7 +220,7 @@ public class jdbcHandler {
 	    closeConn(conn);
 	}
 
-	public void insertSection(int cn, String sem, int year, int sn, String instructor) throws SQLException {
+	public void insertSection(String cNum, String sem, int year, int sn, String instructor) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -228,7 +228,7 @@ public class jdbcHandler {
 		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Course_num, Year, Semester, Instructor, Section_num) VALUES (?,?,?,?,?)");
 		
 		//prep values and insert them
-		pstmt.setInt(1, cn);
+		pstmt.setString(1, cNum);
 		
 		pstmt.setInt(2, year);
 		
