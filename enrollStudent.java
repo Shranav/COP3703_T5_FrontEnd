@@ -18,6 +18,8 @@ public class enrollStudent {
 	private Text txtNnumber;
 	private Text txtCourse;
 	private Text txtSection;
+	private Text txtYear;
+	private Text txtSem;
 
 	/**
 	 * Launch the application.
@@ -81,30 +83,46 @@ public class enrollStudent {
 		lblInfo.setAlignment(SWT.CENTER);
 		lblInfo.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.ITALIC));
 		lblInfo.setBounds(22, 40, 389, 37);
-		lblInfo.setText("Please provide a student nNumber, Course, and Section to enroll them in. ");
+		lblInfo.setText("Please provide a student nNumber, Course, Section, Semester, and Year to enroll them in. ");
 		
 		txtNnumber = new Text(shell, SWT.BORDER);
-		txtNnumber.setBounds(222, 101, 76, 21);
+		txtNnumber.setBounds(222, 87, 76, 21);
 		
 		Label lblStudentNnumber = new Label(shell, SWT.NONE);
-		lblStudentNnumber.setBounds(113, 104, 103, 15);
+		lblStudentNnumber.setBounds(113, 90, 103, 15);
 		lblStudentNnumber.setText("Student nNumber:");
 		
 		txtCourse = new Text(shell, SWT.BORDER);
-		txtCourse.setBounds(222, 128, 76, 21);
+		txtCourse.setBounds(222, 114, 76, 21);
 		
 		Label lblCourse = new Label(shell, SWT.NONE);
 		lblCourse.setAlignment(SWT.CENTER);
 		lblCourse.setText("Course:");
-		lblCourse.setBounds(113, 131, 103, 15);
+		lblCourse.setBounds(113, 117, 103, 15);
 		
 		txtSection = new Text(shell, SWT.BORDER);
-		txtSection.setBounds(222, 155, 76, 21);
+		txtSection.setBounds(222, 141, 76, 21);
 		
 		Label lblSection = new Label(shell, SWT.NONE);
 		lblSection.setText("Section Number:");
 		lblSection.setAlignment(SWT.CENTER);
-		lblSection.setBounds(113, 158, 103, 15);
+		lblSection.setBounds(113, 144, 103, 15);
+		
+		Label lblYear = new Label(shell, SWT.NONE);
+		lblYear.setText("Year:");
+		lblYear.setAlignment(SWT.CENTER);
+		lblYear.setBounds(113, 170, 103, 15);
+		
+		txtYear = new Text(shell, SWT.BORDER);
+		txtYear.setBounds(222, 167, 76, 21);
+		
+		Label lblSemester = new Label(shell, SWT.NONE);
+		lblSemester.setText("Semester:");
+		lblSemester.setAlignment(SWT.CENTER);
+		lblSemester.setBounds(113, 197, 103, 15);
+		
+		txtSem = new Text(shell, SWT.BORDER);
+		txtSem.setBounds(222, 194, 76, 21);
 		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
@@ -122,41 +140,51 @@ public class enrollStudent {
 		btnSubmit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//do we have to do error handling? i.e. for 2nd requirement, if student or course doesnt exist what do we do?
-				//what does the user enter? both course num and section? or just one or the other?
-				//how are semesters divided up? only spring summer and fall? or include summer a, b, c etc?
-				//do grades have to be decimals since they are gpa?
-				//if student doesnt exist in grades table should we add them?
-				//do we have to take Ws and other grades into consideration?
+				//do grades have to be decimals since they are gpa? - yes numeric
+				//if student doesnt exist in grades table should we add them? - throw error asking them to register
+				//do we have to take Ws and other grades into consideration? - no just include FA
 				//can we ask for semester as well? if not how do we retrieve the semester from database for grades
 				
 				//extract text from txt boxes
 				String nNum = txtNnumber.getText();
 				String course = txtCourse.getText();
 				String secNum = txtSection.getText();
+				String year = txtYear.getText();
+				String sem = txtSem.getText().toLowerCase();
 				
 				//check if txt boxes are not blank
-				if (!nNum.isBlank() && !course.isBlank() && !secNum.isBlank()) {
-					if (nNum.matches("^[Nn][0-9]+")) {
-						if (secNum.matches("[123]")) {
-							int section = Integer.parseInt(secNum);
-							
-							//make sql call
-							jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-							try {
-								sqlconn.insertGradesFor(nNum, course, section);
-								createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-								txtNnumber.setText("");
-								txtCourse.setText("");
-								txtSection.setText("");
-							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-								createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+				if (!nNum.isBlank() && !course.isBlank() && !secNum.isBlank() && !year.isBlank() && !sem.isBlank()) {
+					if (nNum.matches("^[Nn][0-9]{8}$")) {
+						if (secNum.matches("[1-9]+")) {
+							if (year.matches("[0-9]{4}")) {
+								if (sem.equals("spring") || sem.equals("summer") || sem.equals("fall")) {
+									int section = Integer.parseInt(secNum);
+									int yearInt = Integer.parseInt(year);
+									
+									//make sql call
+									jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+									try {
+										sqlconn.insertGradesFor(nNum, course, section, yearInt, sem);
+										createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+										txtNnumber.setText("");
+										txtCourse.setText("");
+										txtSection.setText("");
+										txtYear.setText("");
+										txtSem.setText("");
+									} catch (SQLException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+										createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+									}
+									
+								} else {
+									createMsgBox(shell, "Incorrect Semester", "Please choose between spring, summer, or fall");
+								}
+							} else {
+								createMsgBox(shell, "Incorrect Year", "Please enter the year in the 4 digit format.");
 							}
-							
 						} else {
-							createMsgBox(shell, "Incorrect Section Number", "Please enter a valid section number (either 1, 2, or 3).");
+							createMsgBox(shell, "Incorrect Section Number", "Please enter a valid section number (either 1, 2, 3, etc).");
 							txtSection.setText("");
 						}
 					} else {
