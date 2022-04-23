@@ -116,7 +116,7 @@ public class jdbcHandler {
 	    closeConn(conn);
 	}
 	// reminder: add sex later on
-	public void insertStudent(String fName, String lName, String mid, int Ssn, String birth, String sClass, String degree, String sex, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z) throws SQLException {
+	public void insertStudent(String fName, String lName, String mid, String ssn, String birth, String sClass, String degree, String sex, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -130,7 +130,7 @@ public class jdbcHandler {
 		
 		pstmt.setString(3, mid);
 		
-		pstmt.setInt(4, Ssn);
+		pstmt.setString(4, ssn);
 		
 		pstmt.setString(5, birth);
 		
@@ -191,7 +191,7 @@ public class jdbcHandler {
 	    closeConn(conn);	
 	}
 	
-	public void insertCourse(String cName, String description, String cLvl, int cn, int h, int dCode) throws SQLException {
+	public void insertCourse(String cName, String description, String cLvl, String cNum, int h, int dCode) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -205,7 +205,7 @@ public class jdbcHandler {
 		
 		pstmt.setString(3, cName);
 		
-		pstmt.setInt(4, cn);
+		pstmt.setString(4, cNum);
 		
 		pstmt.setInt(5, h);
 		
@@ -247,26 +247,27 @@ public class jdbcHandler {
 	    closeConn(conn);
 	}
 	
-	public void displayCourse(String findCourse) throws SQLException {	
-	//open connection
-	Connection conn = this.createConn();
-	
-	//running query to check if student is 
-	String query = "SELECT Course_name, code" + "FROM COURSE" + "WHERE code = ?";
-	PreparedStatement pstmt = conn.prepareStatement(query);
-	pstmt.setString(1, findCourse);
-	ResultSet rset = pstmt.executeQuery();
-	
-	//while(rset.next)){ }
-	
-	// try to display courses on list 
-	//courseList.setModel(DbUtils.resultSetToTableModel(rs));
-	/*while(rs.next())
-	{
-		txtFindCourse.setText(rs.getString(""));
-	}*/
-	
-	//close connection
-	closeConn(conn);
-	}
+	public ResultSet displayCourse(String findCourse ) throws SQLException {
+	    //open connection
+	    Connection conn = this.createConn();
+
+	    //running query to check if student is 
+	    String query = "SELECT Course_name, Course_num FROM COURSE AS C, DEPARTMENT AS D WHERE C.code = D.code AND D.code = ?";
+	    PreparedStatement pstmt = conn.prepareStatement(query);
+	    pstmt.setString(1, findCourse);
+	    ResultSet rs = pstmt.executeQuery();
+
+	    // try to display courses on list 
+	    //courseList.setModel(DbUtils.resultSetToTableModel(rs));
+	    /*while(rs.next())
+	    {
+	        txtFindCourse.setText(rs.getString(""));
+	    }*/
+
+	    //close connection
+	    closeConn(conn);
+
+	    return rs;
+	    }
+
 }
