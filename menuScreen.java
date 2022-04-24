@@ -41,9 +41,6 @@ public class menuScreen {
 	}
 	
 	public static void openMenu() {
-		System.out.println(loginScreen.username);
-		System.out.println(loginScreen.password);
-		
 		try {
 			menuScreen window = new menuScreen();
 			window.open();
@@ -73,7 +70,6 @@ public class menuScreen {
 		btnStudent.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
 				// Open next screen and close current one.
 				shell.close();
 				addStudent.openStudent();
@@ -86,7 +82,6 @@ public class menuScreen {
 		btnDepartment.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
 				// Open next screen and close current one.
 				shell.close();
 				addDepartment.openDepartment();
@@ -99,7 +94,6 @@ public class menuScreen {
 		btnCourse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
 				// Open next screen and close current one.
 				shell.close();
 				addCourse.openCourse();
@@ -112,7 +106,6 @@ public class menuScreen {
 		btnSection.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
 				// Open next screen and close current one.
 				shell.close();
 				addSection.openSection();
@@ -134,7 +127,6 @@ public class menuScreen {
 		btnCourseOffered.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
 				// Open next screen and close current one.
 				shell.close();
 				findCourse.openCourseOffered();
@@ -147,7 +139,6 @@ public class menuScreen {
 		btnGradeReport.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
 				// Open next screen and close current one.
 				shell.close();
 				findGradeReport.openGradeReport();
@@ -171,7 +162,7 @@ public class menuScreen {
 			public void widgetSelected(SelectionEvent e) {
 				//close menu and open Enroll
 				shell.close();
-			//enrollStudent.openEnroll();
+				enrollStudent.openEnroll();
 			}
 		});
 		btnEnroll.setBounds(50, 21, 97, 38);
@@ -183,7 +174,7 @@ public class menuScreen {
 			public void widgetSelected(SelectionEvent e) {
 				//close menu and open Grade
 				shell.close();
-			//gradeStudent.openGrade();
+				gradeStudent.openGrade();
 			}
 		});
 		btnGrade.setText("Enter a Grade");
