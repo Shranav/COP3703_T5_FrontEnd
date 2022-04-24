@@ -1,16 +1,12 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Composite;
-
 import java.sql.SQLException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -208,8 +204,7 @@ public class addStudent {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
+				// Back to menu and close current screen.
 				shell.close();
 				menuScreen.openMenu();
 			}
@@ -249,104 +244,64 @@ public class addStudent {
 											if(cpn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
 												if(ppn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
 													if(sex.matches("^[MmFfOo]$")) {
-														//if(degree.matches("")) {
-															//if(cAddress.matches("")) {
-																//if(stAddress.matches("")) {
-																	//if(city.matches("")) {
-																		//if(state.matches("")) {
-																			if(zip.matches("^[0-9]{5}$")) {
-																				//int Ssn = Integer.parseInt(ssn);
-																				int z = Integer.parseInt(zip);
-									
-																				//make sql call
-																				jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-																				try {
-																					// reminder: add sex later on
-																					sqlconn.insertStudent(fName, lName, mid, ssn, birth, sex, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, z);
-																					enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
-																					nNumTxt.setText("");
-																					fNameTxt.setText("");
-																					midTxt.setText("");
-																					lNameTxt.setText("");
-																					birthTxt.setText("");
-																					sexTxt.setText("");
-																					ssnTxt.setText("");
-																					cpnTxt.setText("");
-																					ppnTxt.setText("");
-																					sClassTxt.setText("");
-																					degreeTxt.setText("");
-																					cAddressTxt.setText("");
-																					stAddressTxt.setText("");
-																					cityTxt.setText("");
-																					stateTxt.setText("");
-																					zipTxt.setText("");
-																				}catch (SQLException e1) {
-																					// TODO Auto-generated catch block
-																					e1.printStackTrace();
-																					enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
-																				}
-																				
-																			}else {
-																				enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Zip Code.");
-																				zipTxt.setText("");
-																			}
-																			
-																		//}else {
-																			//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State.");
-																			//stateTxt.setText("");
-																		//}
-																		
-																	//}else {
-																		//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid City.");
-																		//cityTxt.setText("");
-																	//}
-																	
-																//}else {
-																	//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Street-Address.");
-																	//stAddressTxt.setText("");
-																//}
-																
-															//}else {
-																//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Address.");
-																//cAddressTxt.setText("");
-															//}
+														if(zip.matches("^[0-9]{5}$")) {
+															int z = Integer.parseInt(zip);
+				
+															//make sql call
+															jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+															try {
+																sqlconn.insertStudent(fName, lName, mid, ssn, birth, sex, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, z);
+																enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully added.");
+																nNumTxt.setText("");
+																fNameTxt.setText("");
+																midTxt.setText("");
+																lNameTxt.setText("");
+																birthTxt.setText("");
+																sexTxt.setText("");
+																ssnTxt.setText("");
+																cpnTxt.setText("");
+																ppnTxt.setText("");
+																sClassTxt.setText("");
+																degreeTxt.setText("");
+																cAddressTxt.setText("");
+																stAddressTxt.setText("");
+																cityTxt.setText("");
+																stateTxt.setText("");
+																zipTxt.setText("");
+															}catch (SQLException e1) {
+																e1.printStackTrace();
+																enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+															}
 															
-														//}else {
-															//enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Degree.");
-															//degreeTxt.setText("");
-														//}
-														
+														}else {
+															enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Zip Code.");
+															zipTxt.setText("");
+														}
 													}else {
 														enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Sex.");
 														sexTxt.setText("");
 													}
-													
 												}else {
 													enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Permanent Phone Number.");
 													ppnTxt.setText("");
 												}
-												
 											}else {
 												enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Phone Number.");
 												cpnTxt.setText("");
 											}
-											
 										}
 										else {
 											enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Social Security Number.");
 											ssnTxt.setText("");
 										}
-										
 									}else {
 										enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Birth-Date.");
 										birthTxt.setText("");
 									}
-									
 								}else {
 									enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Last Name.");
 									lNameTxt.setText("");
 								}
-							
 							} else {
 								enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid middle-Initial.");
 								midTxt.setText("");
@@ -362,10 +317,6 @@ public class addStudent {
 				} else {
 					enrollStudent.createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
 				}
-		
-				// Submit info and return back to menu next screen and close current one.
-				//shell.close();
-				//menuScreen.openMenu();
 			}
 		});
 		btnSub.setBounds(546, 425, 75, 25);
