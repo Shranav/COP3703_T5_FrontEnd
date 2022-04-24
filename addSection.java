@@ -119,7 +119,7 @@ public class addSection {
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				//Extract text
 				String cNum = cNumTxt.getText();
 				String sem = semTxt.getText();
 				String sYear = sYearTxt.getText();
@@ -130,56 +130,39 @@ public class addSection {
 					if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
 						if (sYear.matches("^[0-9]{4}$")) {
 							if (sNum.matches("^[0-9]{5}$")) {
-								//if (instructor.matches("")) {
-									int year = Integer.parseInt(sYear);
-									int sn = Integer.parseInt(sNum);
+								int year = Integer.parseInt(sYear);
+								int sn = Integer.parseInt(sNum);
 										
-										//int section = Integer.parseInt(secNum);
-										
-										//make sql call
-										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-										try {
-											sqlconn.insertSection(cNum, sem, year, sn, instructor);
-											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-											cNumTxt.setText("");
-											semTxt.setText("");
-											sYearTxt.setText("");
-											sNumTxt.setText("");
-											instructorTxt.setText("");
-										} catch (SQLException e1) {
-											// TODO Auto-generated catch block
-											e1.printStackTrace();
-											createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
-										}
-										
-										
-									//}else {
-									//	createMsgBox(shell, "Invalid", "Please enter a valid Instructor.");
-									//	instructorTxt.setText("");
-									//}
-									
-								}else {
-									createMsgBox(shell, "Invalid", "Please enter a valid Section Number.");
+								//make sql call
+								jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+								try {
+									sqlconn.insertSection(cNum, sem, year, sn, instructor);
+									createMsgBox(shell, "Successful", "The entry was successfully added.");
+									cNumTxt.setText("");
+									semTxt.setText("");
+									sYearTxt.setText("");
 									sNumTxt.setText("");
+									instructorTxt.setText("");
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+									createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 								}
-								
-							}else {
-								createMsgBox(shell, "Invalid", "Please enter a valid Year.");
-								sYearTxt.setText("");
+										
+							} else {
+								createMsgBox(shell, "Invalid", "Please enter a valid Section Number.");
+								sNumTxt.setText("");
 							}
-							
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
-							cNumTxt.setText("");
+							createMsgBox(shell, "Invalid", "Please enter a valid Year.");
+							sYearTxt.setText("");
 						}
-
+					} else {
+						createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
+						cNumTxt.setText("");
+					}
 				} else {
 					createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
-				  }
-				
-				// Submit info and return back to menu next screen and close current one.
-				//shell.close();
-				//menuScreen.openMenu();
+				}
 			}
 		});
 		btnSub.setBounds(238, 257, 75, 25);
@@ -189,8 +172,7 @@ public class addSection {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
+				// Back to menu and close current screen.
 				shell.close();
 				menuScreen.openMenu();
 			}
