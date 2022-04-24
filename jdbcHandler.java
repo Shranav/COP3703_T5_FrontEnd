@@ -3,6 +3,7 @@ import java.sql.*;
 public class jdbcHandler {
 	String url = "jdbc:oracle:thin:@cisvm-oracle.unfcsd.unf.edu:1521:orcl";
 	String username, password;
+	private Connection conn;
 	
 	public jdbcHandler(String user, String pass) {
 		this.username = user;
@@ -12,11 +13,12 @@ public class jdbcHandler {
 	public Connection createConn() throws SQLException {
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		Connection conn = DriverManager.getConnection(this.url, this.username, this.password);
+		this.conn = conn;
 		return conn;
 	}
 	
-	public void closeConn(Connection conn) throws SQLException {
-		conn.close();
+	public void closeConn() throws SQLException {
+		this.conn.close();
 	}
 	
 	public void insertGradesFor(String nNum, String courseNum, int section, int currYear, String sem) throws SQLException {
@@ -32,13 +34,9 @@ public class jdbcHandler {
 		pstmt.setString(3, sem);
 		pstmt.setString(4, nNum);
 		pstmt.setInt(5, section);
-		
-		//print inserted rows
-		int rows = pstmt.executeUpdate();
-	    System.out.println("\n" + rows + " row(s) inserted");
 	    
 	    //close connection
-	    closeConn(conn);
+	    this.closeConn();
 	}
 	
 	public void updateGrades(String nNum, String courseNum, int section, String letGrade, int currYear, String sem) throws SQLException {
@@ -89,124 +87,92 @@ public class jdbcHandler {
 			pstmtUpdate.setDouble(1, gradeNum);
 		}
 		
-		//debugging output
-		int rows = pstmtUpdate.executeUpdate();
-	    System.out.println("\n" + rows + " row(s) updated");
-		System.out.println("Successfully updated entry");
-		
 	    //close connection
-	    closeConn(conn);
+		this.closeConn();
 	}
 	
 	public String genGradeReport(String nNum) throws SQLException {
 		
 		String studentInfo = "";
 		String courseGrades = " Course Number | Section | Semester | Year | Grade " + System.lineSeparator();
-		String avgGPA = "GPA: ";
 		
 		//open connection
 		Connection conn = this.createConn();
 		
-		//create statements
-		//PreparedStatement pstmt = conn.prepareStatement("SELECT Fname, Mid_initial, Lname, Class, Degree FROM STUDENT WHERE Nnumber = ?");
-		//pstmt.setString(1, nNum);
-//		ResultSet rset = pstmt.executeQuery();
-		String q = "SELECT Fname, Mid_initial, Lname, Class, Degree FROM STUDENT WHERE Nnumber = '" + nNum + "'";
-		Statement stmt = conn.createStatement();
-		ResultSet rset = stmt.executeQuery(q);
+		//create statement
+		PreparedStatement pstmt = conn.prepareStatement("SELECT Fname, Mid_initial, Lname, Class, Degree, Course_num, Section_num, Semester, Year, Grade_letter FROM STUDENT, GRADES_FOR WHERE STUDENT.NNUMBER = GRADES_FOR.NNUMBER AND STUDENT.NNUMBER = ?");
 		
-		rset.next();
+		//insert value
+		pstmt.setString(1, nNum);
+		
+		//execute query
+		ResultSet rset = pstmt.executeQuery();
+		
+		//parse data
+		int counter = 0;
 		String mInit = "";
-		if (rset != null) {
-			if (rset.getString(2) != null) {
-				mInit = rset.getString(2);
+		String grade = "";
+		while(rset.next()) {
+			System.out.println("in while " + counter);
+			if (counter == 0) {
+				if (rset.getString(2) != null) {
+					mInit = rset.getString(2);
+				}
+				System.out.println("in if counter");
+				studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
+				studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator(); 
 			}
-			studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
-			studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator(); 
-		}
-		rset.close();
-		closeConn(conn);
-		
-//		PreparedStatement pstmt2 = conn.prepareStatement("SELECT Course_num, Section_num, Semester, Year, Grade_letter, Grade_num FROM GRADES_FOR WHERE Nnumber = ?");
-//		pstmt2.setString(1, nNum);
-//		ResultSet rset2 = pstmt2.executeQuery();
-		conn = this.createConn();
-		String q2 = "SELECT Course_num, Section_num, Semester, Year, Grade_letter, Grade_num FROM GRADES_FOR WHERE Nnumber = '" + nNum + "'";
-		Statement stmt2 = conn.createStatement();
-		ResultSet rset2 = stmt2.executeQuery(q2);
-		
-		while(rset2.next()) {
-			System.out.println("in while");
-			String courseNum = centerString(15, rset2.getString(1));
-			String secNum = centerString(9, rset2.getString(2));
-			String sem = centerString(10, rset2.getString(3));
-			String strYear = centerString(6, rset2.getString(4));
-			String grade = centerString(7, rset2.getString(5));
-			if (rset2.wasNull()) {
-				grade = centerString(7, "IP");
+			
+			String courseNum = centerString(21, rset.getString(6));
+			String secNum = centerString(12, rset.getString(7));
+			String sem = centerString(14, rset.getString(8));
+			String strYear = centerString(6, rset.getString(9));
+			System.out.println("outside of ifs");
+			if (rset.getString(10) != null) {
+				grade = centerString(10, rset.getString(10));
+			} else {
+				grade = centerString(10, "IP");
 			}
+			System.out.println("courseNum: " + courseNum);
+			System.out.println("sec: " + secNum);
+			System.out.println("sem: " + sem);
+			System.out.println("year: " + strYear);
+			System.out.println("grade: " + grade);
+			
 			courseGrades += courseNum + "|" + secNum + "|" + sem + "|" + strYear + "|" + grade + System.lineSeparator();
+			counter++;
 		}
 		
-		rset2.close();
-		closeConn(conn);
+		//close connection
+		this.closeConn();
 		
-//		PreparedStatement pstmt3 = conn.prepareStatement("SELECT AVG(Grade_num) FROM GRADES_FOR WHERE Nnumber = ?");
-//		pstmt3.setString(1, nNum);
-//		ResultSet rset3 = pstmt3.executeQuery();
-		conn = this.createConn();
+		//return result
+		return studentInfo + courseGrades;
+	}
+	
+	public String avgGPA (String nNum) throws SQLException {
+		String GPA = "GPA: ";
 		
-		String q3 = "SELECT AVG(Grade_num) FROM GRADES_FOR WHERE Nnumber = '" + nNum + "'";
-		Statement stmt3 = conn.createStatement();
-		ResultSet rset3 = stmt3.executeQuery(q3);
+		//open connection
+		Connection conn = this.createConn();
 		
-		rset3.next();
-		avgGPA += rset3.getDouble(1);
+		//set up query
+		PreparedStatement pstmt = conn.prepareStatement("SELECT AVG(grade_num) FROM GRADES_FOR WHERE NNUMBER = ?");
 		
-		rset.close();
+		//insert value
+		pstmt.setString(1, nNum);
 		
-		//insert values
-		//pstmt.setString(1, nNum);
-		//pstmt2.setString(1, nNum);
-		//pstmt3.setString(1, nNum);
+		//execute query
+		ResultSet rs = pstmt.executeQuery();
 		
-		//execute queries
-		//ResultSet rset = pstmt.executeQuery();
-		//ResultSet rset2 = pstmt2.executeQuery();
-		//ResultSet rset3 = pstmt3.executeQuery();
+		//parse results
+		rs.next();
+		GPA += rs.getDouble(1);
 		
-		//format and store results
-//		String studentInfo = "";
-//		String courseGrades = " Course Number | Section | Semester | Year | Grade " + System.lineSeparator();
-//		String avgGPA = "GPA: ";
+		//close conn
+		this.closeConn();
 		
-//		rset.next();
-//		String mInit = "";
-//		if (rset != null) {
-//			if (rset.getString(2) != null) {
-//				mInit = rset.getString(2);
-//			}
-//			studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
-//			studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator(); 
-//		}
-		
-//		while(rset2.next()) {
-//			System.out.println("in while");
-//			String courseNum = centerString(15, rset2.getString(1));
-//			String secNum = centerString(9, rset2.getString(2));
-//			String sem = centerString(10, rset2.getString(3));
-//			String strYear = centerString(6, rset2.getString(4));
-//			String grade = centerString(7, rset2.getString(5));
-//			if (rset2.wasNull()) {
-//				grade = centerString(7, "IP");
-//			}
-//			courseGrades += courseNum + "|" + secNum + "|" + sem + "|" + strYear + "|" + grade + System.lineSeparator();
-//		}
-		
-//		rset3.next();
-//		avgGPA += rset3.getString(1);
-		
-		return studentInfo + courseGrades + avgGPA;
+		return GPA;
 	}
 	
 	public static String centerString (int width, String s) {
@@ -220,24 +186,6 @@ public class jdbcHandler {
 		
 		//create statement
 		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Fname, Lname, Mid_initial, Ssn, Bdate, Sex, Class, Degree, Nnumber, C_phone, C_address, P_phone, P_st_address, P_city, P_state, P_zip_code) VALUES (?, ?, ?, ?, TO_DATE(?, 'MM-DD-YYYY'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		
-		//debug
-		System.out.println("Fname: " + fName);
-		System.out.println("Lname: " + lName);
-		System.out.println("mid: " + mid);
-		System.out.println("ssn: " + ssn);
-		System.out.println("birth: " + birth);
-		System.out.println("sex: " + sex);
-		System.out.println("class: " + sClass);
-		System.out.println("degree: " + degree);
-		System.out.println("nNum: " + nNum);
-		System.out.println("cpn: " + cpn);
-		System.out.println("ppn: " + ppn);
-		System.out.println("cAdd: " + cAddress);
-		System.out.println("stadd: " + stAddress);
-		System.out.println("city: " + city);
-		System.out.println("state: " + state);
-		System.out.println("z: " + z);
 		
 		//prep values and insert them
 		pstmt.setString(1, fName);
@@ -257,12 +205,8 @@ public class jdbcHandler {
 		pstmt.setString(15, state);
 		pstmt.setInt(16, z);
 		
-		//print inserted rows
-		int rows = pstmt.executeUpdate();
-		System.out.println("\n" + rows + " row(s) inserted");
-		
 		//close connection
-	    closeConn(conn);	
+		this.closeConn();	
 	}
 	
 	public void insertDepartment(String dName, int dCode, int oNum, String officePhone, String college ) throws SQLException {
@@ -270,7 +214,7 @@ public class jdbcHandler {
 		Connection conn = this.createConn();
 		
 		//create statement
-		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO DEPARTMENT(Department_name, Code, Office_num,  college, Office_phone) VALUES ('?','?','?','?','?')");
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO DEPARTMENT(Department_name, Code, Office_num,  college, Office_phone) VALUES (?,?,?,?,?)");
 		
 		//prep values and insert them
 		pstmt.setString(1, dName);
@@ -278,14 +222,9 @@ public class jdbcHandler {
 		pstmt.setInt(3, oNum);
 		pstmt.setString(4, college);
 		pstmt.setString(5, officePhone);
-		
-		//debugging output
-		int rows = pstmt.executeUpdate();
-	    System.out.println("\n" + rows + " row(s) updated");
-		System.out.println("Successfully updated entry");
 
 		//close connection
-	    closeConn(conn);	
+		this.closeConn();	
 	}
 	
 	public void insertCourse(String cName, String description, String cLvl, String cNum, int h, int dCode) throws SQLException {
@@ -293,7 +232,7 @@ public class jdbcHandler {
 		Connection conn = this.createConn();
 		
 		//create statement
-		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO COURSE(Grade_level, Description, Course_name, Course_num, sem_hours, Code) VALUES ('?','?','?','?','?','?')");
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO COURSE(Grade_level, Description, Course_name, Course_num, sem_hours, Code) VALUES (?,?,?,?,?,?)");
 		
 		//prep values and insert them
 		pstmt.setString(1, cLvl);
@@ -302,14 +241,9 @@ public class jdbcHandler {
 		pstmt.setString(4, cNum);
 		pstmt.setInt(5, h);
 		pstmt.setInt(6, dCode);
-		
-		//debugging output
-		int rows = pstmt.executeUpdate();
-	    System.out.println("\n" + rows + " row(s) updated");
-		System.out.println("Successfully updated entry");
 
 		//close connection
-	    closeConn(conn);
+		this.closeConn();
 	}
 
 	public void insertSection(String cNum, String sem, int year, int sn, String instructor) throws SQLException {
@@ -317,7 +251,7 @@ public class jdbcHandler {
 		Connection conn = this.createConn();
 		
 		//create statement
-		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SECTION(Course_num, Year, Semester, Instructor, Section_num) VALUES ('?','?','?','?','?')");
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SECTION(Course_num, Year, Semester, Instructor, Section_num) VALUES (?,?,?,?,?)");
 		
 		//prep values and insert them
 		pstmt.setString(1, cNum);
@@ -332,23 +266,24 @@ public class jdbcHandler {
 		System.out.println("Successfully updated entry");
 
 		//close connection
-	    closeConn(conn);
+		this.closeConn();
 	}
 	
-	public ResultSet displayCourse(String findCourse ) throws SQLException {
+	public ResultSet displayCourse(String findCourse, String choice) throws SQLException {
 	    //open connection
 	    Connection conn = this.createConn();
 
-	    //running query
-	    String query = "SELECT Course_name, Course_num FROM COURSE C, DEPARTMENT D WHERE C.code = D.code AND D.code = ?";
+	    //insert value and running query
+	    String query = "";
+	    if (choice.equals("name")) {
+	    	query = "SELECT Course_name, Course_num FROM COURSE C, DEPARTMENT D WHERE C.code = D.code AND Department_name = ?";
+	    } else {
+	    	query = "SELECT Course_name, Course_num FROM COURSE C, DEPARTMENT D WHERE C.code = D.code AND D.code = ?";
+	    }
 	    PreparedStatement pstmt = conn.prepareStatement(query);
 	    pstmt.setString(1, findCourse);
 	    ResultSet rs = pstmt.executeQuery();
 
-	    //close connection
-	    closeConn(conn);
-
 	    return rs;
-	    }
-
 	}
+}
