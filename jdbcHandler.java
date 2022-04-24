@@ -106,7 +106,7 @@ public class jdbcHandler {
 	public String genGradeReport(String nNum) throws SQLException {
 		
 		String studentInfo = "";
-		String courseGrades = " Course Number | Section | Semester | Year | Grade " + System.lineSeparator();
+		String courseGrades = "Course Number | Section | Semester  |  Year  | Grade " + System.lineSeparator();
 		
 		//open connection
 		Connection conn = this.createConn();
@@ -132,14 +132,14 @@ public class jdbcHandler {
 				studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
 				studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator() + System.lineSeparator(); 
 			}
-			String courseNum = centerString(21, rset.getString(6));
+			String courseNum = "       " + rset.getString(6) + "      ";
 			String secNum = centerString(14, rset.getString(7));
-			String sem = centerString(13, rset.getString(8));
-			String strYear = centerString(6, rset.getString(9));
+			String sem = centerSem( rset.getString(8));
+			String strYear = "  " + rset.getString(9) + " ";
 			if (rset.getString(10) != null) {
-				grade = centerString(10, rset.getString(10));
+				grade = "    " + rset.getString(10);
 			} else {
-				grade = centerString(10, "IP");
+				grade = "    IP";
 			}
 			courseGrades += courseNum + "|" + secNum + "|" + sem + "|" + strYear + "|" + grade + System.lineSeparator();
 			counter++;
@@ -179,6 +179,18 @@ public class jdbcHandler {
 	
 	public static String centerString (int width, String s) {
 	    return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
+	}
+	
+	public static String centerSem(String sem) {
+		String semFormatted = "";
+		if (sem.equals("spring")) {
+			semFormatted = "  Spring  ";
+		} else if (sem.equals("summer")) {
+			semFormatted = "  Summer  ";
+		} else {
+			semFormatted = "   Fall   ";
+		}
+		return semFormatted;
 	}
 	
 	public int insertStudent(String fName, String lName, String mid, String ssn, String birth, String sex, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, String z, String maj, String min) throws SQLException {
