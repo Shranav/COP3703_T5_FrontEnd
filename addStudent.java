@@ -29,6 +29,8 @@ public class addStudent {
 	private Text stateTxt;
 	private Text zipTxt;
 	private Text sexTxt;
+	private Text majorTxt;
+	private Text minorTxt;
 	
 
 	/**
@@ -200,6 +202,20 @@ public class addStudent {
 		degreeTxt.setText("");
 		degreeTxt.setBounds(228, 337, 76, 21);
 		
+		Label lblMajor = new Label(shell, SWT.NONE);
+		lblMajor.setBounds(10, 380, 135, 15);
+		lblMajor.setText("Major Department Code:");
+		
+		majorTxt = new Text(shell, SWT.BORDER);
+		majorTxt.setBounds(151, 377, 75, 21);
+		
+		Label lblMinor = new Label(shell, SWT.NONE);
+		lblMinor.setBounds(266, 380, 135, 15);
+		lblMinor.setText("Minor Department Code:");
+		
+		minorTxt = new Text(shell, SWT.BORDER);
+		minorTxt.setBounds(407, 377, 75, 21);
+		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -233,6 +249,8 @@ public class addStudent {
 				String state = stateTxt.getText();
 				String zip = zipTxt.getText();
 				String sex =  sexTxt.getText();
+				String major = majorTxt.getText();
+				String minor = minorTxt.getText();
 				
 				if (!nNum.isBlank() && !fName.isBlank() && !mid.isBlank() && !lName.isBlank() && !birth.isBlank() && !sex.isBlank() && !ssn.isBlank() && !cpn.isBlank() && !ppn.isBlank() && !sClass.isBlank() && !degree.isBlank() && !cAddress.isBlank() && !stAddress.isBlank() && !city.isBlank() && !state.isBlank() && !zip.isBlank()) {
 					if (nNum.matches("^[Nn][0-9]+$")) {
@@ -244,33 +262,45 @@ public class addStudent {
 											if(cpn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
 												if(ppn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
 													if(sex.matches("^[MmFfOo]$")) {
-														if(zip.matches("^[0-9]{5}$")) {
-															int z = Integer.parseInt(zip);
-				
-															//make sql call
-															jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-															try {
-																sqlconn.insertStudent(fName, lName, mid, ssn, birth, sex, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, z);
-																enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully added.");
-																nNumTxt.setText("");
-																fNameTxt.setText("");
-																midTxt.setText("");
-																lNameTxt.setText("");
-																birthTxt.setText("");
-																sexTxt.setText("");
-																ssnTxt.setText("");
-																cpnTxt.setText("");
-																ppnTxt.setText("");
-																sClassTxt.setText("");
-																degreeTxt.setText("");
-																cAddressTxt.setText("");
-																stAddressTxt.setText("");
-																cityTxt.setText("");
+														if(state.matches("^[A-Z]{2}$")) {
+															if(zip.matches("^[0-9]{5}$")) {
+																int z = Integer.parseInt(zip);
+																int maj = Integer.parseInt(major);
+																int min = Integer.parseInt(minor);
+					
+																//make sql call
+																jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+																try {
+																	// reminder: add sex later on
+																	sqlconn.insertStudent(fName, lName, mid, ssn, birth, sex, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, z, maj, min);
+																	enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
+																	nNumTxt.setText("");
+																	fNameTxt.setText("");
+																	midTxt.setText("");
+																	lNameTxt.setText("");
+																	birthTxt.setText("");
+																	sexTxt.setText("");
+																	ssnTxt.setText("");
+																	cpnTxt.setText("");
+																	ppnTxt.setText("");
+																	sClassTxt.setText("");
+																	degreeTxt.setText("");
+																	cAddressTxt.setText("");
+																	stAddressTxt.setText("");
+																	cityTxt.setText("");
+																	stateTxt.setText("");
+																	zipTxt.setText("");
+																	majorTxt.setText("");
+																	minorTxt.setText("");
+																}catch (SQLException e1) {
+																	// TODO Auto-generated catch block
+																	e1.printStackTrace();
+																	enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+																}
+															
+															}else {
+																enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State (i.e FL).");
 																stateTxt.setText("");
-																zipTxt.setText("");
-															}catch (SQLException e1) {
-																e1.printStackTrace();
-																enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 															}
 															
 														}else {
