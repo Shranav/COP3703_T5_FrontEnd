@@ -11,9 +11,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
 
 public class addCourse {
 
@@ -131,7 +128,7 @@ public class addCourse {
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				//Extract text
 				String cName = cNameTxt.getText();
 				String description = descriptionTxt.getText();
 				String cLvl = cLvlTxt.getText();
@@ -140,64 +137,44 @@ public class addCourse {
 				String code = codeTxt.getText();
 				
 				  //check if txt boxes are not blank
-					if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank() && !code.isBlank()) {
-						if (code.matches("^[0-9]{4}$")) {
-							//if (description.matches("")) {
-								//if (cLvl.matches("")) {
-									if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
-										if (hours.matches("^[0-9]{1}$")) {
-											int h = Integer.parseInt(hours);
-											int dCode = Integer.parseInt(code);
-											
-											//make sql call
-											jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-											try {
-												sqlconn.insertCourse(cName, description, cLvl, cNum, h, dCode);
-												createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-												cNameTxt.setText("");
-												descriptionTxt.setText("");
-												cLvlTxt.setText("");
-												cNumTxt.setText("");
-												hoursTxt.setText("");
-												codeTxt.setText("");
-												
-											} catch (SQLException e1) {
-												// TODO Auto-generated catch block
-												e1.printStackTrace();
-												createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
-											}
-											
-											
-										}else {
-											createMsgBox(shell, "Invalid", "Please enter a valid Hours.");
-											hoursTxt.setText("");
-										}
-										
-									}else {
-										createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
-										cNumTxt.setText("");
-									}
-									
-								//}else {
-								//	createMsgBox(shell, "Invalid", "Please enter a valid Course Level.");
-								//	cLvlTxt.setText("");
-								//}
+				if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank() && !code.isBlank()) {
+					if (code.matches("^([0-9]|[0-9]{2}|[0-9]{3}|[0-9]{4})$")) {
+						if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
+							if (hours.matches("^[0-9]{1}$")) {
+								int h = Integer.parseInt(hours);
+								int dCode = Integer.parseInt(code);
 								
-						//	} else {
-							//	createMsgBox(shell, "Invalid", "Please enter a valid Office Description.");
-							//	descriptionTxt.setText("");
-							//}
+								//make sql call
+								jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+								try {
+									sqlconn.insertCourse(cName, description, cLvl, cNum, h, dCode);
+									createMsgBox(shell, "Successful", "The entry was successfully added.");
+									cNameTxt.setText("");
+									descriptionTxt.setText("");
+									cLvlTxt.setText("");
+									cNumTxt.setText("");
+									hoursTxt.setText("");
+									codeTxt.setText("");
+								} catch (SQLException e1) {												
+									e1.printStackTrace();
+									createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+								}
+								
+							} else {
+								createMsgBox(shell, "Invalid", "Please enter a valid Hours.");
+								hoursTxt.setText("");
+							}
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Code.");
-							codeTxt.setText("");
+							createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
+							cNumTxt.setText("");
 						}
 					} else {
-						createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
-					  }
-		
-				// Submit info and return back to menu next screen and close current one.
-				//shell.close();
-				//menuScreen.openMenu();
+						createMsgBox(shell, "Invalid", "Please enter a valid Code.");
+						codeTxt.setText("");
+					}
+				} else {
+					createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
+				}
 			}
 		});
 		btnSub.setText("Submit");
@@ -207,8 +184,7 @@ public class addCourse {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
+				// Back to menu and close current screen.
 				shell.close();
 				menuScreen.openMenu();
 			}
