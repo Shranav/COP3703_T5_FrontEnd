@@ -175,15 +175,15 @@ public class addStudent {
 		stAddressTxt.setBounds(93, 293, 91, 21);
 		
 		Label lblCity = new Label(shell, SWT.NONE);
-		lblCity.setBounds(204, 296, 24, 15);
+		lblCity.setBounds(190, 296, 24, 15);
 		lblCity.setText("City:");
 		
 		cityTxt = new Text(shell, SWT.BORDER);
-		cityTxt.setBounds(232, 293, 90, 21);
+		cityTxt.setBounds(218, 293, 90, 21);
 		
 		Label lblState = new Label(shell, SWT.NONE);
-		lblState.setBounds(338, 296, 32, 15);
-		lblState.setText("State:");
+		lblState.setBounds(315, 296, 55, 15);
+		lblState.setText("State (XX):");
 		
 		stateTxt = new Text(shell, SWT.BORDER);
 		stateTxt.setBounds(375, 293, 85, 21);
@@ -215,6 +215,7 @@ public class addStudent {
 		
 		minorTxt = new Text(shell, SWT.BORDER);
 		minorTxt.setBounds(407, 377, 75, 21);
+		
 		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
@@ -249,30 +250,41 @@ public class addStudent {
 				String state = stateTxt.getText();
 				String zip = zipTxt.getText();
 				String sex =  sexTxt.getText();
-				String major = majorTxt.getText();
-				String minor = minorTxt.getText();
+				String major = "";
+				String minor = "";
 				
-				if (!nNum.isBlank() && !fName.isBlank() && !mid.isBlank() && !lName.isBlank() && !birth.isBlank() && !sex.isBlank() && !ssn.isBlank() && !cpn.isBlank() && !ppn.isBlank() && !sClass.isBlank() && !degree.isBlank() && !cAddress.isBlank() && !stAddress.isBlank() && !city.isBlank() && !state.isBlank() && !zip.isBlank()) {
+				if (!nNum.isBlank() && !fName.isBlank() && !lName.isBlank() && !birth.isBlank() && !sex.isBlank() && !ssn.isBlank() && !cpn.isBlank() && !ppn.isBlank() && !sClass.isBlank() && !degree.isBlank() && !cAddress.isBlank() && !stAddress.isBlank() && !city.isBlank() && !state.isBlank() && !zip.isBlank()) {
 					if (nNum.matches("^[Nn][0-9]+$")) {
 						if (fName.matches("^[a-zA-z]+$")) {
-							if (mid.matches("^[a-zA-z]{1}$")) {
-								if (lName.matches("^[a-zA-z]+$")) {
-									if(birth.matches("^[01][0-9]-[0-3][0-9]-[0-9]{4}$")) {
-										if(ssn.matches("^[0-9]{3}-[0-9]{2}-[0-9]{4}$")) {
-											if(cpn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
-												if(ppn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
-													if(sex.matches("^[MmFfOo]$")) {
-														if(state.matches("^[A-Z]{2}$")) {
-															if(zip.matches("^[0-9]{5}$")) {
-																int z = Integer.parseInt(zip);
-																int maj = Integer.parseInt(major);
-																int min = Integer.parseInt(minor);
-					
-																//make sql call
-																jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-																try {
-																	// reminder: add sex later on
-																	sqlconn.insertStudent(fName, lName, mid, ssn, birth, sex, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, z, maj, min);
+							if (lName.matches("^[a-zA-z]+$")) {
+								if(birth.matches("^[01][0-9]-[0-3][0-9]-[0-9]{4}$")) {
+									if(ssn.matches("^[0-9]{3}-[0-9]{2}-[0-9]{4}$")) {
+										if(cpn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
+											if(ppn.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
+												if(sex.matches("^[MmFfOo]$")) {
+													if(state.matches("^[A-Z]{2}$")) {
+														if(zip.matches("^[0-9]{5}$")) {
+															if (!major.isBlank()) {
+																if (major.matches("^([0-9A-Za-z]|[0-9A-Za-z]{2}|[0-9A-Za-z]{3}|[0-9A-Za-z]{4})$")) {
+																	major = majorTxt.getText();
+																} else {
+																	enrollStudent.createMsgBox(shell, "Invalid Major", "The Major department code entered was invalid.");
+																}
+															}
+															if (!minor.isBlank()) {
+																if (minor.matches("^([0-9A-Za-z]|[0-9A-Za-z]{2}|[0-9A-Za-z]{3}|[0-9A-Za-z]{4})$")) {
+																	minor = majorTxt.getText();
+																} else {
+																	enrollStudent.createMsgBox(shell, "Invalid Minor", "The Minor department code entered was invalid.");
+																}
+															}
+				
+															//make sql call
+															jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+															try {
+																// reminder: add sex later on
+																int result = sqlconn.insertStudent(fName, lName, mid, ssn, birth, sex, sClass, degree, nNum, cpn, ppn, cAddress, stAddress, city, state, zip, major, minor);
+																if (result > 0) {
 																	enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
 																	nNumTxt.setText("");
 																	fNameTxt.setText("");
@@ -292,49 +304,45 @@ public class addStudent {
 																	zipTxt.setText("");
 																	majorTxt.setText("");
 																	minorTxt.setText("");
-																}catch (SQLException e1) {
-																	// TODO Auto-generated catch block
-																	e1.printStackTrace();
+																} else {
 																	enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
 																}
-															
-															}else {
-																enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State (i.e FL).");
-																stateTxt.setText("");
+															} catch (SQLException e1) {
+																e1.printStackTrace();
+																enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 															}
-															
-														}else {
+														
+														} else {
 															enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Zip Code.");
 															zipTxt.setText("");
 														}
-													}else {
-														enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Sex.");
-														sexTxt.setText("");
+													} else {
+														enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid State (i.e FL).");
+														stateTxt.setText("");
 													}
-												}else {
-													enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Permanent Phone Number.");
-													ppnTxt.setText("");
+												} else {
+													enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Sex.");
+													sexTxt.setText("");
 												}
-											}else {
-												enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Phone Number.");
-												cpnTxt.setText("");
+											} else {
+												enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Permanent Phone Number.");
+												ppnTxt.setText("");
 											}
+										} else {
+											enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Current Phone Number.");
+											cpnTxt.setText("");
 										}
-										else {
-											enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Social Security Number.");
-											ssnTxt.setText("");
-										}
-									}else {
-										enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Birth-Date.");
-										birthTxt.setText("");
+									} else {
+										enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Social Security Number.");
+										ssnTxt.setText("");
 									}
-								}else {
-									enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Last Name.");
-									lNameTxt.setText("");
+								} else {
+									enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Birth-Date.");
+									birthTxt.setText("");
 								}
 							} else {
-								enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid middle-Initial.");
-								midTxt.setText("");
+								enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Last Name.");
+								lNameTxt.setText("");
 							}
 						} else {
 							enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid First Name.");
