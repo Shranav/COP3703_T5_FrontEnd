@@ -91,14 +91,14 @@ public class findGradeReport {
 					jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 					try {
 						String result = sqlconn.genGradeReport(nNum);
-						txtGradeReport.setText(result);
+						String result2 = sqlconn.avgGPA(nNum);
+						txtGradeReport.setText(result + result2);
 						txtNnum.setText("");
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
-						enrollStudent.createMsgBox(shell, "Error", "There was an error with the search. Please try again.");
+						enrollStudent.createMsgBox(shell, "Error", "There was an error with the search. Hint: " + e1.getLocalizedMessage() + ".  Please try again.");
 					}
-					
+
 				} else {
 					enrollStudent.createMsgBox(shell, "Incorrect Student nNumber", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
 				}
@@ -111,8 +111,7 @@ public class findGradeReport {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
+				// Back to menu and close current screen.
 				shell.close();
 				menuScreen.openMenu();
 			}
