@@ -113,7 +113,7 @@ public class addCourse {
 		
 		Label lblDCode = new Label(shell, SWT.NONE);
 		lblDCode.setBounds(10, 254, 149, 15);
-		lblDCode.setText("Offereing department Code:");
+		lblDCode.setText("Offering department Code:");
 		
 		codeTxt = new Text(shell, SWT.BORDER);
 		codeTxt.setBounds(165, 251, 76, 21);
@@ -138,23 +138,26 @@ public class addCourse {
 				
 				  //check if txt boxes are not blank
 				if (!cName.isBlank() && !description.isBlank() && !cLvl.isBlank() && !cNum.isBlank() && !hours.isBlank() && !code.isBlank()) {
-					if (code.matches("^([0-9]|[0-9]{2}|[0-9]{3}|[0-9]{4})$")) {
+					if (code.matches("^([0-9A-Za-z]|[0-9A-Za-z]{2}|[0-9A-Za-z]{3}|[0-9A-Za-z]{4})$")) {
 						if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
 							if (hours.matches("^[0-9]{1}$")) {
 								int h = Integer.parseInt(hours);
-								int dCode = Integer.parseInt(code);
 								
 								//make sql call
 								jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 								try {
-									sqlconn.insertCourse(cName, description, cLvl, cNum, h, dCode);
-									createMsgBox(shell, "Successful", "The entry was successfully added.");
-									cNameTxt.setText("");
-									descriptionTxt.setText("");
-									cLvlTxt.setText("");
-									cNumTxt.setText("");
-									hoursTxt.setText("");
-									codeTxt.setText("");
+									int result = sqlconn.insertCourse(cName, description, cLvl, cNum, h, code);
+									if (result > 0) {
+										createMsgBox(shell, "Successful", "The entry was successfully added.");
+										cNameTxt.setText("");
+										descriptionTxt.setText("");
+										cLvlTxt.setText("");
+										cNumTxt.setText("");
+										hoursTxt.setText("");
+										codeTxt.setText("");
+									} else {
+										createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+									}
 								} catch (SQLException e1) {												
 									e1.printStackTrace();
 									createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
