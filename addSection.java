@@ -121,7 +121,7 @@ public class addSection {
 			public void widgetSelected(SelectionEvent e) {
 				//Extract text
 				String cNum = cNumTxt.getText();
-				String sem = semTxt.getText();
+				String sem = semTxt.getText().toLowerCase();
 				String sYear = sYearTxt.getText();
 				String sNum = sNumTxt.getText();
 				String instructor = instructorTxt.getText();
@@ -129,25 +129,29 @@ public class addSection {
 				if (!cNum.isBlank() && !sem.isBlank() && !sYear.isBlank() && !sNum.isBlank() && !instructor.isBlank()) {
 					if (cNum.matches("^[A-Za-z]{3}[0-9]{4}$")) {
 						if (sYear.matches("^[0-9]{4}$")) {
-							if (sNum.matches("^[0-9]{5}$")) {
-								int year = Integer.parseInt(sYear);
-								int sn = Integer.parseInt(sNum);
-										
-								//make sql call
-								jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-								try {
-									sqlconn.insertSection(cNum, sem, year, sn, instructor);
-									createMsgBox(shell, "Successful", "The entry was successfully added.");
-									cNumTxt.setText("");
-									semTxt.setText("");
-									sYearTxt.setText("");
-									sNumTxt.setText("");
-									instructorTxt.setText("");
-								} catch (SQLException e1) {
-									e1.printStackTrace();
-									createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+							if (sNum.matches("^[0-9]$")) {
+								if (sem.equals("spring") || sem.equals("summer") || sem.equals("fall")) {
+									int year = Integer.parseInt(sYear);
+									int sn = Integer.parseInt(sNum);
+											
+									//make sql call
+									jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+									try {
+										sqlconn.insertSection(cNum, sem, year, sn, instructor);
+										createMsgBox(shell, "Successful", "The entry was successfully added.");
+										cNumTxt.setText("");
+										semTxt.setText("");
+										sYearTxt.setText("");
+										sNumTxt.setText("");
+										instructorTxt.setText("");
+									} catch (SQLException e1) {
+										e1.printStackTrace();
+										createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+									}
+								
+								} else {
+									enrollStudent.createMsgBox(shell, "Incorrect Semester", "Please choose between spring, summer, or fall");
 								}
-										
 							} else {
 								createMsgBox(shell, "Invalid", "Please enter a valid Section Number.");
 								sNumTxt.setText("");
@@ -166,7 +170,7 @@ public class addSection {
 			}
 		});
 		btnSub.setBounds(238, 257, 75, 25);
-		btnSub.setText("Sumbit");
+		btnSub.setText("Submit");
 		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
