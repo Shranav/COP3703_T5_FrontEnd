@@ -68,9 +68,16 @@ public class loginScreen {
 				username = txtUsername.getText();
 				password = txtPassword.getText();
 				
-				// Open next screen and close current one.
-				shell.close();
-				menuScreen.openMenu();
+				//check creds
+				if (!(username.equals("T5"))) {
+					enrollStudent.createMsgBox(shell, "Incorrect Username", "The username you entered was incorrect.");
+				} else if (!(password.equals("Spring2022T5"))) {
+					enrollStudent.createMsgBox(shell, "Incorrect Password", "The password you entered was incorrect.");
+				} else {
+					// Open next screen and close current one.
+					shell.close();
+					menuScreen.openMenu();
+				}
 			}
 		});
 		btnLogin.setBounds(180, 163, 75, 25);
