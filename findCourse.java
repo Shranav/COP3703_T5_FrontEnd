@@ -16,6 +16,7 @@ public class findCourse {
 	protected Shell shell;
 	private Text txtFindCourse;
 	private List courseList;
+	String choice = "name";
 
 	/**
 	 * Launch the application.
@@ -61,23 +62,60 @@ public class findCourse {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(500, 350);
 		shell.setText("Courses Offered");
 		
 		Label lblCourseOffered = new Label(shell, SWT.NONE);
+		lblCourseOffered.setAlignment(SWT.CENTER);
 		lblCourseOffered.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
-		lblCourseOffered.setBounds(112, 10, 186, 21);
+		lblCourseOffered.setBounds(10, 10, 441, 21);
 		lblCourseOffered.setText("Find Course Offered");
 		
-		txtFindCourse = new Text(shell, SWT.BORDER);
-		txtFindCourse.setBounds(140, 37, 136, 21);
+		Label lblChooseYourInput = new Label(shell, SWT.NONE);
+		lblChooseYourInput.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+		lblChooseYourInput.setBounds(20, 41, 106, 15);
+		lblChooseYourInput.setText("Choose your Input:");
 		
-		Label lblFindCourse = new Label(shell, SWT.NONE);
-		lblFindCourse.setBounds(10, 40, 129, 15);
-		lblFindCourse.setText("Enter department code:");
+		Label lblName = new Label(shell, SWT.NONE);
+		lblName.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+		lblName.setBounds(304, 41, 129, 15);
+		lblName.setText("Enter department name:");
+		
+		Label lblCode = new Label(shell, SWT.NONE);
+		lblCode.setText("Enter department code:");
+		lblCode.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+		lblCode.setBounds(304, 41, 129, 15);
+		
+		Button btnName = new Button(shell, SWT.RADIO);
+		btnName.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				lblName.setVisible(true);
+				lblCode.setVisible(false);
+				choice = "name";
+			}
+		});
+		btnName.setBounds(10, 62, 128, 16);
+		btnName.setText("Department Name");
+		btnName.setSelection(true);
+		
+		Button btnCode = new Button(shell, SWT.RADIO);
+		btnCode.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				lblName.setVisible(false);
+				lblCode.setVisible(true);
+				choice = "code";
+			}
+		});
+		btnCode.setBounds(10, 81, 128, 16);
+		btnCode.setText("Department Code");
+		
+		txtFindCourse = new Text(shell, SWT.BORDER);
+		txtFindCourse.setBounds(293, 62, 136, 21);
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setBounds(97, 73, 250, 153);
+		scrolledComposite.setBounds(101, 107, 250, 153);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
@@ -89,40 +127,51 @@ public class findCourse {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
+				// Back to menu and close current screen.
 				shell.close();
 				menuScreen.openMenu();
 			}
 		});
-		btnBack.setBounds(10, 228, 75, 25);
+		btnBack.setBounds(10, 271, 75, 25);
 		btnBack.setText("Back");
 		
 		Button btnSearch = new Button(shell, SWT.NONE);
 		btnSearch.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			
+				courseList.removeAll();
 				String findCourse = txtFindCourse.getText();
-	            
-				jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-	            try {
-	                // reminder: add sex later on
-	                ResultSet courses = sqlconn.displayCourse(findCourse);
-	                while (courses.next()) {
-	                    String result = courses.getString(0) + " " + courses.getString(1);
-	                    courseList.add(result);
-	                }
-	                enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
-	                txtFindCourse.setText("");
-	            }catch (SQLException e1) {
-	                // TODO Auto-generated catch block
-	                e1.printStackTrace();
-	                enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+				String regPat = "";
+				if (choice.equals("code")) {
+					regPat = "^([0-9]|[0-9]{2}|[0-9]{3}|[0-9]{4})$";
+				} else {
+					regPat = "^[A-za-z\\s]+$";
+				}
+				
+	            if (findCourse.matches(regPat)) {
+	            	//make sql call
+					jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+		            try {
+		                ResultSet courses = sqlconn.displayCourse(findCourse, choice);
+		                while (courses.next()) {
+		                    String result = courses.getString(2) + " - " + courses.getString(1);
+		                    courseList.add(result);
+		                }
+		                if (courseList.getItemCount() == 0) {
+		                	enrollStudent.createMsgBox(shell, "No Result", "No courses were found for the department " + choice + " entered.");
+		                }
+		                sqlconn.closeConn();
+		                txtFindCourse.setText("");
+		            }catch (SQLException e1) {
+		                e1.printStackTrace();
+		                enrollStudent.createMsgBox(shell, "Error", "There was an error with the search. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+		            }
+	            } else {
+	            	enrollStudent.createMsgBox(shell, "Incorrect Department " + choice, "The department " + choice + " you've entered is incorrect. Please check this.");
 	            }
 			}
 		});
-		btnSearch.setBounds(292, 35, 75, 25);
+		btnSearch.setBounds(376, 271, 75, 25);
 		btnSearch.setText("Search");
 
 	}
