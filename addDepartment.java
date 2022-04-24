@@ -131,22 +131,25 @@ public class addDepartment {
 			    
 			  //check if txt boxes are not blank
 				if (!dName.isBlank() && !code.isBlank() && !officeNum.isBlank() && !officePhone.isBlank() && !college.isBlank()) {
-					if (code.matches("^([0-9]|[0-9]{2}|[0-9]{3}|[0-9]{4})$")) {
+					if (code.matches("^([0-9A-Za-z]|[0-9A-Za-z]{2}|[0-9A-Za-z]{3}|[0-9A-Za-z]{4})$")) {
 						if (officeNum.matches("^[0-9]{4}$")) {
 							if (officePhone.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
-								int dCode = Integer.parseInt(code);
 								int oNum = Integer.parseInt(officeNum);
 								
 								//make sql call
 								jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 								try {
-									sqlconn.insertDepartment(dName, dCode, oNum, officePhone, college);
-									createMsgBox(shell, "Successful", "The entry was successfully added.");
-									dNameTxt.setText("");
-									codeTxt.setText("");
-									officeNumTxt.setText("");
-									officePhoneTxt.setText("");
-									collegeTxt.setText("");
+									int result = sqlconn.insertDepartment(dName, code, oNum, officePhone, college);
+									if (result > 0) {
+										createMsgBox(shell, "Successful", "The entry was successfully added.");
+										dNameTxt.setText("");
+										codeTxt.setText("");
+										officeNumTxt.setText("");
+										officePhoneTxt.setText("");
+										collegeTxt.setText("");
+									} else {
+										createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+									}
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 									createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
