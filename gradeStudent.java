@@ -156,23 +156,32 @@ public class gradeStudent {
 							if (letGrade.matches("^[A-Za-z][Aa\\-+]?")) {
 								if (year.matches("[0-9]{4}")) {
 									if (sem.equals("spring") || sem.equals("summer") || sem.equals("fall")) {
-										int section = Integer.parseInt(secNum);
-										int yearInt = Integer.parseInt(year);
-								
-										//make sql call
-										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-										try {
-											sqlconn.updateGrades(nNum, course, section, letGrade, yearInt, sem);
-											enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
-											txtNnumber.setText("");
+										if (course.matches("^[A-Za-z]{3}[0-9]{4}$")) {
+											int section = Integer.parseInt(secNum);
+											int yearInt = Integer.parseInt(year);
+									
+											//make sql call
+											jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+											try {
+												int result = sqlconn.updateGrades(nNum, course, section, letGrade, yearInt, sem);
+												if (result > 0) {
+													enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
+													txtNnumber.setText("");
+													txtCourse.setText("");
+													txtSection.setText("");
+													txtLetterGrade.setText("");
+													txtYear.setText("");
+													txtSem.setText("");
+												} else {
+													enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+												}
+											} catch (SQLException e1) {
+												e1.printStackTrace();
+												enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+											}
+										} else {
+											enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
 											txtCourse.setText("");
-											txtSection.setText("");
-											txtLetterGrade.setText("");
-											txtYear.setText("");
-											txtSem.setText("");
-										} catch (SQLException e1) {
-											e1.printStackTrace();
-											enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 										}
 									} else {
 										enrollStudent.createMsgBox(shell, "Incorrect Semester", "Please choose between spring, summer, or fall");
