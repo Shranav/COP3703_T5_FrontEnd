@@ -159,16 +159,21 @@ public class enrollStudent {
 									//make sql call
 									jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 									try {
-										sqlconn.insertGradesFor(nNum, course, section, yearInt, sem);
-										createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-										txtNnumber.setText("");
-										txtCourse.setText("");
-										txtSection.setText("");
-										txtYear.setText("");
-										txtSem.setText("");
+										int result = sqlconn.insertGradesFor(nNum, course, section, yearInt, sem);
+										if (result > 0) {
+											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
+											txtNnumber.setText("");
+											txtCourse.setText("");
+											txtSection.setText("");
+											txtYear.setText("");
+											txtSem.setText("");
+										} else {
+											createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+
+										}
 									} catch (SQLException e1) {
 										e1.printStackTrace();
-										createMsgBox(shell, "Error", "There was an error with the insertion.Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+										createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 									}
 									
 								} else {
