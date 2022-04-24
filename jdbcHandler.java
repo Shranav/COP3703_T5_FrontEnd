@@ -226,7 +226,7 @@ public class jdbcHandler {
 		pstmt2.executeUpdate();
 
 		//close connection
-	    	closeConn(conn);
+	    	this.closeConn();
 	}
 	
 	public void insertDepartment(String dName, int dCode, int oNum, String officePhone, String college ) throws SQLException {
