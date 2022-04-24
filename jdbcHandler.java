@@ -34,6 +34,9 @@ public class jdbcHandler {
 		pstmt.setString(3, sem);
 		pstmt.setString(4, nNum);
 		pstmt.setInt(5, section);
+		
+		//executing update
+		pstmt.executeUpdate();
 	    
 	    //close connection
 	    this.closeConn();
@@ -87,6 +90,9 @@ public class jdbcHandler {
 			pstmtUpdate.setDouble(1, gradeNum);
 		}
 		
+		//executing update
+		pstmtUpdate.executeUpdate();
+		
 	    //close connection
 		this.closeConn();
 	}
@@ -122,7 +128,6 @@ public class jdbcHandler {
 				studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
 				studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator(); 
 			}
-			
 			String courseNum = centerString(21, rset.getString(6));
 			String secNum = centerString(12, rset.getString(7));
 			String sem = centerString(14, rset.getString(8));
@@ -133,12 +138,6 @@ public class jdbcHandler {
 			} else {
 				grade = centerString(10, "IP");
 			}
-			System.out.println("courseNum: " + courseNum);
-			System.out.println("sec: " + secNum);
-			System.out.println("sem: " + sem);
-			System.out.println("year: " + strYear);
-			System.out.println("grade: " + grade);
-			
 			courseGrades += courseNum + "|" + secNum + "|" + sem + "|" + strYear + "|" + grade + System.lineSeparator();
 			counter++;
 		}
@@ -205,6 +204,9 @@ public class jdbcHandler {
 		pstmt.setString(15, state);
 		pstmt.setInt(16, z);
 		
+		//executing update
+		pstmt.executeUpdate();
+		
 		//close connection
 		this.closeConn();	
 	}
@@ -222,6 +224,9 @@ public class jdbcHandler {
 		pstmt.setInt(3, oNum);
 		pstmt.setString(4, college);
 		pstmt.setString(5, officePhone);
+		
+		//executing update
+		pstmt.executeUpdate();
 
 		//close connection
 		this.closeConn();	
@@ -241,6 +246,9 @@ public class jdbcHandler {
 		pstmt.setString(4, cNum);
 		pstmt.setInt(5, h);
 		pstmt.setInt(6, dCode);
+		
+		//executing update
+		pstmt.executeUpdate();
 
 		//close connection
 		this.closeConn();
@@ -260,10 +268,8 @@ public class jdbcHandler {
 		pstmt.setString(4, instructor);
 		pstmt.setInt(5, sn);
 		
-		//debugging output
-		int rows = pstmt.executeUpdate();
-	    System.out.println("\n" + rows + " row(s) updated");
-		System.out.println("Successfully updated entry");
+		//executing update
+		pstmt.executeUpdate();
 
 		//close connection
 		this.closeConn();
