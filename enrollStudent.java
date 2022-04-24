@@ -83,7 +83,7 @@ public class enrollStudent {
 		lblInfo.setAlignment(SWT.CENTER);
 		lblInfo.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.ITALIC));
 		lblInfo.setBounds(22, 40, 389, 37);
-		lblInfo.setText("Please provide a student nNumber, Course, Section, Semester, and Year to enroll them in. ");
+		lblInfo.setText("Please provide a student nNumber, Course Code, Section, Semester, and Year to enroll them in. ");
 		
 		txtNnumber = new Text(shell, SWT.BORDER);
 		txtNnumber.setBounds(222, 87, 76, 21);
@@ -97,7 +97,7 @@ public class enrollStudent {
 		
 		Label lblCourse = new Label(shell, SWT.NONE);
 		lblCourse.setAlignment(SWT.CENTER);
-		lblCourse.setText("Course:");
+		lblCourse.setText("Course Code:");
 		lblCourse.setBounds(113, 117, 103, 15);
 		
 		txtSection = new Text(shell, SWT.BORDER);
@@ -140,11 +140,6 @@ public class enrollStudent {
 		btnSubmit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//do grades have to be decimals since they are gpa? - yes numeric
-				//if student doesnt exist in grades table should we add them? - throw error asking them to register
-				//do we have to take Ws and other grades into consideration? - no just include FA
-				//can we ask for semester as well? if not how do we retrieve the semester from database for grades
-				
 				//extract text from txt boxes
 				String nNum = txtNnumber.getText();
 				String course = txtCourse.getText();
@@ -172,9 +167,8 @@ public class enrollStudent {
 										txtYear.setText("");
 										txtSem.setText("");
 									} catch (SQLException e1) {
-										// TODO Auto-generated catch block
 										e1.printStackTrace();
-										createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+										createMsgBox(shell, "Error", "There was an error with the insertion.Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 									}
 									
 								} else {
@@ -189,7 +183,6 @@ public class enrollStudent {
 						}
 					} else {
 						createMsgBox(shell, "Incorrect Student nNumber", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
-						txtNnumber.setText("");
 					}
 				} else {
 					createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
