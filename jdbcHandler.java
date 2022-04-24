@@ -21,9 +21,11 @@ public class jdbcHandler {
 		this.conn.close();
 	}
 	
-	public void insertGradesFor(String nNum, String courseNum, int section, int currYear, String sem) throws SQLException {
+	public int insertGradesFor(String nNum, String courseNum, int section, int currYear, String sem) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
+		
+		//create nNum statement
 		
 		//create statement
 		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO GRADES_FOR(Course_num, Year, Semester, Nnumber, Section_num) VALUES (?, ?, ?, ?, ?)");
@@ -36,13 +38,15 @@ public class jdbcHandler {
 		pstmt.setInt(5, section);
 		
 		//executing update
-		pstmt.executeUpdate();
+		int rows = pstmt.executeUpdate();
 	    
 	    //close connection
 	    this.closeConn();
+	    
+	    return rows;
 	}
 	
-	public void updateGrades(String nNum, String courseNum, int section, String letGrade, int currYear, String sem) throws SQLException {
+	public int updateGrades(String nNum, String courseNum, int section, String letGrade, int currYear, String sem) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -91,10 +95,12 @@ public class jdbcHandler {
 		}
 		
 		//executing update
-		pstmtUpdate.executeUpdate();
+		int rows = pstmtUpdate.executeUpdate();
 		
 	    //close connection
 		this.closeConn();
+		
+		return rows;
 	}
 	
 	public String genGradeReport(String nNum) throws SQLException {
@@ -119,20 +125,17 @@ public class jdbcHandler {
 		String mInit = "";
 		String grade = "";
 		while(rset.next()) {
-			System.out.println("in while " + counter);
 			if (counter == 0) {
 				if (rset.getString(2) != null) {
-					mInit = rset.getString(2);
+					mInit = rset.getString(2) + " ";
 				}
-				System.out.println("in if counter");
 				studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
-				studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator(); 
+				studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator() + System.lineSeparator(); 
 			}
 			String courseNum = centerString(21, rset.getString(6));
-			String secNum = centerString(12, rset.getString(7));
-			String sem = centerString(14, rset.getString(8));
+			String secNum = centerString(14, rset.getString(7));
+			String sem = centerString(13, rset.getString(8));
 			String strYear = centerString(6, rset.getString(9));
-			System.out.println("outside of ifs");
 			if (rset.getString(10) != null) {
 				grade = centerString(10, rset.getString(10));
 			} else {
@@ -150,7 +153,7 @@ public class jdbcHandler {
 	}
 	
 	public String avgGPA (String nNum) throws SQLException {
-		String GPA = "GPA: ";
+		String GPA = System.lineSeparator() + "GPA: ";
 		
 		//open connection
 		Connection conn = this.createConn();
@@ -178,17 +181,21 @@ public class jdbcHandler {
 	    return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
 	}
 	
-	public void insertStudent(String fName, String lName, String mid, String ssn, String birth, String sex, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z, int maj, int min) throws SQLException {
+	public int insertStudent(String fName, String lName, String mid, String ssn, String birth, String sex, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, String z, String maj, String min) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
-
+		
 		//create statement
 		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Fname, Lname, Mid_initial, Ssn, Bdate, Sex, Class, Degree, Nnumber, C_phone, C_address, P_phone, P_st_address, P_city, P_state, P_zip_code) VALUES (?, ?, ?, ?, TO_DATE(?, 'MM-DD-YYYY'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
+		
 		//prep values and insert them to STUDENT
 		pstmt.setString(1, fName);
 		pstmt.setString(2, lName);
-		pstmt.setString(3, mid);
+		if (mid.isBlank()) {
+			pstmt.setNull(3, Types.NULL);
+		} else {
+			pstmt.setString(3, mid);
+		}
 		pstmt.setString(4, ssn);
 		pstmt.setString(5, birth);
 		pstmt.setString(6, sex);
@@ -201,35 +208,44 @@ public class jdbcHandler {
 		pstmt.setString(13, stAddress);
 		pstmt.setString(14, city);
 		pstmt.setString(15, state);
-		pstmt.setInt(16, z);
-
-		//debugging output
+		pstmt.setString(16, z);
+		
+		//executing update
 		int rows = pstmt.executeUpdate();
-		System.out.println("\n" + rows + " row(s) inserted");
-		System.out.println("Successfully updated entry");
-
-		//create statement
-		PreparedStatement pstmt1 = conn.prepareStatement("INSERT INTO CHOOSES_Major(Nnumber, Code) VALUES (?, ?)");
-		//prep values and insert them to CHOOSES_MAJOR
-		pstmt1.setString(1, nNum);
-		pstmt1.setInt(2, maj);
-
-		//create statement
-		PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO CHOOSES_Minor(Nnumber, Code) VALUES (?, ?)");
-		//prep values and insert them to CHOOSES_MINOR
-		pstmt2.setString(1, nNum);
-		pstmt2.setInt(2, min);
-
-		//debugging output
-		pstmt1.executeUpdate();
-		//debugging output
-		pstmt2.executeUpdate();
+		
+		int rows1 = 1;
+		if (!maj.isBlank()) {
+			//create 2nd statement
+			PreparedStatement pstmt1 = conn.prepareStatement("INSERT INTO CHOOSES_Major(Nnumber, Code) VALUES (?, ?)");
+			
+			//prep values and insert them to CHOOSES_MAJOR
+			pstmt1.setString(1, nNum);
+			pstmt1.setString(2, maj);
+			
+			//execute updates
+			rows1 = pstmt1.executeUpdate();
+		}
+		
+		int rows2 = 1;
+		if (!min.isBlank()) {
+			//create 3rd statement
+			PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO CHOOSES_Minor(Nnumber, Code) VALUES (?, ?)");
+			
+			//prep values and insert them to CHOOSES_MINOR
+			pstmt2.setString(1, nNum);
+			pstmt2.setString(2, min);
+			
+			//execute update
+			rows2 = pstmt2.executeUpdate();
+		}
 
 		//close connection
-	    	this.closeConn();
+		this.closeConn();
+		
+		return Math.min(Math.min(rows, rows1), rows2);
 	}
 	
-	public void insertDepartment(String dName, int dCode, int oNum, String officePhone, String college ) throws SQLException {
+	public int insertDepartment(String dName, String dCode, int oNum, String officePhone, String college ) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -238,19 +254,21 @@ public class jdbcHandler {
 		
 		//prep values and insert them
 		pstmt.setString(1, dName);
-		pstmt.setInt(2, dCode);
+		pstmt.setString(2, dCode);
 		pstmt.setInt(3, oNum);
 		pstmt.setString(4, college);
 		pstmt.setString(5, officePhone);
 		
 		//executing update
-		pstmt.executeUpdate();
+		int row = pstmt.executeUpdate();
 
 		//close connection
-		this.closeConn();	
+		this.closeConn();
+		
+		return row;
 	}
 	
-	public void insertCourse(String cName, String description, String cLvl, String cNum, int h, int dCode) throws SQLException {
+	public int insertCourse(String cName, String description, String cLvl, String cNum, int h, String dCode) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -263,16 +281,18 @@ public class jdbcHandler {
 		pstmt.setString(3, cName);
 		pstmt.setString(4, cNum);
 		pstmt.setInt(5, h);
-		pstmt.setInt(6, dCode);
+		pstmt.setString(6, dCode);
 		
 		//executing update
-		pstmt.executeUpdate();
+		int row = pstmt.executeUpdate();
 
 		//close connection
 		this.closeConn();
+		
+		return row;
 	}
 
-	public void insertSection(String cNum, String sem, int year, int sn, String instructor) throws SQLException {
+	public int insertSection(String cNum, String sem, int year, int sn, String instructor) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
 		
@@ -287,10 +307,12 @@ public class jdbcHandler {
 		pstmt.setInt(5, sn);
 		
 		//executing update
-		pstmt.executeUpdate();
+		int row = pstmt.executeUpdate();
 
 		//close connection
 		this.closeConn();
+		
+		return row;
 	}
 	
 	public ResultSet displayCourse(String findCourse, String choice) throws SQLException {
