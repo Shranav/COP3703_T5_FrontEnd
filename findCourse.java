@@ -143,7 +143,7 @@ public class findCourse {
 				String findCourse = txtFindCourse.getText();
 				String regPat = "";
 				if (choice.equals("code")) {
-					regPat = "^([0-9]|[0-9]{2}|[0-9]{3}|[0-9]{4})$";
+					regPat = "^([0-9A-Za-z]|[0-9A-Za-z]{2}|[0-9A-Za-z]{3}|[0-9A-Za-z]{4})$";
 				} else {
 					regPat = "^[A-za-z\\s]+$";
 				}
