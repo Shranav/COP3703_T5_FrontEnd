@@ -137,13 +137,17 @@ public class addSection {
 									//make sql call
 									jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
 									try {
-										sqlconn.insertSection(cNum, sem, year, sn, instructor);
-										createMsgBox(shell, "Successful", "The entry was successfully added.");
-										cNumTxt.setText("");
-										semTxt.setText("");
-										sYearTxt.setText("");
-										sNumTxt.setText("");
-										instructorTxt.setText("");
+										int result = sqlconn.insertSection(cNum, sem, year, sn, instructor);
+										if (result > 0) {
+											createMsgBox(shell, "Successful", "The entry was successfully added.");
+											cNumTxt.setText("");
+											semTxt.setText("");
+											sYearTxt.setText("");
+											sNumTxt.setText("");
+											instructorTxt.setText("");
+										} else {
+											createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
+										}
 									} catch (SQLException e1) {
 										e1.printStackTrace();
 										createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
@@ -151,6 +155,7 @@ public class addSection {
 								
 								} else {
 									enrollStudent.createMsgBox(shell, "Incorrect Semester", "Please choose between spring, summer, or fall");
+									semTxt.setText("");
 								}
 							} else {
 								createMsgBox(shell, "Invalid", "Please enter a valid Section Number.");
