@@ -122,7 +122,7 @@ public class addDepartment {
 		btnSub.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				//Extract text
 				String dName = dNameTxt.getText();
 				String code = codeTxt.getText();
 				String officeNum = officeNumTxt.getText();
@@ -131,61 +131,42 @@ public class addDepartment {
 			    
 			  //check if txt boxes are not blank
 				if (!dName.isBlank() && !code.isBlank() && !officeNum.isBlank() && !officePhone.isBlank() && !college.isBlank()) {
-					//if (dName.matches("")) {
-						if (code.matches("^[0-9]{4}$")) {
-							if (officeNum.matches("^[0-9]{4}$")) {
-								if (officePhone.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
-									//if (college.matches("")) {
-										int dCode = Integer.parseInt(code);
-										int oNum = Integer.parseInt(officeNum);
-										
-										//make sql call
-										jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-										try {
-											sqlconn.insertDepartment(dName, dCode, oNum, officePhone, college);
-											createMsgBox(shell, "Successful", "The entry was successfully inserted.");
-											dNameTxt.setText("");
-											codeTxt.setText("");
-											officeNumTxt.setText("");
-											officePhoneTxt.setText("");
-											collegeTxt.setText("");
-										} catch (SQLException e1) {
-											// TODO Auto-generated catch block
-											e1.printStackTrace();
-											createMsgBox(shell, "Error", "There was an error with the insertion. Please try again.");
-										}
-										
-										
-									//}else {
-									//	createMsgBox(shell, "Invalid", "Please enter a valid College.");
-									//	collegeTxt.setText("");
-									//}
-									
-								}else {
-									createMsgBox(shell, "Invalid", "Please enter a valid Office Phone Number.");
+					if (code.matches("^([0-9]|[0-9]{2}|[0-9]{3}|[0-9]{4})$")) {
+						if (officeNum.matches("^[0-9]{4}$")) {
+							if (officePhone.matches("^[0-9]{3}-[0-9]{3}-[0-9]{4}$")) {
+								int dCode = Integer.parseInt(code);
+								int oNum = Integer.parseInt(officeNum);
+								
+								//make sql call
+								jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+								try {
+									sqlconn.insertDepartment(dName, dCode, oNum, officePhone, college);
+									createMsgBox(shell, "Successful", "The entry was successfully added.");
+									dNameTxt.setText("");
+									codeTxt.setText("");
+									officeNumTxt.setText("");
 									officePhoneTxt.setText("");
+									collegeTxt.setText("");
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+									createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 								}
 								
-							}else {
-								createMsgBox(shell, "Invalid", "Please enter a valid Office Number.");
-								officeNumTxt.setText("");
+							} else {
+								createMsgBox(shell, "Invalid", "Please enter a valid Office Phone Number.");
+								officePhoneTxt.setText("");
 							}
-							
 						} else {
-							createMsgBox(shell, "Invalid", "Please enter a valid Department code.");
-							codeTxt.setText("");
+							createMsgBox(shell, "Invalid", "Please enter a valid Office Number.");
+							officeNumTxt.setText("");
 						}
-					//} else {
-						//createMsgBox(shell, "Invalid", "Please enter a valid Department Name.");
-						//dNameTxt.setText("");
-					//}
+					} else {
+						createMsgBox(shell, "Invalid", "Please enter a valid Department code.");
+						codeTxt.setText("");
+					}
 				} else {
 					createMsgBox(shell, "Incorrect Values", "Please double check your values entered.");
-				  }
-		
-				// Submit info and return back to menu next screen and close current one.
-				//shell.close();
-				//menuScreen.openMenu();
+				}
 			}
 		});
 		btnSub.setBounds(253, 289, 75, 25);
@@ -195,8 +176,7 @@ public class addDepartment {
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-		
-				// Back to menu and close current one.
+				// Back to menu and close current screen.
 				shell.close();
 				menuScreen.openMenu();
 			}
