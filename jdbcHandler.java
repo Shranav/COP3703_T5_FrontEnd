@@ -178,15 +178,14 @@ public class jdbcHandler {
 	    return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
 	}
 	
-	// reminder: add sex later on
-	public void insertStudent(String fName, String lName, String mid, String ssn, String birth, String sex, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z) throws SQLException {
+	public void insertStudent(String fName, String lName, String mid, String ssn, String birth, String sex, String sClass, String degree, String nNum, String cpn, String ppn, String cAddress, String stAddress, String city, String state, int z, int maj, int min) throws SQLException {
 		//open connection
 		Connection conn = this.createConn();
-		
+
 		//create statement
 		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO STUDENT(Fname, Lname, Mid_initial, Ssn, Bdate, Sex, Class, Degree, Nnumber, C_phone, C_address, P_phone, P_st_address, P_city, P_state, P_zip_code) VALUES (?, ?, ?, ?, TO_DATE(?, 'MM-DD-YYYY'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		
-		//prep values and insert them
+
+		//prep values and insert them to STUDENT
 		pstmt.setString(1, fName);
 		pstmt.setString(2, lName);
 		pstmt.setString(3, mid);
@@ -203,12 +202,31 @@ public class jdbcHandler {
 		pstmt.setString(14, city);
 		pstmt.setString(15, state);
 		pstmt.setInt(16, z);
-		
-		//executing update
-		pstmt.executeUpdate();
-		
+
+		//debugging output
+		int rows = pstmt.executeUpdate();
+		System.out.println("\n" + rows + " row(s) inserted");
+		System.out.println("Successfully updated entry");
+
+		//create statement
+		PreparedStatement pstmt1 = conn.prepareStatement("INSERT INTO CHOOSES_Major(Nnumber, Code) VALUES (?, ?)");
+		//prep values and insert them to CHOOSES_MAJOR
+		pstmt1.setString(1, nNum);
+		pstmt1.setInt(2, maj);
+
+		//create statement
+		PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO CHOOSES_Minor(Nnumber, Code) VALUES (?, ?)");
+		//prep values and insert them to CHOOSES_MINOR
+		pstmt2.setString(1, nNum);
+		pstmt2.setInt(2, min);
+
+		//debugging output
+		pstmt1.executeUpdate();
+		//debugging output
+		pstmt2.executeUpdate();
+
 		//close connection
-		this.closeConn();	
+	    	closeConn(conn);
 	}
 	
 	public void insertDepartment(String dName, int dCode, int oNum, String officePhone, String college ) throws SQLException {
