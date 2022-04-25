@@ -75,20 +75,8 @@ public class menuScreen {
 				addStudent.openStudent();
 			}
 		});
-		btnStudent.setBounds(8, 16, 94, 35);
+		btnStudent.setBounds(108, 16, 94, 35);
 		btnStudent.setText("Student");
-		
-		Button btnDepartment = new Button(group, SWT.NONE);
-		btnDepartment.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// Open next screen and close current one.
-				shell.close();
-				addDepartment.openDepartment();
-			}
-		});
-		btnDepartment.setBounds(108, 16, 94, 35);
-		btnDepartment.setText("Department");
 		
 		Button btnCourse = new Button(group, SWT.NONE);
 		btnCourse.addSelectionListener(new SelectionAdapter() {
@@ -113,6 +101,18 @@ public class menuScreen {
 		});
 		btnSection.setBounds(308, 16, 94, 35);
 		btnSection.setText("Course Section");
+		
+		Button btnDepartment = new Button(group, SWT.NONE);
+		btnDepartment.setBounds(8, 16, 94, 35);
+		btnDepartment.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// Open next screen and close current one.
+				shell.close();
+				addDepartment.openDepartment();
+			}
+		});
+		btnDepartment.setText("Department");
 		
 		Label lblDisplayItems = new Label(shell, SWT.NONE);
 		lblDisplayItems.setText("Display Items");
