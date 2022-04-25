@@ -158,7 +158,7 @@ public class addStudent {
 		lblCAddress.setText("Current Address:");
 		
 		cAddressTxt = new Text(shell, SWT.BORDER);
-		cAddressTxt.setBounds(114, 220, 76, 21);
+		cAddressTxt.setBounds(114, 220, 135, 21);
 		
 		sexTxt = new Text(shell, SWT.BORDER);
 		sexTxt.setBounds(359, 220, 24, 21);
@@ -214,7 +214,7 @@ public class addStudent {
 		lblMinor.setText("Minor Department Code:");
 		
 		minorTxt = new Text(shell, SWT.BORDER);
-		minorTxt.setBounds(407, 377, 75, 21);
+		minorTxt.setBounds(436, 337, 75, 21);
 		
 		
 		Button btnBack = new Button(shell, SWT.NONE);
