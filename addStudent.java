@@ -214,7 +214,7 @@ public class addStudent {
 		lblMinor.setText("Minor Department Code:");
 		
 		minorTxt = new Text(shell, SWT.BORDER);
-		minorTxt.setBounds(436, 337, 75, 21);
+		minorTxt.setBounds(407, 377, 75, 21);
 		
 		
 		Button btnBack = new Button(shell, SWT.NONE);
