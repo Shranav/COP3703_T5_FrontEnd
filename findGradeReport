@@ -11,11 +11,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class findGradeReport {
+public class gradeStudent {
 
 	protected Shell shell;
-	private Text txtNnum;
-	private Text txtGradeReport;
+	private Text txtNnumber;
+	private Text txtCourse;
+	private Text txtSection;
+	private Text txtLetterGrade;
+	private Text txtYear;
+	private Text txtSem;
 
 	/**
 	 * Launch the application.
@@ -23,7 +27,7 @@ public class findGradeReport {
 	 */
 	public static void main(String[] args) {
 		try {
-			findGradeReport window = new findGradeReport();
+			gradeStudent window = new gradeStudent();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,10 +49,9 @@ public class findGradeReport {
 		}
 	}
 	
-	public static void openGradeReport() {
-		
+	public static void openGrade() {
 		try {
-			findGradeReport window = new findGradeReport();
+			gradeStudent window = new gradeStudent();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,64 +63,150 @@ public class findGradeReport {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(600, 450);
+		shell.setSize(450, 300);
 		shell.setText("SWT Application");
 		
-		Label lblGradeReport = new Label(shell, SWT.NONE);
-		lblGradeReport.setAlignment(SWT.CENTER);
-		lblGradeReport.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
-		lblGradeReport.setBounds(35, 10, 516, 25);
-		lblGradeReport.setText("Grade Report");
+		Label lblTitle = new Label(shell, SWT.NONE);
+		lblTitle.setText("Enter A Student's Grade");
+		lblTitle.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		lblTitle.setAlignment(SWT.CENTER);
+		lblTitle.setBounds(10, 10, 419, 24);
 		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(145, 47, 129, 15);
-		lblNewLabel.setText("Enter Student's Number:");
+		Label lblInfo = new Label(shell, SWT.NONE);
+		lblInfo.setText("Please provide a student nNumber, Course Code, Section, Grade, Year, and Semester to update their record. ");
+		lblInfo.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.ITALIC));
+		lblInfo.setAlignment(SWT.CENTER);
+		lblInfo.setBounds(20, 41, 389, 37);
 		
-		txtNnum = new Text(shell, SWT.BORDER);
-		txtNnum.setBounds(326, 44, 87, 21);
+		Label lblStudentNnumber = new Label(shell, SWT.NONE);
+		lblStudentNnumber.setText("Student nNumber:");
+		lblStudentNnumber.setBounds(22, 104, 103, 15);
 		
-		txtGradeReport = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL);
-		txtGradeReport.setBounds(35, 77, 516, 280);
+		txtNnumber = new Text(shell, SWT.BORDER);
+		txtNnumber.setBounds(131, 101, 76, 21);
 		
-		Button btnSearch = new Button(shell, SWT.NONE);
-		btnSearch.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String nNum = txtNnum.getText();
-				
-				if(nNum.matches("^[Nn][0-9]{8}$")) {
-					
-					//make sql call
-					jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
-					try {
-						String result = sqlconn.genGradeReport(nNum);
-						String result2 = sqlconn.avgGPA(nNum);
-						txtGradeReport.setText(result + result2);
-						txtNnum.setText("");
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-						enrollStudent.createMsgBox(shell, "Error", "There was an error with the search. Hint: " + e1.getLocalizedMessage() + ".  Please try again.");
-					}
-
-				} else {
-					enrollStudent.createMsgBox(shell, "Incorrect Student nNumber", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
-				}
-			}
-		});
-		btnSearch.setBounds(504, 375, 75, 25);
-		btnSearch.setText("Search");
+		Label lblCourse = new Label(shell, SWT.NONE);
+		lblCourse.setText("Course Code:");
+		lblCourse.setAlignment(SWT.CENTER);
+		lblCourse.setBounds(22, 131, 103, 15);
+		
+		txtCourse = new Text(shell, SWT.BORDER);
+		txtCourse.setBounds(131, 128, 76, 21);
+		
+		Label lblSection = new Label(shell, SWT.NONE);
+		lblSection.setText("Section Number:");
+		lblSection.setAlignment(SWT.CENTER);
+		lblSection.setBounds(22, 158, 103, 15);
+		
+		txtSection = new Text(shell, SWT.BORDER);
+		txtSection.setBounds(131, 155, 76, 21);
+		
+		Label lblLetterGrade = new Label(shell, SWT.NONE);
+		lblLetterGrade.setText("Letter Grade:");
+		lblLetterGrade.setAlignment(SWT.CENTER);
+		lblLetterGrade.setBounds(213, 104, 103, 15);
+		
+		txtLetterGrade = new Text(shell, SWT.BORDER);
+		txtLetterGrade.setBounds(322, 101, 76, 21);
+		
+		Label lblYear = new Label(shell, SWT.NONE);
+		lblYear.setText("Year:");
+		lblYear.setAlignment(SWT.CENTER);
+		lblYear.setBounds(213, 128, 103, 15);
+		
+		txtYear = new Text(shell, SWT.BORDER);
+		txtYear.setBounds(322, 125, 76, 21);
+		
+		Label lblSemester = new Label(shell, SWT.NONE);
+		lblSemester.setText("Semester:");
+		lblSemester.setAlignment(SWT.CENTER);
+		lblSemester.setBounds(213, 155, 103, 15);
+		
+		txtSem = new Text(shell, SWT.BORDER);
+		txtSem.setBounds(322, 152, 76, 21);
 		
 		Button btnBack = new Button(shell, SWT.NONE);
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Back to menu and close current screen.
+				//reopen menu
 				shell.close();
 				menuScreen.openMenu();
 			}
 		});
-		btnBack.setBounds(10, 375, 75, 25);
 		btnBack.setText("Back");
+		btnBack.setBounds(34, 219, 75, 25);
+		
+		Button btnSubmit = new Button(shell, SWT.NONE);
+		btnSubmit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//extract text from txt boxes
+				String nNum = txtNnumber.getText().toUpperCase();
+				String course = txtCourse.getText();
+				String secNum = txtSection.getText();
+				String letGrade = txtLetterGrade.getText();
+				String year = txtYear.getText();
+				String sem = txtSem.getText().toLowerCase();
+				
+				//check if txt boxes are not blank
+				if (!nNum.isBlank() && !course.isBlank() && !secNum.isBlank() && !letGrade.isBlank()) {
+					if (nNum.matches("^[Nn][0-9]{8}$")) {
+						if (secNum.matches("[1-9]+")) {
+							if (letGrade.matches("^[A-Za-z][Aa\\-+]?")) {
+								if (year.matches("[0-9]{4}")) {
+									if (sem.equals("spring") || sem.equals("summer") || sem.equals("fall")) {
+										if (course.matches("^[A-Za-z]{3}[0-9]{4}$")) {
+											int section = Integer.parseInt(secNum);
+											int yearInt = Integer.parseInt(year);
+									
+											//make sql call
+											jdbcHandler sqlconn = new jdbcHandler(loginScreen.username, loginScreen.password);
+											try {
+												int result = sqlconn.updateGrades(nNum, course, section, letGrade, yearInt, sem);
+												if (result > 0) {
+													enrollStudent.createMsgBox(shell, "Successful", "The entry was successfully updated.");
+													txtNnumber.setText("");
+													txtCourse.setText("");
+													txtSection.setText("");
+													txtLetterGrade.setText("");
+													txtYear.setText("");
+													txtSem.setText("");
+												} else {
+													enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
+												}
+											} catch (SQLException e1) {
+												enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
+											}
+										} else {
+											enrollStudent.createMsgBox(shell, "Invalid", "Please enter a valid Course Number.");
+											txtCourse.setText("");
+										}
+									} else {
+										enrollStudent.createMsgBox(shell, "Incorrect Semester", "Please choose between spring, summer, or fall");
+									}
+								} else {
+									enrollStudent.createMsgBox(shell, "Incorrect Year", "Please enter the year in the 4 digit format.");
+								}
+							} else {
+								enrollStudent.createMsgBox(shell, "Incorrect Grade", "Please enter a valid Grade.");
+								txtLetterGrade.setText("");
+							}
+						} else {
+							enrollStudent.createMsgBox(shell, "Incorrect Section Number", "Please enter a valid section number (either 1, 2, 3, etc).");
+							txtSection.setText("");
+						}
+					} else {
+						enrollStudent.createMsgBox(shell, "Incorrect Student nNumber", "The Student nNumber you've entered does not seem to be in the correct format. Please fix this.");
+					}
+				} else {
+					enrollStudent.createMsgBox(shell, "Incorrect Values", "Please double check your values entered for either Student nNumber or the Course/Section.");
+				}
+			}
+		});
+		btnSubmit.setText("Submit");
+		btnSubmit.setBounds(326, 219, 75, 25);
 
 	}
+
 }
