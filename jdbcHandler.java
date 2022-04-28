@@ -104,15 +104,13 @@ public class jdbcHandler {
 	}
 	
 	public String genGradeReport(String nNum) throws SQLException {
-		
-		String studentInfo = "";
 		String courseGrades = "Course Number | Section | Semester  |  Year  | Grade " + System.lineSeparator();
 		
 		//open connection
 		Connection conn = this.createConn();
 		
 		//create statement
-		PreparedStatement pstmt = conn.prepareStatement("SELECT Fname, Mid_initial, Lname, Class, Degree, Course_num, Section_num, Semester, Year, Grade_letter FROM STUDENT, GRADES_FOR WHERE STUDENT.NNUMBER = GRADES_FOR.NNUMBER AND STUDENT.NNUMBER = ?");
+		PreparedStatement pstmt = conn.prepareStatement("SELECT Course_num, Section_num, Semester, Year, Grade_letter FROM GRADES_FOR WHERE Nnumber = ?");
 		
 		//insert value
 		pstmt.setString(1, nNum);
@@ -121,35 +119,127 @@ public class jdbcHandler {
 		ResultSet rset = pstmt.executeQuery();
 		
 		//parse data
-		int counter = 0;
-		String mInit = "";
 		String grade = "";
 		while(rset.next()) {
-			if (counter == 0) {
-				if (rset.getString(2) != null) {
-					mInit = rset.getString(2) + " ";
-				}
-				studentInfo += "Name: " + rset.getString(1) + " " + mInit + rset.getString(3) + System.lineSeparator();
-				studentInfo += "Class: " + rset.getString(4) + "\tDegree: " + rset.getString(5) + System.lineSeparator() + System.lineSeparator(); 
-			}
-			String courseNum = "       " + rset.getString(6) + "      ";
-			String secNum = centerString(14, rset.getString(7));
-			String sem = centerSem( rset.getString(8));
-			String strYear = "  " + rset.getString(9) + " ";
-			if (rset.getString(10) != null) {
-				grade = "    " + rset.getString(10);
+			String courseNum = "       " + rset.getString(1) + "      ";
+			String secNum = centerString(14, rset.getString(2));
+			String sem = centerSem( rset.getString(3));
+			String strYear = "  " + rset.getString(4) + " ";
+			if (rset.getString(5) != null) {
+				grade = "    " + rset.getString(5);
 			} else {
 				grade = "    IP";
 			}
 			courseGrades += courseNum + "|" + secNum + "|" + sem + "|" + strYear + "|" + grade + System.lineSeparator();
-			counter++;
 		}
 		
 		//close connection
 		this.closeConn();
 		
 		//return result
-		return studentInfo + courseGrades;
+		return courseGrades;
+	}
+	
+	public String studentInfo(String nNum) throws SQLException {
+		String studentInfo = "";
+		
+		//open connection
+		Connection conn = this.createConn();
+		
+		//set up query
+		PreparedStatement pstmt = conn.prepareStatement("SELECT Fname, Mid_initial, Lname, Class, Degree, Bdate FROM STUDENT WHERE NNUMBER = ?");
+		
+		//insert value
+		pstmt.setString(1, nNum);
+		
+		//execute query
+		ResultSet rs = pstmt.executeQuery();
+		
+		//parse results
+		while(rs.next()) {
+			String mInit = "";
+			String major = majorLookup(nNum);
+			String minor = minorLookup(nNum);
+			
+			if (rs.getString(2) != null) {
+				mInit = rs.getString(2) + " ";
+			}
+			
+			//birthday string manipulation
+			String sqlBirth = rs.getString(6);
+			String formattedBirth = sqlBirth.substring(5, 10) + "-" + sqlBirth.substring(0, 4);
+			
+			studentInfo += "Name: " + rs.getString(1) + " " + mInit + rs.getString(3) + System.lineSeparator();
+			studentInfo += "Nnumber: " + nNum + System.lineSeparator();
+			studentInfo += "Birthday: " + formattedBirth + System.lineSeparator();
+			studentInfo += "Major: " + major +  System.lineSeparator();
+			studentInfo += "Minor: " + minor + System.lineSeparator();
+			studentInfo += "Class: " + rs.getString(4) + System.lineSeparator();
+			studentInfo += "Degree: " + rs.getString(5) + System.lineSeparator() + System.lineSeparator(); 
+		}
+		
+		//close conn
+		this.closeConn();
+		
+		return studentInfo;
+	}
+	
+	public String majorLookup(String nNum) throws SQLException {
+		String major = "";
+		//open connection
+		Connection conn = this.createConn();
+		
+		//set up query
+		PreparedStatement pstmt = conn.prepareStatement("SELECT CODE FROM CHOOSES_MAJOR WHERE NNUMBER = ?");
+		
+		//insert value
+		pstmt.setString(1, nNum);
+		
+		//execute query
+		ResultSet rs = pstmt.executeQuery();
+		
+		//parse results
+		if (rs.next()) {
+			major = rs.getString(1);
+		} else {
+			major = "Not Declared";
+		}
+		
+		//close conn
+		this.closeConn();
+
+		return major;
+	}
+	
+	public String minorLookup(String nNum) throws SQLException {
+		String minor = "";
+		//open connection
+		Connection conn = this.createConn();
+		
+		//set up query
+		PreparedStatement pstmt = conn.prepareStatement("SELECT CODE FROM CHOOSES_MINOR WHERE NNUMBER = ?");
+		
+		//insert value
+		pstmt.setString(1, nNum);
+		
+		//execute query
+		ResultSet rs = pstmt.executeQuery();
+		
+		//parse results
+		if (rs.next()) {
+			minor = rs.getString(1);
+		} else {
+			minor = "Not Declared";
+		}
+		
+		//close conn
+		this.closeConn();
+		
+		if (minor.isBlank()) {
+			minor = "Not Declared";
+		}
+
+		return minor;
 	}
 	
 	public String avgGPA (String nNum) throws SQLException {
