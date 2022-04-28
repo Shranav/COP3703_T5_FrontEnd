@@ -141,7 +141,7 @@ public class enrollStudent {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				//extract text from txt boxes
-				String nNum = txtNnumber.getText();
+				String nNum = txtNnumber.getText().toUpperCase();
 				String course = txtCourse.getText();
 				String secNum = txtSection.getText();
 				String year = txtYear.getText();
@@ -172,7 +172,6 @@ public class enrollStudent {
 
 										}
 									} catch (SQLException e1) {
-										e1.printStackTrace();
 										createMsgBox(shell, "Error", "There was an error with the insertion. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 									}
 									
