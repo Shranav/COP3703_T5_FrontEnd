@@ -142,7 +142,7 @@ public class gradeStudent {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				//extract text from txt boxes
-				String nNum = txtNnumber.getText();
+				String nNum = txtNnumber.getText().toUpperCase();
 				String course = txtCourse.getText();
 				String secNum = txtSection.getText();
 				String letGrade = txtLetterGrade.getText();
@@ -176,7 +176,6 @@ public class gradeStudent {
 													enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Please try again.");
 												}
 											} catch (SQLException e1) {
-												e1.printStackTrace();
 												enrollStudent.createMsgBox(shell, "Error", "There was an error with the update. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 											}
 										} else {
