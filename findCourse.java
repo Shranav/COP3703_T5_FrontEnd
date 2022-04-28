@@ -146,6 +146,7 @@ public class findCourse {
 					regPat = "^([0-9A-Za-z]|[0-9A-Za-z]{2}|[0-9A-Za-z]{3}|[0-9A-Za-z]{4})$";
 				} else {
 					regPat = "^[A-za-z\\s]+$";
+					findCourse = findCourse.toLowerCase();
 				}
 				
 	            if (findCourse.matches(regPat)) {
@@ -163,7 +164,6 @@ public class findCourse {
 		                sqlconn.closeConn();
 		                txtFindCourse.setText("");
 		            }catch (SQLException e1) {
-		                e1.printStackTrace();
 		                enrollStudent.createMsgBox(shell, "Error", "There was an error with the search. Hint: " + e1.getLocalizedMessage() + ". Please try again.");
 		            }
 	            } else {
